@@ -102,7 +102,8 @@
     {
         public int RestaurantId { get; set; }
         public List<OrderSummaryDto> Orders { get; set; } = new List<OrderSummaryDto>();
-    }public class DriverOrderHistoryDto
+    }
+    public class DriverOrderHistoryDto
     {
         public int DriverId { get; set; }
         public List<OrderSummaryDto> Orders { get; set; } = new List<OrderSummaryDto>();
@@ -125,3 +126,4 @@
         public int RestaurantId { get; set; }
         public List<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
     }
+}
