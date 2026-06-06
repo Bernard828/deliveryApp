@@ -7,7 +7,7 @@ namespace deliveryApp.Server.Services
     public interface IOrderService
     {
         Task<OrderDto> CreateOrderAsync(CreateOrderDto createOrderDto);
-        Task<OrderDetailsDto?> GetOrderDetailsByIdAsync(int id);
+        Task<OrderDetailsDto> GetOrderDetailsByIdAsync(int id);
         Task<bool> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto);
         Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto);
         Task<CustomerOrderHistoryDto> GetCustomerHistoryAsync(int customerId);
@@ -80,7 +80,7 @@ namespace deliveryApp.Server.Services
                 .ThenInclude(oi => oi.MenuItem)
                 .FirstOrDefaultAsync(o => o.OrderId == id);
 
-            if (order == null) return null;
+            if (order == null) return null!;
             return new OrderDetailsDto
             {
                 OrderId = order.OrderId,
