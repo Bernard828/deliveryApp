@@ -6,14 +6,14 @@ namespace deliveryApp.Server.Services
 {
     public interface IOrderService
     {
-        Task<OrderDto> CreateOrderasync(CreateOrderDto createOrderDto);
+        Task<OrderDto> CreateOrderAsync(CreateOrderDto createOrderDto);
         Task<OrderDetailsDto?> GetOrderDetailsByIdAsync(int id);
-        Task<bool> UPdateOrderstatusAsync(UpdateOrderStatusDto updateOrderStatusDto);
+        Task<bool> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto);
         Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto);
-        Task<CustomerOrderHistoryDto> GetCustomerOrderHistoryAsync(int customerId);
-        Task<RestaurantOrderHistoryDto> GetRestaurantOrderHistoryAsync(int restaurantId);
-        Task<DriverOrderHistoryDto> GetDriverOrderHistorAsync(int driverId);
-        Task<DriverEarningsDto> GetDriversEasrningsAsync(int driverId);
+        Task<CustomerOrderHistoryDto> GetCustomerHistoryAsync(int customerId);
+        Task<RestaurantOrderHistoryDto> GetRestaurantHistoryAsync(int restaurantId);
+        Task<DriverOrderHistoryDto> GetDriverHistoryAsync(int driverId);
+        Task<DriverEarningsDto> GetDriversEarningsAsync(int driverId);
     }
     public class OrderService : IOrderService
     {
@@ -24,11 +24,11 @@ namespace deliveryApp.Server.Services
             _context = context;
         }
 
-        public async Task<OrderDto> CreatedOrderAsync(CreatedOrderDto createdOrderDto)
+        public async Task<OrderDto> CreateOrderAsync(CreateOrderDto createdOrderDto)
         {
             var order = new Order
             {
-                CustomerId = createdOrderDto.CustomerId,,
+                CustomerId = createdOrderDto.CustomerId,
                 RestaurantId = createdOrderDto.RestaurantId,
                 Status = "Pending",
                 CreatedAt = DateTime.UtcNow
@@ -102,8 +102,8 @@ namespace deliveryApp.Server.Services
 
         public async Task<bool> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto)
         {
-            var order = await _context.Orders.FindAsync(updateOrderStatusDto.OrderId)
-                if (order == null) return false;
+            var order = await _context.Orders.FindAsync(updateOrderStatusDto.OrderId);
+            if (order == null) return false;
 
             order.Status = updateOrderStatusDto.Status; ;
             await _context.SaveChangesAsync();
@@ -139,7 +139,7 @@ namespace deliveryApp.Server.Services
             };
         }
 
-        public async Task<RestaurantOrderHistoryDto> GetRestaurantOrderHistorysync(int resaturantId)
+        public async Task<RestaurantOrderHistoryDto> GetRestaurantHistoryAsync(int resaturantId)
         {
             var orders = await _context.Orders
                 .Where(o => o.RestaurantId == resaturantId)
@@ -174,7 +174,7 @@ namespace deliveryApp.Server.Services
             };
         }
 
-        public async Task<DriverEarningsDto> GetDriverEarningsAsync(int driverId)
+        public async Task<DriverEarningsDto> GetDriversEarningsAsync(int driverId)
         {
             decimal earnings = await _context.Orders
                 .Where(o => o.DriverId == driverId && o.Status == "Delivered")
