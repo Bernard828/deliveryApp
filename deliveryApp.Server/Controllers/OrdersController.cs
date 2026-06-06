@@ -41,7 +41,7 @@ namespace deliveryApp.Server.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateStatus([FromBody] UpdateOrderStatusDto dto)
         {
-            var updated = await _orderService.UpdateOrderStatusAsync(dto)
+            var updated = await _orderService.UpdateOrderStatusAsync(dto);
                 if (!updated) return NotFound($"Order {dto.OrderId} not found");
             return NoContent();
         }
