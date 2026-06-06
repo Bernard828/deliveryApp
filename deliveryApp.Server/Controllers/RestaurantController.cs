@@ -24,7 +24,7 @@ namespace deliveryApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
-            var restaurant = await _restaurantService.GetRestaurantyByIdAsync(id);
+            var restaurant = await _restaurantService.GetRestaurantByIdAsync(id);
             if (restaurant == null) return NotFound($"Restaurant with Id {id} does not exist.");
 
             return Ok(restaurant);
