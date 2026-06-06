@@ -24,8 +24,8 @@ namespace deliveryApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
-            var restaurant = await _restaurantService.GetRestaurantByIdAsync(id);
-            if (restuarant == null) return NotFound($"Restaurant with Id {id} does not exist.");
+            var restaurant = await _restaurantService.GetRestaurantyByIdAsync(id);
+            if (restaurant == null) return NotFound($"Restaurant with Id {id} does not exist.");
 
             return Ok(restaurant);
         }
@@ -47,7 +47,7 @@ namespace deliveryApp.Server.Controllers
         {
             if (id != restaurantDto.RestaurantId)
             {
-                return BadRequest("Payload Id structural mismatch with resource route identified.")
+                return BadRequest("Payload Id structural mismatch with resource route identified.");
             }
 
             if (!ModelState.IsValid) return BadRequest(ModelState);

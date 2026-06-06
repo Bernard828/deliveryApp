@@ -1,12 +1,13 @@
 ﻿using deliveryApp.Server.Data;
 using deliveryApp.Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace deliveryApp.Server.NewFolder
 {
     public interface IRestaurantService
     {
         Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync();
-        Task<RestaurantDto?> GetRestaurantyIdAsync(int id);
+        Task<RestaurantDto?> GetRestaurantByIdAsync(int id);
         Task<RestaurantDto> CreateRestaurantAsync(RestaurantDto restaurantDto);
         Task<bool> UpdateRestaurantAsync(int id, RestaurantDto restaurantDto);
         Task<bool> DeleteRestaurantAsync(int id);
@@ -14,16 +15,16 @@ namespace deliveryApp.Server.NewFolder
 
     public class RestaurantService : IRestaurantService
     {
-        private readonly DeliveryAppDb _context;
+        private readonly DeliveryAppDbContext _context;
 
-        public RestaurantService(DeliveryAppDb context)
+        public RestaurantService(DeliveryAppDbContext context)
         {
             _context = context;
         }
 
         public async Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync()
         {
-            return await _context.Restaurants
+            return await _context.Resataurants
                 .Include(r => r.Cuisine)
                 .Select(r => MapToDto(r))
                 .ToListAsync();
@@ -31,7 +32,7 @@ namespace deliveryApp.Server.NewFolder
 
         public async Task<RestaurantDto?> GetRestaurantByIdAsync(int id)
         {
-            var restaurant = await _context.Restaurants
+            var restaurant = await _context.Resataurants
                 .Include(r => r.Cuisine)
                 .FirstOrDefaultAsync(r => r.RestaurantId == id);
 
@@ -55,7 +56,7 @@ namespace deliveryApp.Server.NewFolder
                 }).ToList()
             };
 
-            _context.Restaurants.Add(restaurant);
+            _context.Resataurants.Add(restaurant);
             await _context.SaveChangesAsync();
 
             restaurantDto.RestaurantId = restaurant.RestaurantId;
@@ -64,13 +65,13 @@ namespace deliveryApp.Server.NewFolder
 
         public async Task<bool> UpdateRestaurantAsync(int id, RestaurantDto restaurantDto)
         {
-            var restaurant = await _context.Restaurants
+            var restaurant = await _context.Resataurants
                 .Include(r => r.OperatingHours)
                 .FirstOrDefaultAsync(r => r.RestaurantId == id);
 
             if (restaurant == null) return false;
             restaurant.Name = restaurantDto.Name;
-            restaurant.cuisineTypeId = restaurantDto.CuisineTypeId;
+            restaurant.CuisineTypeId = restaurantDto.CuisineTypeId;
             restaurant.Address = restaurantDto.Address;
             restaurant.Price = restaurantDto.Price;
             restaurant.ImageUrl = restaurantDto.ImageUrl;
@@ -91,7 +92,7 @@ namespace deliveryApp.Server.NewFolder
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (DbUpdateCurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!RestaurantExists(id)) return false;
                 throw;
@@ -100,16 +101,16 @@ namespace deliveryApp.Server.NewFolder
 
         public async Task<bool> DeleteRestaurantAsync(int id)
         {
-            var restaurant = await _context.Restaurants.FindAsync(id);
+            var restaurant = await _context.Resataurants.FindAsync(id);
             if (restaurant == null) return false;
-            _context.Restaurants.Remove(restaurant);
-            await _context.SaveChangesasync();
+            _context.Resataurants.Remove(restaurant);
+            await _context.SaveChangesAsync();
             return true;
         }
 
         private bool RestaurantExists(int id)
         {
-            return _context.Restaurants.Any(e => e.RestaurantId == id);
+            return _context.Resataurants.Any(e => e.RestaurantId == id);
         }
 
         private static RestaurantDto MapToDto(Restaurant restaurant)
