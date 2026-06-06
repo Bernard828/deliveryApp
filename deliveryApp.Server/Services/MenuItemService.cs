@@ -8,7 +8,7 @@ namespace deliveryApp.Server.Services
     {
         Task<IEnumerable<MenuItem>> GetMenuByRestaurantIdAsync(int restaurantId);
         Task<MenuItem> GetByIdAsync(int id);
-        Task<MenuItem> Createasync(MenuItem item);
+        Task<MenuItem> CreateAsync(MenuItem item);
         Task<bool> UpdateAsync(int id, MenuItem item);
         Task<bool> DeleteAsync(int id);
     }
