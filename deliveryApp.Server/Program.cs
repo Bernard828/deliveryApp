@@ -1,5 +1,6 @@
 using deliveryApp.Server.Data;
 using deliveryApp.Server.NewFolder;
+using deliveryApp.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<DeliveryAppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IMenuItemService, MenuItemService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

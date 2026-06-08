@@ -39,6 +39,7 @@ namespace deliveryApp.Server.Services
             await _context.SaveChangesAsync();
                 return user;
         }
+
         public async Task<bool>UpdateUserAsync(int id,User user)
         {
             if (id != user.UserId) return false;
