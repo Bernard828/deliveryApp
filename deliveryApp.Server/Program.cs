@@ -12,6 +12,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

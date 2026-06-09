@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace deliveryApp.Server.Controllers
 {
-    public class MenuItemController : ControllerBase
+    public class MenuItemController : BaseApiController
     {
         private readonly IMenuItemService _menuItemservice;
 
@@ -19,7 +19,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(await _menuItemservice.GetMenuByRestaurantIdAsync(restaurantId));
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<MenuItem>> Get(int id)
         {
             var item = await _menuItemservice.GetByIdAsync(id);
@@ -39,7 +39,7 @@ namespace deliveryApp.Server.Controllers
             }, created);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult>Update(int id, [FromBody] MenuItem item)
         {
             var success = await _menuItemservice.UpdateAsync(id, item);
@@ -47,7 +47,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _menuItemservice.DeleteAsync(id);

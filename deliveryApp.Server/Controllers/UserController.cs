@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace deliveryApp.Server.Controllers
 {
-    public class UserController:ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IUserService _userService;
 
@@ -19,7 +19,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(await _userService.GetAllUsersAsync());
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -27,27 +27,27 @@ namespace deliveryApp.Server.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("create-user")]
         public async Task<ActionResult<User>> Create([FromBody] User user)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var created = await _userService.CreateUserAsync(user);
             return CreatedAtAction(nameof(GetUser), new { id = created.UserId }, created);
         }
 
-        [HttpPut]
+        [HttpPut("update-user/{id}")]
         public async Task<IActionResult> PutUser(int id, [FromBody] User user)
         {
             if (id != user.UserId) return BadRequest();
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var success = await _userService.UpdateUserAsync(id, user);
-            if(!success) return NotFound();
+            if (!success) return NotFound();
 
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _userService.DeleteUserAsync(id);

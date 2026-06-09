@@ -5,7 +5,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace deliveryApp.Server.Controllers
 {
-    public class OrdersController : ControllerBase
+    public class OrdersController : BaseApiController
     {
         //create new order
         //update order status (e.g., pending, accepted, in transit, delivered)
@@ -30,7 +30,7 @@ namespace deliveryApp.Server.Controllers
             }, order);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<OrderDetailsDto>> GetDetails(int id)
         {
             var details = await _orderService.GetOrderDetailsByIdAsync(id);
@@ -38,15 +38,15 @@ namespace deliveryApp.Server.Controllers
             return Ok(details);
         }
 
-        [HttpPut]
+        [HttpPut("status")]
         public async Task<ActionResult> UpdateStatus([FromBody] UpdateOrderStatusDto dto)
         {
             var updated = await _orderService.UpdateOrderStatusAsync(dto);
-                if (!updated) return NotFound($"Order {dto.OrderId} not found");
+            if (!updated) return NotFound($"Order {dto.OrderId} not found");
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("assign-driver")]
         public async Task<IActionResult> AssignDriver([FromBody] AssignDriverDto dto)
         {
             var assigned = await _orderService.AssignDriverAsync(dto);
@@ -54,19 +54,20 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("customer/{customerId}")]
         public async Task<ActionResult<CustomerOrderHistoryDto>> GetCustomerHistory(int customerId)
         {
             return Ok(await _orderService.GetCustomerHistoryAsync(customerId));
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<RestaurantOrderHistoryDto>> GetRestaurantHistory(int restaurantId) {
+        [HttpGet("restaurant/{restaurantId}")]
+        public async Task<ActionResult<RestaurantOrderHistoryDto>> GetRestaurantHistory(int restaurantId)
+        {
             return Ok(await _orderService.GetRestaurantHistoryAsync(restaurantId));
         }
 
-        [HttpGet]
+        [HttpGet("driver/{driverId}")]
         public async Task<ActionResult<DriverOrderHistoryDto>> GetDriverOrderHistory(int driverId)
         {
             return Ok(await _orderService.GetDriverHistoryAsync(driverId));

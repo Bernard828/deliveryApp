@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace deliveryApp.Server.Controllers
 {
     //fetch list of available restaurants and their specific menus
-    public class RestaurantController : ControllerBase
+    public class RestaurantController : BaseApiController
     {
         private readonly IRestaurantService _restaurantService;
 
@@ -21,7 +21,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(restaurants);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
             var restaurant = await _restaurantService.GetRestaurantByIdAsync(id);
@@ -30,7 +30,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(restaurant);
         }
 
-        [HttpPost]
+        [HttpPost("create-restaurant")]
         public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantDto restaurantDto)
         {
             if (!ModelState.IsValid)
@@ -42,7 +42,7 @@ namespace deliveryApp.Server.Controllers
             return CreatedAtAction(nameof(GetRestaurant), new { id = createdRestaurant.RestaurantId }, createdRestaurant);
         }
 
-        [HttpPut]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutRestaurant(int id, [FromBody] RestaurantDto restaurantDto)
         {
             if (id != restaurantDto.RestaurantId)
