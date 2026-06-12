@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderTrackingComponentComponent } from './order-tracking-component.component';
+import { OrderTrackingComponentComponent } from './order-tracking.component';
 
 describe('OrderTrackingComponentComponent', () => {
   let component: OrderTrackingComponentComponent;

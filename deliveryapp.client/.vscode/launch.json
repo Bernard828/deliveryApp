@@ -2,16 +2,21 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "edge",
-      "request": "launch",
-      "name": "localhost (Edge)",
-      "url": "https://localhost:21970",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
       "type": "chrome",
       "request": "launch",
       "name": "localhost (Chrome)",
+      "url": "https://localhost:21970",
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable": "stable",
+      "userDataDir": false,
+      "env": {
+        "ASPNETCORE_HTTPS_PORT": "7299"
+      }
+    },
+    {
+      "type": "edge",
+      "request": "launch",
+      "name": "localhost (Edge)",
       "url": "https://localhost:21970",
       "webRoot": "${workspaceFolder}"
     }

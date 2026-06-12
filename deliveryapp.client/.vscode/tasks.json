@@ -11,12 +11,13 @@
         "pattern": "$tsc",
         "background": {
           "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
+          "beginsPattern": "Application bundle generation complete",
+          "endsPattern": "Watch mode enabled"
+        }
+      },
+      "options": {
+        "env": {
+          "ASPNETCORE_HTTPS_PORT": "7229"
         }
       }
     },
@@ -29,12 +30,8 @@
         "pattern": "$tsc",
         "background": {
           "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
+          "beginsPattern": "Application bundle generation complete",
+          "endsPattern": "Watch mode enabled"
         }
       }
     }

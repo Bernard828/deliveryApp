@@ -1,23 +1,21 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RestaurantListComponentComponent } from './restaurant-list-component/restaurant-list-component.component';
-import { MenuComponentComponent } from './menu-component/menu-component.component';
-import { OrderTrackingComponentComponent } from './order-tracking-component/order-tracking-component.component';
+import { RestaurantListComponent } from './component/restaurant-list/restaurant-list.component';
+import { MenuComponent } from './component/menu/menu.component';
+import { OrderTrackingComponent } from './component/order-tracking/order-tracking.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    RestaurantListComponentComponent,
-    MenuComponentComponent,
-    OrderTrackingComponentComponent
+    RestaurantListComponent,
+    MenuComponent,
+    OrderTrackingComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule, AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
