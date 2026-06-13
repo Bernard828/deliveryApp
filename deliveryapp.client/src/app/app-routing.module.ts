@@ -9,14 +9,14 @@ import { RestaurantListComponent } from './component/restaurant-list/restaurant-
 import { OrderTrackingComponent } from './component/order-tracking/order-tracking.component';
 
 const routes: Routes = [
-  { path: 'home.component', component: HomeComponent, title: 'Home' },
-  { path: 'restaurant.component', component: RestaurantComponent, title: 'Restaurants' },
-  { path: 'user.component', component: UserComponent, title: 'User' },
-  { path: 'menu.component', component: MenuComponent, title: 'Menu' },
-  { path: 'order.component', component: OrderComponent, title: 'Order' },
-  { path: 'order-tracking.component', component: OrderTrackingComponent, title: 'Order Progress' },
-  { path: 'restaurant-list.component', component: RestaurantListComponent, title: 'Restaurants' },
-  { path: '', redirectTo: 'home.component' }
+  { path: 'home', component: HomeComponent, title: 'Home' },
+  { path: 'restaurant', component: RestaurantComponent, title: 'Restaurants' },
+  { path: 'user', component: UserComponent, title: 'User' },
+  { path: 'menu', component: MenuComponent, title: 'Menu' },
+  { path: 'order', component: OrderComponent, title: 'Order' },
+  { path: 'order-tracking', component: OrderTrackingComponent, title: 'Order Progress' },
+  { path: 'restaurant-list', component: RestaurantListComponent, title: 'Restaurants' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
