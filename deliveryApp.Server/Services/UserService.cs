@@ -7,10 +7,10 @@ namespace deliveryApp.Server.Services
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<User?> GetUserByIdAsync(int id);
+        Task<User?> GetUserByIdAsync(Guid id);
         Task<User> CreateUserAsync(User user);
-        Task<bool> UpdateUserAsync(int id, User user);
-        Task<bool> DeleteUserAsync(int id);
+        Task<bool> UpdateUserAsync(Guid id, User user);
+        Task<bool> DeleteUserAsync(Guid id);
     }
     public class UserService : IUserService
     {
@@ -26,7 +26,7 @@ namespace deliveryApp.Server.Services
             return await _context.Users.Include(u => u.Role).ToListAsync();
         }
 
-        public async Task<User?> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
            return await _context.Users
             .Include(u => u.Role)
@@ -40,7 +40,7 @@ namespace deliveryApp.Server.Services
                 return user;
         }
 
-        public async Task<bool>UpdateUserAsync(int id,User user)
+        public async Task<bool>UpdateUserAsync(Guid id,User user)
         {
             if (id != user.UserId) return false;
             _context.Entry(user).State = EntityState.Modified;
@@ -56,7 +56,7 @@ namespace deliveryApp.Server.Services
             }
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return false;

@@ -20,7 +20,7 @@ namespace deliveryApp.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null) return NotFound();
@@ -36,7 +36,7 @@ namespace deliveryApp.Server.Controllers
         }
 
         [HttpPut("update-user/{id}")]
-        public async Task<IActionResult> PutUser(int id, [FromBody] User user)
+        public async Task<IActionResult> PutUser(Guid id, [FromBody] User user)
         {
             if (id != user.UserId) return BadRequest();
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -48,7 +48,7 @@ namespace deliveryApp.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var success = await _userService.DeleteUserAsync(id);
             if (!success) return NotFound();

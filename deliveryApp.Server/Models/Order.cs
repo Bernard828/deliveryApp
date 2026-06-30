@@ -6,7 +6,7 @@
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public int RestaurantId { get; set; }
-        public int? DriverId { get; set; }
+        public Guid DriverId { get; set; }
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = "Pending";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -56,7 +56,7 @@
     public class AssignDriverDto
     {
         public int OrderId { get; set; }
-        public int DriverId { get; set; }
+        public Guid DriverId { get; set; }
     }
 
     public class OrderDto
@@ -65,7 +65,7 @@
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public int RestaurantId { get; set; }
-        public int? DriverId { get; set; }
+        public Guid? DriverId { get; set; }
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -77,7 +77,7 @@
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public int RestaurantId { get; set; }
-        public int? DriverId { get; set; }
+        public Guid? DriverId { get; set; }
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -88,7 +88,7 @@
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public int RestaurantId { get; set; }
-        public int? DriverId { get; set; }
+        public Guid? DriverId { get; set; }
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -117,7 +117,7 @@
 
     public class DriverOrderHistoryDto
     {
-        public int DriverId { get; set; }
+        public Guid DriverId { get; set; }
         public int TotalOrders { get; set; }
         public decimal TotalEarnings { get; set; }
         public List<OrderSummaryDto> Orders { get; set; } = new List<OrderSummaryDto>();
@@ -125,7 +125,7 @@
 
     public class DriverEarningsDto
     {
-        public int DriverId { get; set; }
+        public Guid DriverId { get; set; }
         public decimal TotalEarnings { get; set; }
     }
 

@@ -46,13 +46,13 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut("assign-driver")]
-        public async Task<IActionResult> AssignDriver([FromBody] AssignDriverDto dto)
-        {
-            var assigned = await _orderService.AssignDriverAsync(dto);
-            if (!assigned) return BadRequest();
-            return NoContent();
-        }
+        //[HttpPut("assign-driver")]
+        //public async Task<IActionResult> AssignDriver([FromBody] AssignDriverDto dto)
+        //{
+        //    var assigned = await _orderService.AssignDriverAsync(dto);
+        //    if (!assigned) return BadRequest();
+        //    return NoContent();
+        //}
 
         [HttpGet("customer/{customerId}")]
         public async Task<ActionResult<CustomerOrderHistoryDto>> GetCustomerHistory(int customerId)
@@ -68,7 +68,7 @@ namespace deliveryApp.Server.Controllers
         }
 
         [HttpGet("driver/{driverId}")]
-        public async Task<ActionResult<DriverOrderHistoryDto>> GetDriverOrderHistory(int driverId)
+        public async Task<ActionResult<DriverOrderHistoryDto>> GetDriverOrderHistory(Guid driverId)
         {
             return Ok(await _orderService.GetDriverHistoryAsync(driverId));
         }

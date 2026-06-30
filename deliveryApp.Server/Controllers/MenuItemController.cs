@@ -6,54 +6,70 @@ namespace deliveryApp.Server.Controllers
 {
     public class MenuItemController : BaseApiController
     {
-        private readonly IMenuItemService _menuItemservice;
+        private readonly IMenuItemService _service;
 
-        public MenuItemController(IMenuItemService menuItemService)
+        public MenuItemController(IMenuItemService service)
         {
-            _menuItemservice = menuItemService;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MenuItem>>> GetByRestaurant(int restaurantId)
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _menuItemservice.GetMenuByRestaurantIdAsync(restaurantId));
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MenuItem>> Get(int id)
-        {
-            var item = await _menuItemservice.GetByIdAsync(id);
+            var item = await _service.GetByIdAsync(id);
             if (item == null) return NotFound();
-
             return Ok(item);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetByRestaurant(int restaurantId)
+        {
+            var items = await _service.GetByRestaurantIdAsync(restaurantId);
+            return Ok(items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search([FromBody] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query cannot be empty.");
+            var results = await _service.SearchAsync(query);
+            return Ok(results);
+        }
+
         [HttpPost]
-        public async Task<ActionResult<MenuItem>> Create([FromBody] MenuItem item)
+        public async Task<IActionResult> Create(MenuItemCreateDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            var created = await _menuItemservice.CreateAsync(item);
-            return CreatedAtAction(nameof(Get), new
-            {
-                id = created.MenuItemId
-            }, created);
+            var item = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), 
+                new { id = item.MenuItemId },
+                item);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult>Update(int id, [FromBody] MenuItem item)
+        [HttpPut]
+        public async Task<IActionResult>Update(int id,MenuItemUpdateDto dto)
         {
-            var success = await _menuItemservice.UpdateAsync(id, item);
-            if (!success) return BadRequest();
-            return NoContent();
+            if (id != dto.MenuItemId)
+                return BadRequest("Mismatch ID.");
+            var success = await _service.UpdateAsync(dto);
+            if (!success) return NotFound();
+            return Ok(success);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var success = await _menuItemservice.DeleteAsync(id);
-            if(!success) return BadRequest();
+            var success = await _service.DeleteAsync(id);
+            if(!success) return NotFound();
             return NoContent();
+        }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateTags(int id, [FromBody]List<string> tags)
+        {
+            if (tags == null || !tags.Any())
+                return BadRequest("Tags list cannot be empty.");
+            var success = await _service.Up
         }
     }
 }

@@ -9,11 +9,11 @@ namespace deliveryApp.Server.Services
         Task<OrderDto> CreateOrderAsync(CreateOrderDto createOrderDto);
         Task<OrderDetailsDto> GetOrderDetailsByIdAsync(int id);
         Task<bool> UpdateOrderStatusAsync(UpdateOrderStatusDto updateOrderStatusDto);
-        Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto);
+        //Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto);
         Task<CustomerOrderHistoryDto> GetCustomerHistoryAsync(int customerId);
         Task<RestaurantOrderHistoryDto> GetRestaurantHistoryAsync(int restaurantId);
-        Task<DriverOrderHistoryDto> GetDriverHistoryAsync(int driverId);
-        Task<DriverEarningsDto> GetDriversEarningsAsync(int driverId);
+        Task<DriverOrderHistoryDto> GetDriverHistoryAsync(Guid driverId);
+        Task<DriverEarningsDto> GetDriversEarningsAsync(Guid driverId);
     }
     public class OrderService : IOrderService
     {
@@ -110,20 +110,20 @@ namespace deliveryApp.Server.Services
             return true;
         }
 
-        public async Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto)
-        {
-            var order = await _context.Orders.FindAsync(assignDriverDto.OrderId);
-            if (order == null) return false;
+        //public async Task<bool> AssignDriverAsync(AssignDriverDto assignDriverDto)
+        //{
+        //    var order = await _context.Orders.FindAsync(assignDriverDto.OrderId);
+        //    if (order == null) return false;
 
-            //Verify entity has Driver Role
-            var driverExists = await _context.Users.AnyAsync(u => u.UserId == assignDriverDto.DriverId);
-            if (!driverExists) return false;
+        //    //Verify entity has Driver Role
+        //    var driverExists = await _context.Users.AnyAsync(u => u.UserId = assignDriverDto.DriverId);
+        //    if (!driverExists) return false;
 
-            order.DriverId = assignDriverDto.DriverId;
-            order.Status = "Accepted By Driver";
-            await _context.SaveChangesAsync();
-            return true;
-        }
+        //    order.DriverId = assignDriverDto.DriverId;
+        //    order.Status = "Accepted By Driver";
+        //    await _context.SaveChangesAsync();
+        //    return true;
+        //}
 
         public async Task<CustomerOrderHistoryDto> GetCustomerHistoryAsync(int customerId)
         {
@@ -153,7 +153,7 @@ namespace deliveryApp.Server.Services
             };
         }
 
-        public async Task<DriverOrderHistoryDto> GetDriverHistoryAsync(int driverId)
+        public async Task<DriverOrderHistoryDto> GetDriverHistoryAsync(Guid driverId)
         {
             var baseQuery = await _context.Orders
                 .Where(o => o.DriverId == driverId)
@@ -174,7 +174,7 @@ namespace deliveryApp.Server.Services
             };
         }
 
-        public async Task<DriverEarningsDto> GetDriversEarningsAsync(int driverId)
+        public async Task<DriverEarningsDto> GetDriversEarningsAsync(Guid driverId)
         {
             decimal earnings = await _context.Orders
                 .Where(o => o.DriverId == driverId && o.Status == "Delivered")

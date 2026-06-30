@@ -9,7 +9,7 @@ namespace deliveryApp.Server.Data
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
-        public DbSet<Restaurant> Resataurants { get; set; } = null!;
+        public DbSet<Restaurant> Restaurants { get; set; } = null!;
         public DbSet<CuisineType> CuisineTypes { get; set; } = null!;
         public DbSet<RestaurantHour> RestaurantHours { get; set; } = null!;
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
@@ -42,7 +42,7 @@ namespace deliveryApp.Server.Data
 
             //Restaurant, Cuisine, and Hours Relationships
             modelBuilder.Entity<Restaurant>()
-               .HasOne(r => r.Cuisine)
+               .HasOne(r => r.CuisineType)
                .WithMany(c => c.Restaurants)
                .HasForeignKey(r => r.CuisineTypeId)
                .OnDelete(DeleteBehavior.Restrict);

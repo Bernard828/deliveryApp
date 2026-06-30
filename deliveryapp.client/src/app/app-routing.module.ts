@@ -10,13 +10,13 @@ import { OrderTrackingComponent } from './component/order-tracking/order-trackin
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'Home' },
-  { path: 'restaurant', component: RestaurantComponent, title: 'Restaurants' },
+  { path: 'restaurant', component: RestaurantComponent, title: 'Restaurant' },
   { path: 'user', component: UserComponent, title: 'User' },
   { path: 'menu', component: MenuComponent, title: 'Menu' },
   { path: 'order', component: OrderComponent, title: 'Order' },
   { path: 'order-tracking', component: OrderTrackingComponent, title: 'Order Progress' },
   { path: 'restaurant-list', component: RestaurantListComponent, title: 'Restaurants' },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/restaurant-list', pathMatch: 'full' }
 ];
 
 @NgModule({
