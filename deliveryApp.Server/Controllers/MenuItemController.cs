@@ -41,13 +41,13 @@ namespace deliveryApp.Server.Controllers
         public async Task<IActionResult> Create(MenuItemCreateDto dto)
         {
             var item = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), 
+            return CreatedAtAction(nameof(GetById),
                 new { id = item.MenuItemId },
                 item);
         }
 
         [HttpPut]
-        public async Task<IActionResult>Update(int id,MenuItemUpdateDto dto)
+        public async Task<IActionResult> Update(int id, MenuItemUpdateDto dto)
         {
             if (id != dto.MenuItemId)
                 return BadRequest("Mismatch ID.");
@@ -60,16 +60,45 @@ namespace deliveryApp.Server.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _service.DeleteAsync(id);
-            if(!success) return NotFound();
+            if (!success) return NotFound();
             return NoContent();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTags(int id, [FromBody]List<string> tags)
+        public async Task<IActionResult> UpdateTags(int id, [FromBody] List<string> tags)
         {
             if (tags == null || !tags.Any())
                 return BadRequest("Tags list cannot be empty.");
-            var success = await _service.Up
+            var success = await _service.UpdateTagsAsync(id, tags);
+            if (!success) return NotFound();
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTags(int id, [FromBody], List<string> tags)
+        {
+            if (tags == null || !tags.Any())
+                return BadRequest("Tag list cannot be empty.");
+
+            var success = await _service.DeleteTagsAsync(id, tags);
+            if (!success) return NotFound();
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var results = await _service.GetPagedAsync(page, pageSize);
+            return Ok(results);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BatchUpdate([FromBody] List<MenuItemUpdateDto> items)
+        {
+            if (items == null || !items.Any())
+                return BadRequest("Update list cannot be empty.");
+            var success = await _service.BatchUpdateAsync(items);
+            if (!success) return NotFound("No matching menu items found.");
+            return NoContent();
         }
     }
 }
