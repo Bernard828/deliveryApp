@@ -26,7 +26,7 @@ namespace deliveryApp.Server.Endpoints
                 {
                     RestaurantId = r.RestaurantId,
                     Name = r.Name,
-                    CuisineTypeId = r.CuisineTypeId,
+                    CuisineTypeId = r.CuisineTypeId ?? 0,
                     Cuisine = r.CuisineType,
                     Price = r.Price,
                     ImageUrl = r.ImageUrl,
@@ -64,7 +64,7 @@ namespace deliveryApp.Server.Endpoints
                 {
                     RestaurantId = restaurant.RestaurantId,
                     Name = restaurant.Name,
-                    CuisineTypeId = restaurant.CuisineTypeId,
+                    CuisineTypeId = restaurant.CuisineTypeId ?? 0,
                     Cuisine = restaurant.CuisineType,
                     Price = restaurant.Price,
                     ImageUrl = restaurant.ImageUrl,

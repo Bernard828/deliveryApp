@@ -13,7 +13,7 @@ namespace deliveryApp.Server.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _service.GetByIdAsync(id);
@@ -21,7 +21,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(item);
         }
 
-        [HttpGet]
+        [HttpGet("restaurantId")]
         public async Task<IActionResult> GetByRestaurant(int restaurantId)
         {
             var items = await _service.GetByRestaurantIdAsync(restaurantId);
@@ -51,7 +51,7 @@ namespace deliveryApp.Server.Controllers
         {
             if (id != dto.MenuItemId)
                 return BadRequest("Mismatch ID.");
-            var success = await _service.UpdateAsync(dto);
+            var success = await _service.UpdateAsync(id, dto);
             if (!success) return NotFound();
             return Ok(success);
         }
@@ -64,7 +64,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("tag")]
         public async Task<IActionResult> UpdateTags(int id, [FromBody] List<string> tags)
         {
             if (tags == null || !tags.Any())
@@ -74,8 +74,8 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTags(int id, [FromBody], List<string> tags)
+        [HttpDelete("tagDelete")]
+        public async Task<IActionResult> DeleteTags(int id, [FromBody] List<string> tags)
         {
             if (tags == null || !tags.Any())
                 return BadRequest("Tag list cannot be empty.");
@@ -85,13 +85,13 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<IActionResult> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var results = await _service.GetPagedAsync(page, pageSize);
             return Ok(results);
         }
-        [HttpPut]
+        [HttpPut("batch")]
         public async Task<IActionResult> BatchUpdate([FromBody] List<MenuItemUpdateDto> items)
         {
             if (items == null || !items.Any())

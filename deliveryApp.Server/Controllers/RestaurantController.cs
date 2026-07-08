@@ -30,7 +30,7 @@ namespace deliveryApp.Server.Controllers
             return Ok(restaurant);
         }
 
-        [HttpGet]
+        [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string query)
         {
             if (string.IsNullOrWhiteSpace(query)) return BadRequest("Query is empty");
@@ -65,7 +65,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("batch")]
         public async Task<IActionResult> UpdateMultiple([FromBody] RestaurantUpdateMultipleDto dto)
         {
             var success = await _service.EditMultipleAsync(dto);
@@ -73,7 +73,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("tag")]
         public async Task<IActionResult> DeleteTags(int id, [FromBody] DeleteRestaurantSearchTagsDto dto)
         {
             if (dto.TagNames == null || !dto.TagNames.Any())
@@ -92,7 +92,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("hours")]
         public async Task<IActionResult> UpdateHours(int id, List<RestaurantHourDto> hours)
         {
             var success = await _service.UpdateOperatingHoursAsync(id, hours);
@@ -100,7 +100,7 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<IActionResult> GetPaged([FromQuery]int page =1, [FromQuery] int pageSize = 10)
         {
             var results = await _service.GetPagedAsync(page, pageSize);

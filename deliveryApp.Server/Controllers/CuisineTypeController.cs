@@ -27,5 +27,18 @@ namespace deliveryApp.Server.Controllers
             if (!updated) return NotFound();
             return Ok(updated);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CuisineType>>> GetAll()
+        {
+            try
+            {
+            var result = await _service.GetAllAsync();
+            return Ok(result);
+            }catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
