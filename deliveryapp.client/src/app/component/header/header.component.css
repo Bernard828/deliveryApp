@@ -1,11 +1,16 @@
 a {
   text-decoration: none;
   color: black;
-  padding:1.5rem;
+  padding: 1.5rem;
 }
 
   a:hover {
     background-color: lightgreen;
     color: darkblue;
-    border-radius: 30%;
+    border-radius: 14%;
   }
+
+.user {
+  display: flex;
+  justify-content: flex-end;
+}

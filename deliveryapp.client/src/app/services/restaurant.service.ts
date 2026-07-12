@@ -31,7 +31,7 @@ export class RestaurantService {
   }
 
   create(dto: RestaurantCreateDto): Observable<RestaurantDto> {
-    return this.http.post<RestaurantDto>(this.apiUrl, dto), pipe(
+    return this.http.post<RestaurantDto>(this.apiUrl, dto).pipe(
       tap((newDocument) => this.restaurants.update(list => [...list, newDocument]))
     );
   }
