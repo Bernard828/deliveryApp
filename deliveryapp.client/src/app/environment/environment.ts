@@ -1,4 +1,4 @@
 
 export class Environment {
-  private apiUri = 'https://localhost:21970/';
+  public apiUri = 'https://localhost:21970/';
 }

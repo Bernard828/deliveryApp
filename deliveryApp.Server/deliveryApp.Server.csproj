@@ -8,7 +8,7 @@
 	<PublishAot>false</PublishAot>
 	  <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.EntityFrameworkCore.GeneratedInterceptors</InterceptorsNamespaces>
     <SpaRoot>..\deliveryapp.client</SpaRoot>
-    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyLaunchCommand>npm start --open</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:21970</SpaProxyServerUrl>
   </PropertyGroup>
 

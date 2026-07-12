@@ -1,3 +1,5 @@
+import { MenuItemSearchDto } from "./menuItem.model";
+
 export interface RestaurantDto {
   restaurantId: number;
   name: string;
@@ -15,7 +17,19 @@ export interface RestaurantHourDto {
   openTime: string;
   closeTime: string;
 }
-
+export interface RestaurantSearchDto {
+  restaurantId: number;
+  name: string;
+  description: string;
+  cusineTypeId: number;
+  menuItmes: MenuItemSearchDto[];
+}
+export interface RestaurantCreateDto {
+  name: string;
+  description: string;
+  searchTags: string[];
+  cusineTypeId: number | null;
+}
 export interface CuisineType {
   cusineTypeId: number;
   name: string;

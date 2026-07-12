@@ -18,7 +18,6 @@ namespace deliveryApp.Server.Models
         public virtual ICollection<RestaurantHour> OperatingHours { get; set; } = new List<RestaurantHour>();
         public virtual ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
     }
-
     public class RestaurantTag
     {
         public int RestaurantTagId { get; set; }
@@ -57,7 +56,6 @@ namespace deliveryApp.Server.Models
         public List<string>? AddSearchTags { get; set; }
 
     }
-
     public class DeleteRestaurantSearchTagsDto
     {
         public List<string> TagNames { get; set; } = new();
@@ -71,7 +69,6 @@ namespace deliveryApp.Server.Models
         public IEnumerable<MenuItemSearchDto> MenuItems { get; set; } = Enumerable.Empty<MenuItemSearchDto>();
 
     }
-
     //public class RestaurantCuisine
     //{
     //    public int RestaurantId { get; set; }
@@ -79,7 +76,6 @@ namespace deliveryApp.Server.Models
     //    public int CuisineTypeId { get; set; }
     //    public CuisineType? CuisineType { get; set; }
     //}
-
     public class RestaurantDto
     {
         public int RestaurantId { get; set; }
@@ -94,7 +90,6 @@ namespace deliveryApp.Server.Models
         public bool IsCurrentlyOpen { get; set; }
         public List<RestaurantHourDto> OperatingHours { get; set; } = new();
     }
-
     public class RestaurantHourDto
     {
         public DayOfWeek DayOfWeek { get; set; }

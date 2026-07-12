@@ -6,6 +6,13 @@ export interface MenuItem {
   imageUrl: string;
   restaurantId: number;
 }
+export interface MenuItemSearchDto {
+  menuItemId: number;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+}
 
 export interface OrderItemDto {
   menuItemId: number;
