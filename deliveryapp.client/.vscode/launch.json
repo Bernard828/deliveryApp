@@ -5,12 +5,15 @@
       "type": "chrome",
       "request": "launch",
       "name": "localhost (Chrome)",
-      "url": "https://localhost:21970",
+      //"url": "https://localhost:21970",
+      "url": "https://localhost:4200",
       "webRoot": "${workspaceFolder}",
       "runtimeExecutable": "stable",
       "userDataDir": false,
       "env": {
-        "ASPNETCORE_HTTPS_PORT": "7299"
+        //"ASPNETCORE_HTTPS_PORT": "7299"
+        "ASPNETCORE_HTTPS_PORT": "7140"
+
       }
     },
     {
