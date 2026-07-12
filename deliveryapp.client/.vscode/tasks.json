@@ -17,7 +17,7 @@
       },
       "options": {
         "env": {
-          "ASPNETCORE_HTTPS_PORT": "7229"
+          "ASPNETCORE_HTTPS_PORT": "7140"
         }
       }
     },
