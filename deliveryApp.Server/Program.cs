@@ -42,7 +42,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DeliveryAppExchange", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:21970")
        .AllowAnyHeader()
        .AllowAnyMethod();
     });
