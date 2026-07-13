@@ -38,6 +38,15 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DeliveryAppExchange", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+       .AllowAnyHeader()
+       .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -71,6 +80,7 @@ app.UseAuthorization();
 //    return order is not null ? Results.Ok(order) : Results.NotFound();
 //});
 app.MapControllers();
+app.UseCors("DeliveryAppExchange");
 
 app.MapFallbackToFile("/index.html");
 
