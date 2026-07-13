@@ -3,14 +3,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './component/header/header.component';
 
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,7 +12,6 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
 
   constructor(private http: HttpClient) { }
 
