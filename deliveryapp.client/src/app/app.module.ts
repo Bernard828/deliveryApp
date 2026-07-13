@@ -1,8 +1,9 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { NgModule, ApplicationConfig } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RestaurantListComponent } from './component/restaurant-list/restaurant-list.component';
 import { MenuComponent } from './component/menu/menu.component';
@@ -10,9 +11,15 @@ import { OrderTrackingComponent } from './component/order-tracking/order-trackin
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient()
+  ]
+};
+
 @NgModule({
   declarations: [
-    RestaurantListComponent,
     MenuComponent,
     OrderTrackingComponent
   ],
@@ -32,6 +39,7 @@ import Aura from '@primeuix/themes/aura';
       }
     })
   ],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule { }
+

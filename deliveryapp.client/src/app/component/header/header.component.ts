@@ -1,13 +1,17 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { RouterModule } from '@angular/router';
-
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { MenubarModule } from 'primeng/menubar';
 @Component({
   selector: 'app-header',
-  imports: [RouterModule],
+  standalone:true,
+  imports: [RouterModule, RouterOutlet],
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  items = [
+    { label: 'Home', routerLink: '/' },
+    { label: 'Restaurants', RouterLink: '/restaurant-list' }
+  ]
 }

@@ -35,4 +35,9 @@ export class RestaurantService {
       tap((newDocument) => this.restaurants.update(list => [...list, newDocument]))
     );
   }
+  update(id: number, dto: RestaurantDto): Observable<RestaurantDto> {
+    return this.http.put<RestaurantDto>(this.apiUrl, dto).pipe(
+      tap((newDocument) => this.restaurants.update(list => [...list, newDocument]))
+    );
+  }
 }
