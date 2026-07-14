@@ -1,1 +1,13 @@
-<p>menu-category works!</p>
+<div class="menu-category mb-4">
+  <h3 class="mb-3">{{ title }}</h3>
+
+  @for(item of items; track item.menuItemId) {
+  <app-menu-item-card [item]="item"
+                      (addToCart)="addToCart.emit($event)">
+  </app-menu-item-card>
+  }
+
+  @empty {
+  <p class="text-color-secondary">No items in this category.</p>
+  }
+</div>
