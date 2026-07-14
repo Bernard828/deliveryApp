@@ -1,15 +1,31 @@
-import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  OnInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+
 import { RestaurantService } from "../../services/restaurant.service";
-import { RestaurantSearchDto, RestaurantCreateDto, RestaurantDto } from '../../models/restuarant.model';
+import {
+  RestaurantSearchDto,
+  RestaurantCreateDto,
+  RestaurantDto
+} from '../../models/restuarant.model';
 
 //PrimeNG Imports
 import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
 //import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ChipModule } from 'primeng/chip';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -33,30 +49,27 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ProgressSpinnerModule
   ],
   templateUrl: './restaurant-list.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './restaurant-list.component.css'
+  styleUrls: ['./restaurant-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RestaurantListComponent implements OnInit {
-  //restaurantService = inject(RestaurantService);
   private fb = inject(FormBuilder);
+  private restaurantService = inject(RestaurantService);
+
   restaurants = signal<RestaurantDto[]>([]);
 
-  //modal display toggles
-  dialogVisible = signal(false);
-  dialogMode = signal<'create' | 'edit'>('create');
+  //Dialogs
   displayCreateDialog = signal<boolean>(false);
   displayMenuDialog = signal<boolean>(false);
 
-  //selected restaurant focus
+  //selected restaurant for menu modal
   selectedRestaurantMenu = signal<RestaurantSearchDto | null>(null);
 
-  constructor(private readonly restaurantService: RestaurantService) {
-    this.loadRestaurants();
-  }
+  //constructor() { this.loadRestaurants(); }
+
   createForm!: FormGroup;
 
   ngOnInit(): void {
-    //this.restaurantService.getAll().subscribe();
     this.loadRestaurants();
     this.initForm();
   }
@@ -89,28 +102,14 @@ export class RestaurantListComponent implements OnInit {
     });
   }
 
-  openCreate(): void {
-    this.dialogMode.set('create');
-    this.selectRestaurant.set(null);
-    this.dialogVisible.set(true);
-  }
+  onSubmit(): void {
+    if (this.createForm.invalid) return;
 
-  openEdit(restaurant: RestaurantSearchDto): void {
-    this.dialogMode.set('edit');
-    this.selectRestaurant.set(restaurant);
-    this.dialogVisible.set(true);
-  }
+    const dto = this.createForm.value as RestaurantCreateDto;
 
-  closeDialog(): void {
-    this.dialogVisible.set(false);
-  }
-
-  handleSave(restaurant:unknown): void {
-    if (this.dialogMode() === 'create') {
-      this.restaurantService.create(restaurant as RestaurantCreateDto).subscribe(() => this.loadRestaurants());
-    } else {
-      this.restaurantService.update(restaurant as RestaurantDto).subscribe(() => this.loadRestaurants());
-    }
-    this.closeDialog();
+    this.restaurantService.create(dto).subscribe(() => {
+      this.displayCreateDialog.set(false);
+      this.loadRestaurants();
+    });
   }
 }
