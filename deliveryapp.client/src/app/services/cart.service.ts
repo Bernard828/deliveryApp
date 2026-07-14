@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { CartItem } from '../models/cart-item-model';
+import { CartItem } from '../models/order';
 import { BehaviorSubject } from 'rxjs';
 import { OrderItemDto } from '../models/menuItem.model';
 
