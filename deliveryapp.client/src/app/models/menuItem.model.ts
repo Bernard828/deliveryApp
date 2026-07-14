@@ -12,7 +12,16 @@ export interface MenuItemSearchDto {
   description: string;
   price: number;
   imageUrl: string;
+  category: MenuCategory;
 }
+
+export type MenuCategory =
+  | 'Apps'
+  | 'SoupSalad'
+  | 'Sandwich'
+  | 'Entrees'
+  | 'Kids'
+  | 'Dessert';
 
 export interface OrderItemDto {
   menuItemId: number;
