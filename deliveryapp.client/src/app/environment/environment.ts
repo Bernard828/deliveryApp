@@ -1,4 +1,3 @@
-
-export class Environment {
-  public apiUri = 'https://localhost:5400/';
+export const environment {
+   apiUri = 'https://localhost:5400/api/';
 }

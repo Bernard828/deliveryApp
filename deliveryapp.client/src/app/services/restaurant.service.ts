@@ -1,43 +1,67 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { RestaurantDto, RestaurantCreateDto, RestaurantSearchDto } from '../models/restuarant.model';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Environment } from '../environment/environment';
-import { Observable, tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
+import {
+  RestaurantDto,
+  RestaurantCreateDto,
+  RestaurantSearchDto
+} from '../models/restuarant.model';
+import { environment } from '../environment/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class RestaurantService {
   private http = inject(HttpClient);
-  private environement = inject(Environment);
-  private apiUrl = 'https://loccalhost:7001/api/restaurants';
+  private apiUrl = environment.apiUri + ' restaurants';
+
+  restaurants = signal<RestaurantDto[]>([]);
+  loading = signal(false);
+
   constructor() { }
 
-  //restaurants = this.http.get<RestaurantDto[]>(this.environement.apiUri + 'api/restaurant');
-  restaurants = signal<RestaurantDto[]>([]);
-  loading = signal<boolean>(false);
-
-  getAll(): Observable<RestaurantDto[]> {
+  getAll() {
     this.loading.set(true);
+
     return this.http.get<RestaurantDto[]>(this.apiUrl).pipe(
-      tap({
-        next: (data) => this.restaurants.set(data),
-        finalize: () => this.loading.set(false)
-      })
+      tap(data => this.restaurants.set(data)),
+      finalize(() => this.loading.set(false))
     );
   }
 
-  getbyId(id: number): Observable<RestaurantSearchDto> {
+  getbyId(id: number) {
     return this.http.get<RestaurantSearchDto>(`${this.apiUrl}/${id}`);
   }
 
-  create(dto: RestaurantCreateDto): Observable<RestaurantDto> {
+  create(dto: RestaurantCreateDto) {
     return this.http.post<RestaurantDto>(this.apiUrl, dto).pipe(
-      tap((newDocument) => this.restaurants.update(list => [...list, newDocument]))
+      tap(newRestaurant =>
+        this.restaurants.update(list => [...list, newRestaurant])
+      )
     );
   }
-  update(id: number, dto: RestaurantDto): Observable<RestaurantDto> {
-    return this.http.put<RestaurantDto>(this.apiUrl, dto).pipe(
-      tap((newDocument) => this.restaurants.update(list => [...list, newDocument]))
+
+  update(id: number, dto: RestaurantDto) {
+    return this.http.put<RestaurantDto>(`${this.apiUrl}/${id}`, dto).pipe(
+      tap(updated =>
+        this.restaurants.update(list =>
+          list.map(r => (r.restaurantId === id ? updated : r))
+        )
+      )
     );
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      tap(() =>
+        this.restaurants.update(list =>
+          list.filter(r => r.restaurantId !== id)
+        )
+      )
+    );
+  }
+
+  getMenuByRestaurantId(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}/menu`);
   }
 }
