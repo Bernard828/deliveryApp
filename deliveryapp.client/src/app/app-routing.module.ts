@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
-import { RestaurantComponent } from './component/restaurant/restaurant.component';
-import { UserComponent } from './component/user/user.component';
-import { MenuComponent } from './component/menu/menu.component';
-import { OrderComponent } from './component/order/order.component';
-import { RestaurantListComponent } from './component/restaurant-list/restaurant-list.component';
-import { OrderTrackingComponent } from './component/order-tracking/order-tracking.component';
+import { RestaurantComponent } from './pages/restaurant/restaurant.component';
+import { UserComponent } from './pages/user/user.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { OrderComponent } from './pages/order/order.component';
+import { RestaurantListComponent } from './pages/restaurant-list/restaurant-list.component';
+import { OrderTrackingComponent } from './pages/order-tracking/order-tracking.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'Home' },
