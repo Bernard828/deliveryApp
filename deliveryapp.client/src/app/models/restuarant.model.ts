@@ -3,6 +3,7 @@ import { MenuItemSearchDto } from "./menuItem.model";
 export interface RestaurantDto {
   restaurantId: number;
   name: string;
+  description:string;
   cuisineTypeId: number;
   cuisine: CuisineType;
   price: number;
@@ -21,16 +22,16 @@ export interface RestaurantSearchDto {
   restaurantId: number;
   name: string;
   description: string;
-  cusineTypeId: number;
-  menuItmes: MenuItemSearchDto[];
+  cuisineTypeId: number;
+  menuItems: MenuItemSearchDto[];
 }
 export interface RestaurantCreateDto {
   name: string;
   description: string;
   searchTags: string[];
-  cusineTypeId: number | null;
+  cuisineTypeId: number | null;
 }
 export interface CuisineType {
-  cusineTypeId: number;
+  cuisineTypeId: number;
   name: string;
 }
