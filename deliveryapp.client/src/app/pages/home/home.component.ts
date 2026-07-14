@@ -1,14 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-home',
- //imports: [RouterOutlet, HeaderComponent],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
-
-}
+export class HomeComponent { }
