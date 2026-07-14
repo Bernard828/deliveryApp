@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './component/home/home.component';
-import { RestaurantComponent } from './pages/restaurant/restaurant.component';
+import { RestaurantComponent } from './component/restaurant/restaurant.component';
 import { UserComponent } from './pages/user/user.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { OrderComponent } from './pages/order/order.component';

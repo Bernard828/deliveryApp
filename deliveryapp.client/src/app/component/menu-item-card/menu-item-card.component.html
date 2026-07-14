@@ -1,1 +1,24 @@
-<p>menu-item-card works!</p>
+<div class="menu-item-card flex justify-content-between gap-3 gap-3 border-round surface-card border-1 surface-border">
+  <div class="flex gap-3">
+    <img [src]="item.imageUrl || 'assets/default-food.jpg'"
+         alt="Food item"
+         class="border-round"
+         style="width:70px; height:70px; object-fit:cover" />
+
+    <div>
+      <span class="font-bold text-lg block">{{ item.name}} </span>
+      <span class="text-sm text-colot-secondary block">{{ item.description }}</span>
+      <span class="font-bold text-primary block mt-2">{{ item.price | currency }}</span>
+    </div>
+  </div>
+
+  <div class="flex flex-column align-items-end gap-2">
+    <p-inputNumber [(ngModel)]="quantity" [min]="1" [max]="20" [showButtons]="true"></p-inputNumber>
+
+    <p-button icon="pi pi-shopping-cart"
+              label="Add"
+              severity="warning"
+              size="small"
+              (click)="add()"></p-button>
+  </div>
+</div>
