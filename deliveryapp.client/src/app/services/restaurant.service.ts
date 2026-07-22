@@ -13,7 +13,7 @@ import { environment } from '../environment/environment';
 })
 export class RestaurantService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUri + ' restaurants';
+  private apiUrl = environment.apiUri + 'Restaurant/';
 
   restaurants = signal<RestaurantDto[]>([]);
   loading = signal(false);
@@ -23,13 +23,13 @@ export class RestaurantService {
   getAll() {
     this.loading.set(true);
 
-    return this.http.get<RestaurantDto[]>(this.apiUrl).pipe(
+    return this.http.get<RestaurantDto[]>(this.apiUrl +'GetRestaurants').pipe(
       tap(data => this.restaurants.set(data)),
       finalize(() => this.loading.set(false))
     );
   }
 
-  getbyId(id: number) {
+  getById(id: number) {
     return this.http.get<RestaurantSearchDto>(`${this.apiUrl}/${id}`);
   }
 

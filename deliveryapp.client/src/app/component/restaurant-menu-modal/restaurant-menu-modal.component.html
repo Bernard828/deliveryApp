@@ -1,1 +1,37 @@
-<p>restaurant-menu-modal works!</p>
+<p-dialog [(visible)]="visible"
+          [modal]="true"
+          [style]="{ width: '700px' }"
+          [header]="restaurantName + ' Menu'">
+
+  <div class="flex flex-column gap-4">
+    <app-menu-category title="Appetizers"
+                       [items]="grouped.Apps"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+
+    <app-menu-category title="Soup & Salad"
+                       [items]="grouped.SoupSalad"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+
+    <app-menu-category title="Sandwich / Handheld"
+                       [items]="grouped.Sandwiches"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+
+    <app-menu-category title="Entrees"
+                       [items]="grouped.Entrees"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+
+    <app-menu-category title="Kids"
+                       [items]="grouped.Kids"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+
+    <app-menu-category title="Dessert"
+                       [items]="grouped.Dessert"
+                       (addToCart)="addToCart($event)">
+    </app-menu-category>
+  </div>
+</p-dialog>

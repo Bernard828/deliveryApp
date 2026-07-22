@@ -34,9 +34,9 @@ namespace deliveryApp.Server.NewFolder
         public async Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync()
         {
             var restaurants = await _context.Restaurants
-                 .Include(r => r.CuisineType)
-                 .Include(r => r.OperatingHours)
-                 .Include(r => r.SearchTags)
+                 //.Include(r => r.CuisineType)
+                 //.Include(r => r.OperatingHours)
+                 //.Include(r => r.SearchTags)
                  .ToListAsync();
             //return Ok(restaurants);
             return restaurants.Select(MapToDto);
@@ -101,11 +101,9 @@ namespace deliveryApp.Server.NewFolder
                 Name = dto.Name,
                 Description = dto.Description,
                 CuisineTypeId = dto.CuisineTypeId,
-
                 //Address = dto.Address,
                 //Price = dto.Price,
                 //ImageUrl = dto.ImageUrl,
-
                 SearchTags = dto.SearchTags
                 .Select(t => new RestaurantTag
                 { TagName = t })
@@ -117,7 +115,6 @@ namespace deliveryApp.Server.NewFolder
                 //    CloseTime = TimeSpan.Parse(h.CloseTime)
                 //}).ToList()
             };
-
             _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();
             return restaurant;
@@ -129,7 +126,7 @@ namespace deliveryApp.Server.NewFolder
                 .FindAsync(dto.RestaurantId);
 
             if (restaurant == null) return false;
-
+            //if(restaurant ==null || id != restaurant.RestaurantId)
             restaurant.Name = dto.Name;
             restaurant.CuisineTypeId = dto.CuisineTypeId;
 
@@ -179,7 +176,7 @@ namespace deliveryApp.Server.NewFolder
 
             if (restaurant == null) return false;
 
-           // restaurant.SearchTags.Remove(t => tagNames.Contains(t.TagName));
+            // restaurant.SearchTags.Remove(t => tagNames.Contains(t.TagName));
 
             await _context.SaveChangesAsync();
             return true;
@@ -194,7 +191,7 @@ namespace deliveryApp.Server.NewFolder
             return true;
         }
 
-        public async Task<bool> UpdateOperatingHoursAsync(int restaurantId,List<RestaurantHourDto> hours)
+        public async Task<bool> UpdateOperatingHoursAsync(int restaurantId, List<RestaurantHourDto> hours)
         {
             var restaurant = await _context.Restaurants
                 .Include(r => r.OperatingHours)
@@ -237,10 +234,10 @@ namespace deliveryApp.Server.NewFolder
             //    pageSize = pageSize
             //};
         }
-        
+
         private static RestaurantDto MapToDto(Restaurant r)
         {
-            var now= DateTime.Now;
+            var now = DateTime.Now;
             var today = now.DayOfWeek;
             var time = now.TimeOfDay;
 

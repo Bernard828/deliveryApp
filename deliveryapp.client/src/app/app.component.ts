@@ -13,5 +13,4 @@ import { HeaderComponent } from './component/header/header.component';
 })
 export class AppComponent {
   title = 'Food Delivery App';
-
 }

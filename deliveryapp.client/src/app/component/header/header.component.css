@@ -1,16 +1,19 @@
-a {
-  text-decoration: none;
-  color: black;
-  padding: 1.5rem;
+.app-header a {
+    text-decoration:none;
+    color: var(--text-color);
 }
 
-  a:hover {
-    background-color: lightgreen;
-    color: darkblue;
-    border-radius: 14%;
-  }
+.app-header a:hover{
+    color: var(--primary-color);
+}
 
-.user {
-  display: flex;
-  justify-content: flex-end;
+.cart-badge{
+    position:absolute;
+    top:-4px;
+    right: -4px;
+    background: var(--primary-color);
+    color:white;
+    font-size:0.75rem;
+    padding: 2px 6px;
+    border-radius:50%;
 }

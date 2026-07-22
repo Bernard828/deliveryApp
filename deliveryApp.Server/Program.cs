@@ -7,8 +7,8 @@ using deliveryApp.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
-var builder = WebApplication.CreateSlimBuilder(args);
-//var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateSlimBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DeliveryAppDbContext>(options =>
@@ -79,8 +79,8 @@ app.UseAuthorization();
 //    var order = service.GetOrder(id);
 //    return order is not null ? Results.Ok(order) : Results.NotFound();
 //});
-app.MapControllers();
 app.UseCors("DeliveryAppExchange");
+app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 

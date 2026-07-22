@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -5,14 +6,15 @@ import {
   signal,
   OnInit
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
+  FormsModule
 } from '@angular/forms';
 
+//Serivces
 import { RestaurantService } from "../../services/restaurant.service";
 import {
   RestaurantSearchDto,
@@ -25,28 +27,28 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
-//import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ChipModule } from 'primeng/chip';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
+import { RestaurantMenuModalComponent } from '../../component/restaurant-menu-modal/restaurant-menu-modal.component';
 @Component({
   selector: 'app-restaurant-list',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     CardModule,
     ButtonModule,
     DialogModule,
     InputTextModule,
-    //InputTextareaModule,
     ChipModule,
     InputNumberModule,
     TagModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    RestaurantMenuModalComponent
   ],
   templateUrl: './restaurant-list.component.html',
   styleUrls: ['./restaurant-list.component.css'],
@@ -54,62 +56,104 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 })
 export class RestaurantListComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private restaurantService = inject(RestaurantService);
+  public restaurantService = inject(RestaurantService);
 
   restaurants = signal<RestaurantDto[]>([]);
-
-  //Dialogs
-  displayCreateDialog = signal<boolean>(false);
-  displayMenuDialog = signal<boolean>(false);
-
-  //selected restaurant for menu modal
+  // Selected restaurant for menu modal
   selectedRestaurantMenu = signal<RestaurantSearchDto | null>(null);
 
-  //constructor() { this.loadRestaurants(); }
+  // Dialogs
+  displayCreateDialog = signal(false);
+  displayMenuDialog = signal(false);
 
   createForm!: FormGroup;
+  submitting = signal(false);
 
   ngOnInit(): void {
+    this.initForm(false);
     this.loadRestaurants();
-    this.initForm();
   }
 
   loadRestaurants(): void {
-    this.restaurantService.getAll().subscribe(restaurants =>
-      this.restaurants.set(restaurants));
+    this.restaurantService.getAll().subscribe(list => {
+      this.restaurants.set(list || []);
+    });
   }
 
-  initForm(): void {
+  initForm(openAfterInit = true): void {
     this.createForm = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      cuisineTypeId: [null, [Validators.required]],
-      searchTags: [[]]
+      name: ['', [Validators.required, Validators.maxLength(200)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
+      // cuisineTypeId: [null, [Validators.required]],
+      //searchTags: [[]]
     });
+    //this.displayCreateDialog.set(true);
+    if (openAfterInit) {
+      this.displayCreateDialog.set(true);
+    }
   }
 
   openCreateModal(): void {
-    this.createForm.reset({ searchTags: [] });
-    this.displayCreateDialog.set(true);
+    //this.createForm.reset({ searchTags: [] });
+    //this.displayCreateDialog.set(true);
+    this.initForm(true);
   }
 
-  selectRestaurant(id: number): void {
-    this.restaurantService.getbyId(id).subscribe({
-      next: (data) => {
-        this.selectedRestaurantMenu.set(data);
-        this.displayMenuDialog.set(true);
-      }
-    });
+  private resetForm(close = true): void {
+    if (this.createForm) {
+      this.createForm.reset();
+    } if (close) {
+      this.displayCreateDialog.set(false);
+    }
+  } 
+
+  onCancel(): void {
+    this.resetForm(true);
+  }
+
+  onClose(): void {
+    this.resetForm(true);
   }
 
   onSubmit(): void {
-    if (this.createForm.invalid) return;
+    //if (this.createForm.invalid) return;
+    if (!this.createForm || this.createForm.invalid) {
+      this.createForm.markAllAsTouched(); return;
+    }
 
     const dto = this.createForm.value as RestaurantCreateDto;
 
-    this.restaurantService.create(dto).subscribe(() => {
-      this.displayCreateDialog.set(false);
-      this.loadRestaurants();
+    this.submitting.set(true);
+
+    this.restaurantService.create(dto).subscribe({
+      // () => {this.displayCreateDialog.set(false);
+      // this.loadRestaurants();}
+      next: (created: RestaurantDto) => {
+        this.restaurants.update(list => [created, ...list]);
+
+        this.resetForm(true);
+      },
+      error: (err) => {
+        console.error('Failed to create restaurant', err);
+      },
+      complete: () => {
+        this.submitting.set(false);
+      }
     });
+    //this.displayCreateDialog.set(false);
+  }
+
+  selectRestaurant(id: number): void {
+    this.restaurantService.getById(id).subscribe({
+      next: (data) => {
+        this.selectedRestaurantMenu.set(data);
+        this.displayMenuDialog.set(true);
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  trackById(index: number, item: RestaurantDto) {
+    return item.restaurantId;
   }
 }

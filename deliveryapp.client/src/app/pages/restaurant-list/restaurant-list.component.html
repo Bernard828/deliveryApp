@@ -1,105 +1,95 @@
 <div class="p-5">
   <!--Header -->
-  <div class="flex justify-content-between align-items-center mb-4">
+  <div class="header flex justify-between items-center mb-4">
     <h2>Explore Restaurants</h2>
-    <p-button label="Add Restaurant"
-              icon="pi pi-plus"
-              severity="success"
-              (click)="openCreateModal()"></p-button>
+    <button class="btn btn-primary"
+            label="Add Restaurant"
+            icon="pi pi-plus"
+            severity="success"
+            (click)="openCreateModal()">
+      + Add Restaurant
+    </button>
   </div>
 
   <!--Loading-->
-  @if(restaurantService.loading()){
-  <div class="flex justify-content-center m-5">
-    <p-progressSpinner aria-label="loading"></p-progressSpinner>
+  <div *ngIf="restaurantService.loading()" class="loading-wrap m-5">
+    <div class="spinner" arai-hidden="true"></div>
   </div>
-  }
 
   <!--Restaurant Grid-->
   <div class="grid">
-    @for(res of restaurants(); track res.restaurantId){
-    <div class="col-12 md:col-4 lg:col-3">
-      <p-card [header]="res.name"
-              [subheader]="res.cuisineName"
-              (click)="selectRestaurant(res.restaurantId)"
-              styleClass="cursor-pointer hover:shadow-4 transition-duration-200">
-        <ng-template pTempalate="header">
-          <img [src]="res.imageUrl || 'assets/default-restaurant.jpg'"
-               alt="Restaurant Image"
-               style="height:200px; object-fit:cover; width:100%; border-radius:6px;" />
-        </ng-template>
+    <ng-container *ngFor=" let res of restaurants(); trackBy: trackById">
+      <div class="card" (click)="selectRestaurant(res.restaurantId)">
+        <div class="card-image">
+          <img [src]="res.imageUrl || 'assets/default-restaurant.jp'" alt="{{ res.name }}" />
+        </div>
 
-        <div class="flex flex-xolumn gap-2">
-          <span class="text-color-secondary">
-            <i class="pi pi-map-marker mr-2"></i>{{ res.address }}
-          </span>
-
-          <div class="flex justify-content-between align-items-center mt-2">
-            <span class="font-bold text-lg text-primary">
-              {{ res.price | currency }}
+        <div class="card-body">
+          <div class="card-title">{{ res.name }}</div>
+          <div class="card-sub">{{res.cuisine?.name || ''}}</div>
+          <div class="card-meta">
+            <span class="address">{{ res.address }}</span>
+            <span class="price">{{ res.price | currency }}</span>
+            <span class="status" [class.open]="res.isCurrentlyOpen" [class.closed]="!res.isCurrentlyOpen">
+              {{ res.isCurrentlyOpen ? 'OPEN' : 'CLOSED' }}
             </span>
-
-            <p-tag [severity]="res.isCurrentlyOpen ? 'success' : 'danger '"
-                   [value]="res.isCurrentlyOpen ? 'OPEN': 'CLOSED'">
-            </p-tag>
           </div>
         </div>
-      </p-card>
-    </div>
-    }
+      </div>
+    </ng-container>
   </div>
 </div>
 
 <!--Create Restaurant Dialog-->
-<p-dialog header="Create New Restaurant"
-          [(visible)]="displayCreateDialog()"
-          [modal]="true"
-          [style]="{ width:'450px' }">
-  <form [formGroup]="createForm"
-        (ngSumbmit)="onSubmit()"
-        class="flex flex-column gap-3 mt-2">
-    <div class="field">
-      <label for="name" class="font-bold block mb-1">RestaurantName</label>
-      <input pInputText id="name" formControlName="name" placeholder="Enter name" />
-    </div>
+<div class="modal-backdrop" *ngIf="displayCreateDialog()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+    <header class="modal-header">
+      <h3 id="createTitle">Create New Restaurant</h3>
+      <button class="close-x" (click)="onClose()" aria-label="Close">X</button>
+    </header>
 
-    <div class="field">
-      <label for="cuisineTypeId" class="font-bold block mb-1">Cuisine Type ID</label>
-      <p-inputNumber id="cuisineTypeId"
-                     formControlName="cuisineTypeId"
-                     [useGrouping]="false"
-                     placeholder="E.g. 1">
-      </p-inputNumber>
-    </div>
+    <form [formGroup]="createForm"
+          (ngSubmit)="onSubmit()"
+          class="modal-body">
+      <div class="form-row">
+        <label for="name" class="font-bold block mb-1">Restaurant Name</label>
+        <input id="name" type="text" formControlName="name" />
+        <div class="field-error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">Name is required.</div>
+      </div>
 
-    <div class="field">
-      <label for="description" class="font-bold-bold block mb-1">Description</label>
-      <textarea pInputTextarea
-                id="description"
-                formControlName="description"
-                rows="3"
-                placeholder="Describe the restaurant">
+      <div class="form-row">
+        <label for="description">Description</label>
+        <textarea id="description"
+                  rows="4"
+                  formControlName="description">
       </textarea>
-    </div>
+        <div class="field-error" *ngIf="createForm.get('description')?.touched && createForm.get('description')?.invalid">Description is required.</div>
+      </div>
 
-    <div class="field">
-      <label for="searchTags" class="font-bold block mb-1">Search Tags</label>
-      <p-chips id="searchTags" formControlName="searchTags" placeholder="pizza, fastfood, spicy"></p-chips>
-    </div>
+      <div class="modal-actions">
+        <button type="button"
+                class="btn btn-primary"
+                (click)="onCancel()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="createForm.invalid || submitting()">{{ submitting() ? 'Submitting...' : 'Submit' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-    <div class="flex justify-content-end gap-2 mt-4">
-      <p-button label="Cancel"
-                severity="secondary"
-                [text]="true" (click)="displayCreateDialog.set(false)">
-      </p-button>
-      <p-button label="Save" type="submit" [disabled]="createForm.invalid"></p-button>
-    </div>
-  </form>
-</p-dialog>
+<app-restaurant-menu-modal>
+    [visible]="displayMenuDialog()"
+  [restaurantName]="selectedRestaurantMenu()?.name || ''"
+  [menuItems]="selectedRestaurantMenu()?.menuItems || []">
+</app-restaurant-menu-modal>
 
 <!-- Menu Dialog-->
-<p-dialog [header]="selectedRestaurantMenu()?.name + ' - Menu'"
-          [(visible)]="displayMenuDialog"
+
+
+<!--<p-dialog [header]="selectedRestaurantMenu()?.name + ' - Menu'"
+          [visible]="displayMenuDialog()"
+          (visibleChange)="displayMenuDialog.set($event)"
           [modal]="true"
           [style]="{ width:'600px' }">
   @if(selectedRestaurantMenu();as menuDetails){
@@ -109,12 +99,12 @@
     @for(item of menuDetails.menuItems; track item.menuItemId) {
     <div class="flex  justify-content-between gap-3 border-round surface-card border-1 surface-border p-3">
       <div class="flex gap-3">
-        <img [src]="item.imageUrl || 'assetes/default-food.jpg'"
+        <img [src]="item.imageUrl || 'assets/default-food.jpg'"
              alt="Food item image"
              style="width:70px; height:70px; object-fit:cover"
              class="border-round" />
         <div>
-          <span class="font-bold block text-lg mb-1" {{ item.name }}></span>
+          <span class="font-bold block text-lg mb-1"> {{ item.name }}</span>
           <span class="text-sm text-color-secondary block mb-1">
             {{ item.description }}
           </span>
@@ -129,7 +119,7 @@
         <p-button icon="pi pi-shopping-cart"
                   size="small"
                   label="Add"
-                  severity="warning"></p-button>
+                  severity="warn"></p-button>
       </div>
     </div>
     }
@@ -141,4 +131,7 @@
     }
   </div>
   }
-</p-dialog>
+</p-dialog>-->
+
+<!--GRID-->
+<div></div>
