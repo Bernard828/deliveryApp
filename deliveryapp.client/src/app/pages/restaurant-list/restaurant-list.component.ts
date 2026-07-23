@@ -84,50 +84,43 @@ export class RestaurantListComponent implements OnInit {
     this.createForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(200)]],
       description: ['', [Validators.required, Validators.maxLength(1000)]],
-      // cuisineTypeId: [null, [Validators.required]],
-      //searchTags: [[]]
     });
-    //this.displayCreateDialog.set(true);
     if (openAfterInit) {
       this.displayCreateDialog.set(true);
     }
   }
 
   openCreateModal(): void {
-    //this.createForm.reset({ searchTags: [] });
-    //this.displayCreateDialog.set(true);
     this.initForm(true);
   }
 
-  private resetForm(close = true): void {
+  resetForm(close = true): void {
     if (this.createForm) {
       this.createForm.reset();
     } if (close) {
       this.displayCreateDialog.set(false);
     }
-  } 
-
-  onCancel(): void {
-    this.resetForm(true);
   }
 
-  onClose(): void {
-    this.resetForm(true);
+  onCancel(): void {
+    if (this.createForm)
+      this.createForm.reset();
+    this.displayCreateDialog.set(false);
+  }
+
+  onCloseClicked(): void {
+    if (this.createForm)
+      this.createForm.reset();
+    this.displayCreateDialog.set(false);
   }
 
   onSubmit(): void {
-    //if (this.createForm.invalid) return;
     if (!this.createForm || this.createForm.invalid) {
       this.createForm.markAllAsTouched(); return;
     }
-
     const dto = this.createForm.value as RestaurantCreateDto;
-
-    this.submitting.set(true);
-
-    this.restaurantService.create(dto).subscribe({
-      // () => {this.displayCreateDialog.set(false);
-      // this.loadRestaurants();}
+        this.submitting.set(true);
+            this.restaurantService.create(dto).subscribe({
       next: (created: RestaurantDto) => {
         this.restaurants.update(list => [created, ...list]);
 
@@ -140,7 +133,6 @@ export class RestaurantListComponent implements OnInit {
         this.submitting.set(false);
       }
     });
-    //this.displayCreateDialog.set(false);
   }
 
   selectRestaurant(id: number): void {

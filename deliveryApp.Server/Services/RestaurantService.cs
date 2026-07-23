@@ -11,7 +11,7 @@ namespace deliveryApp.Server.NewFolder
     {
         Task<RestaurantDto?> GetRestaurantByIdAsync(int id);
         Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync();
-        Task<Restaurant> CreateAsync(RestaurantCreateDto dto);
+        Task<RestaurantDto> CreateAsync(RestaurantCreateDto dto);
         Task<bool> UpdateAsync(RestaurantUpdateDto dto);
         Task<bool> EditMultipleAsync(RestaurantUpdateMultipleDto dto);
         Task<bool> DeleteTagAsync(int id, List<string> tagNames);
@@ -94,26 +94,12 @@ namespace deliveryApp.Server.NewFolder
                 })
                 .ToListAsync();
         }
-        public async Task<Restaurant> CreateAsync(RestaurantCreateDto dto)
+        public async Task<RestaurantDto> CreateAsync(RestaurantCreateDto dto)
         {
             var restaurant = new Restaurant
             {
                 Name = dto.Name,
-                Description = dto.Description,
-                CuisineTypeId = dto.CuisineTypeId,
-                //Address = dto.Address,
-                //Price = dto.Price,
-                //ImageUrl = dto.ImageUrl,
-                SearchTags = dto.SearchTags
-                .Select(t => new RestaurantTag
-                { TagName = t })
-                .ToList(),
-                //OperatingHours = dto.OperatingHours.Select(h => new RestaurantHour
-                //{
-                //    DayOfWeek = h.DayOfWeek,
-                //    OpenTime = TimeSpan.Parse(h.OpenTime),
-                //    CloseTime = TimeSpan.Parse(h.CloseTime)
-                //}).ToList()
+                Description = dto.Description
             };
             _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();

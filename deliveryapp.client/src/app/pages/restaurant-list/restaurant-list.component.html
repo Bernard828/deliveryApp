@@ -1,32 +1,26 @@
 <div class="p-5">
-  <!--Header -->
+  <!-- Header -->
   <div class="header flex justify-between items-center mb-4">
     <h2>Explore Restaurants</h2>
-    <button class="btn btn-primary"
-            label="Add Restaurant"
-            icon="pi pi-plus"
-            severity="success"
-            (click)="openCreateModal()">
-      + Add Restaurant
-    </button>
+    <button class="btn btn-primary" (click)="openCreateModal()">+ Add Restaurant</button>
   </div>
 
-  <!--Loading-->
+  <!-- Loading -->
   <div *ngIf="restaurantService.loading()" class="loading-wrap m-5">
-    <div class="spinner" arai-hidden="true"></div>
+    <div class="spinner" aria-hidden="true"></div>
   </div>
 
-  <!--Restaurant Grid-->
+  <!-- Restaurant Grid -->
   <div class="grid">
-    <ng-container *ngFor=" let res of restaurants(); trackBy: trackById">
+    <ng-container *ngFor="let res of restaurants(); trackBy: trackById">
       <div class="card" (click)="selectRestaurant(res.restaurantId)">
         <div class="card-image">
-          <img [src]="res.imageUrl || 'assets/default-restaurant.jp'" alt="{{ res.name }}" />
+          <img [src]="res.imageUrl || 'assets/default-restaurant.jpg'" alt="{{ res.name }}" />
         </div>
 
         <div class="card-body">
           <div class="card-title">{{ res.name }}</div>
-          <div class="card-sub">{{res.cuisine?.name || ''}}</div>
+          <div class="card-sub">{{ res.cuisine?.name || '' }}</div>
           <div class="card-meta">
             <span class="address">{{ res.address }}</span>
             <span class="price">{{ res.price | currency }}</span>
@@ -40,98 +34,43 @@
   </div>
 </div>
 
-<!--Create Restaurant Dialog-->
-<div class="modal-backdrop" *ngIf="displayCreateDialog()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+<!-- Create Restaurant Modal -->
+<div class="fd-modal-backdrop" *ngIf="displayCreateDialog()">
+  <div class="fd-modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
     <header class="modal-header">
       <h3 id="createTitle">Create New Restaurant</h3>
-      <button class="close-x" (click)="onClose()" aria-label="Close">X</button>
+      <button class="close-x" (click)="onCloseClicked()" aria-label="Close">✕</button>
     </header>
 
-    <form [formGroup]="createForm"
-          (ngSubmit)="onSubmit()"
-          class="modal-body">
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="modal-body">
       <div class="form-row">
         <label for="name" class="font-bold block mb-1">Restaurant Name</label>
         <input id="name" type="text" formControlName="name" />
-        <div class="field-error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">Name is required.</div>
+        <div class="field-error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">
+          Name is required.
+        </div>
       </div>
 
       <div class="form-row">
         <label for="description">Description</label>
-        <textarea id="description"
-                  rows="4"
-                  formControlName="description">
-      </textarea>
-        <div class="field-error" *ngIf="createForm.get('description')?.touched && createForm.get('description')?.invalid">Description is required.</div>
+        <textarea id="description" rows="4" formControlName="description"></textarea>
+        <div class="field-error" *ngIf="createForm.get('description')?.touched && createForm.get('description')?.invalid">
+          Description is required.
+        </div>
       </div>
 
       <div class="modal-actions">
-        <button type="button"
-                class="btn btn-primary"
-                (click)="onCancel()">
-          Cancel
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="createForm.invalid || submitting()">
+          {{ submitting() ? 'Submitting...' : 'Submit' }}
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="createForm.invalid || submitting()">{{ submitting() ? 'Submitting...' : 'Submit' }}</button>
       </div>
     </form>
   </div>
 </div>
 
-<app-restaurant-menu-modal>
-    [visible]="displayMenuDialog()"
-  [restaurantName]="selectedRestaurantMenu()?.name || ''"
-  [menuItems]="selectedRestaurantMenu()?.menuItems || []">
+<!-- Menu modal component (attributes on opening tag) -->
+<app-restaurant-menu-modal [visible]="displayMenuDialog()"
+                           [restaurantName]="selectedRestaurantMenu()?.name || ''"
+                           [menuItems]="selectedRestaurantMenu()?.menuItems || []">
 </app-restaurant-menu-modal>
-
-<!-- Menu Dialog-->
-
-
-<!--<p-dialog [header]="selectedRestaurantMenu()?.name + ' - Menu'"
-          [visible]="displayMenuDialog()"
-          (visibleChange)="displayMenuDialog.set($event)"
-          [modal]="true"
-          [style]="{ width:'600px' }">
-  @if(selectedRestaurantMenu();as menuDetails){
-  <p class="text-color-secondary mb-4">{{ menuDetails.description }}</p>
-
-  <div class="flex flex-column gap-3">
-    @for(item of menuDetails.menuItems; track item.menuItemId) {
-    <div class="flex  justify-content-between gap-3 border-round surface-card border-1 surface-border p-3">
-      <div class="flex gap-3">
-        <img [src]="item.imageUrl || 'assets/default-food.jpg'"
-             alt="Food item image"
-             style="width:70px; height:70px; object-fit:cover"
-             class="border-round" />
-        <div>
-          <span class="font-bold block text-lg mb-1"> {{ item.name }}</span>
-          <span class="text-sm text-color-secondary block mb-1">
-            {{ item.description }}
-          </span>
-        </div>
-      </div>
-
-      <div class="flex flex-column align-items-end gap-2">
-        <span class="font-bold text-xl text-primary">
-          {{ item.price | currency }}
-        </span>
-
-        <p-button icon="pi pi-shopping-cart"
-                  size="small"
-                  label="Add"
-                  severity="warn"></p-button>
-      </div>
-    </div>
-    }
-
-    @empty {
-    <div class="text-center p-4 text-color-secondary">
-      No items available on the menu yet.
-    </div>
-    }
-  </div>
-  }
-</p-dialog>-->
-
-<!--GRID-->
-<div></div>

@@ -23,7 +23,7 @@ export class RestaurantService {
   getAll() {
     this.loading.set(true);
 
-    return this.http.get<RestaurantDto[]>(this.apiUrl +'GetRestaurants').pipe(
+    return this.http.get<RestaurantDto[]>(this.apiUrl + 'GetRestaurants').pipe(
       tap(data => this.restaurants.set(data)),
       finalize(() => this.loading.set(false))
     );
@@ -34,7 +34,7 @@ export class RestaurantService {
   }
 
   create(dto: RestaurantCreateDto) {
-    return this.http.post<RestaurantDto>(this.apiUrl, dto).pipe(
+    return this.http.post<RestaurantDto>(this.apiUrl + 'Create', dto).pipe(
       tap(newRestaurant =>
         this.restaurants.update(list => [...list, newRestaurant])
       )
@@ -42,7 +42,7 @@ export class RestaurantService {
   }
 
   update(id: number, dto: RestaurantDto) {
-    return this.http.put<RestaurantDto>(`${this.apiUrl}/${id}`, dto).pipe(
+    return this.http.put<RestaurantDto>(this.apiUrl + 'Update', dto).pipe(
       tap(updated =>
         this.restaurants.update(list =>
           list.map(r => (r.restaurantId === id ? updated : r))

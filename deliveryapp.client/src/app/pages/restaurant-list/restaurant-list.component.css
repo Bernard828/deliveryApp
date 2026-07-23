@@ -38,11 +38,11 @@
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(16,24,40,0.06);
   cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
+  /*transition: transform .12s ease, box-shadow .12s ease;*/
 }
 
 .card-hover {
-  transform: translateY(-4px);
+  /*transform: translateY(-4px);*/
   box-shadow: 0 6px 18px rgba(16,24,40,0.08);
 }
 
@@ -94,18 +94,19 @@
     color: #7f1d1d;
   }
 
-/* Modal */
+Modal
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2,6,23,0.45);
+  /*background: rgba(2,6,23,0.45);*/
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1200;
+  /*z-index: 9999;*/ /* very high to avoid being behind other elements */
   padding: 1rem;
 }
 
+/* Modal panel */
 .modal {
   width: 100%;
   max-width: 520px;
@@ -113,14 +114,20 @@
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(2,6,23,0.3);
   overflow: hidden;
+  z-index: 10000; /* ensure panel is above backdrop */
+  transform: none !important; /* prevent inherited transforms from hiding it */
+  position: relative; /* keep it inside the stacking context of the backdrop */
 }
 
+/* Header with X */
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid #eef2f7;
+  background: #fff;
+  /*z-index: 10001;*/
 }
 
 .close-x {
@@ -130,6 +137,7 @@
   cursor: pointer;
 }
 
+/* Body */
 .modal-body {
   padding: 1rem;
   display: flex;
@@ -137,19 +145,35 @@
   gap: 0.75rem;
 }
 
-.form-row label {
+/*.form-row label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.25rem;
-}
+}*/
 
-.form-row input, .form-row textarea {
+/* Ensure inputs are visible */
+/*.form-row input, .form-row textarea {
   width: 100%;
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #e6e9ef;
-  font-size: 0.95rem;
-  background: #fff;
+  background: #fff;*/
+  /*  z-index: 10002;*/
+/*}*/
+
+/* Prevent parent transforms from creating stacking issues */
+.modal-backdrop, .modal {
+  -webkit-transform: none;
+  transform: none;
+}
+
+/* Accessibility: trap pointer events to modal */
+.modal-backdrop {
+  pointer-events: auto;
+}
+
+.modal {
+  pointer-events: auto;
 }
 
 .field-error {
@@ -165,7 +189,7 @@
   margin-top: 0.5rem;
 }
 
-/* Loading spinner (simple) */
+/*Loading spinner (simple)*/
 .loading-wrap {
   display: flex;
   justify-content: center;
@@ -183,6 +207,6 @@
 
 @keyframes spin {
   to {
-    transform: rotate(360deg);
+    /*transform: rotate(360deg);*/
   }
 }

@@ -1,4 +1,5 @@
 ﻿using deliveryApp.Server.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace deliveryApp.Server.Models
 {
@@ -8,7 +9,7 @@ namespace deliveryApp.Server.Models
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         //public string SearchTags { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
+        public Address? Address { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public int? CuisineTypeId { get; set; }
@@ -36,9 +37,16 @@ namespace deliveryApp.Server.Models
     }
     public class RestaurantCreateDto
     {
+        [Required]
+        [MaxLength(200)]
         public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(200)]
         public string Description { get; set; } = string.Empty;
-        public List<string> SearchTags { get; set; } = new();
+
+        public AddressDto? Address { get; set; }
+        public List<string>? SearchTags { get; set; } = new();
         public int? CuisineTypeId { get; set; }
     }
     public class RestaurantUpdateDto
@@ -69,26 +77,22 @@ namespace deliveryApp.Server.Models
         public IEnumerable<MenuItemSearchDto> MenuItems { get; set; } = Enumerable.Empty<MenuItemSearchDto>();
 
     }
-    //public class RestaurantCuisine
-    //{
-    //    public int RestaurantId { get; set; }
-    //    public Restaurant? Restaurant { get; set; }
-    //    public int CuisineTypeId { get; set; }
-    //    public CuisineType? CuisineType { get; set; }
-    //}
+   
     public class RestaurantDto
     {
         public int RestaurantId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int CuisineTypeId { get; set; }
-        public string CuisineName { get; set; } = string.Empty;
-        public virtual CuisineType Cuisine { get; set; } = null!;
-
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
-        public bool IsCurrentlyOpen { get; set; }
-        public List<RestaurantHourDto> OperatingHours { get; set; } = new();
+        public string Description { get; set; } = string.Empty;
+        public AddressDto? Address { get; set; }
+        public int? CuisineTypeId { get; set; }
+        public List<string>? SearchTags { get; set; }
+        //public string CuisineName { get; set; } = string.Empty;
+        //public virtual CuisineType Cuisine { get; set; } = null!;
+        //public decimal Price { get; set; }
+        //public string ImageUrl { get; set; } = string.Empty;
+        //public string Address { get; set; } = string.Empty;
+        //public bool IsCurrentlyOpen { get; set; }
+        //public List<RestaurantHourDto> OperatingHours { get; set; } = new();
     }
     public class RestaurantHourDto
     {

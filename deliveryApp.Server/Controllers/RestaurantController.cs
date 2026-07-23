@@ -96,12 +96,12 @@ namespace deliveryApp.Server.Controllers
         public async Task<IActionResult> UpdateHours(int id, List<RestaurantHourDto> hours)
         {
             var success = await _service.UpdateOperatingHoursAsync(id, hours);
-            if(!success) return NotFound();
+            if (!success) return NotFound();
             return NoContent();
         }
 
         [HttpGet("paged")]
-        public async Task<IActionResult> GetPaged([FromQuery]int page =1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var results = await _service.GetPagedAsync(page, pageSize);
             return Ok(results);
