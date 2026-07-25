@@ -6,7 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string SearchTags { get; set; } = string.Empty;
+       // public string SearchTags { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;    
         public int RestaurantId { get; set; }
 
@@ -24,7 +24,7 @@
         public int MenuItemId { get; set; }
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string SearchTags { get; set; } = string.Empty;
+       // public string SearchTags { get; set; } = string.Empty;
         public int RestaurantId { get; set; }
     }
 
@@ -32,7 +32,7 @@
     {
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string SearchTags { get; set; } = string.Empty;
+        //public string SearchTags { get; set; } = string.Empty;
         public int RestaurantId { get; set; }
     }
     public class MenuItemUpdateDto
@@ -40,7 +40,7 @@
         public int MenuItemId { get; set; }
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string SearchTags { get; set; } = string.Empty;
+       // public string SearchTags { get; set; } = string.Empty;
         public int RestaurantId { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace deliveryApp.Server.Data
              .Property(m => m.Price)
              .HasPrecision(18, 2);
             modelBuilder.Entity<Order>()
-                .Property(o=>o.TotalPrice)
+                .Property(o => o.TotalPrice)
                 .HasPrecision(18, 2);
             modelBuilder.Entity<OrderItem>()
            .Property(oi => oi.Price)
@@ -41,28 +41,31 @@ namespace deliveryApp.Server.Data
                  .OnDelete(DeleteBehavior.Restrict);
 
             //Restaurant, Cuisine, and Hours Relationships
-            modelBuilder.Entity<Restaurant>()
-               .HasOne(r => r.CuisineType)
-               .WithMany(c => c.Restaurants)
-               .HasForeignKey(r => r.CuisineTypeId)
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Restaurant>()
-                .HasMany(r => r.OperatingHours)
-                .WithOne()
-                .HasForeignKey(h => h.RestaurantId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Restaurant>()
+            //   .HasOne(r => r.CuisineType)
+            //   .WithMany(c => c.Restaurants)
+            //   .HasForeignKey(r => r.CuisineTypeId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Restaurant>()
+            //    .HasMany(r => r.OperatingHours)
+            //    .WithOne()
+            //    .HasForeignKey(h => h.RestaurantId)
+            //    .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Restaurant>()
              .HasMany(r => r.MenuItems)
              .WithOne(m => m.Restaurant)
              .HasForeignKey(m => m.RestaurantId)
               .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Restaurant>()
+            //  .OwnsOne(r => r.Address);
 
             //Order & OrderItem Relationships
             modelBuilder.Entity<Order>()
-              .HasOne(o => o.Customer)
-              .WithMany(u => u.Orders)
-              .HasForeignKey(r => r.CustomerId)
-              .OnDelete(DeleteBehavior.Restrict);
+             .HasOne(o => o.Customer)
+             .WithMany(u => u.Orders)
+             .HasForeignKey(o => o.CustomerId)
+             .HasPrincipalKey(u => u.UserId);
+
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Driver)

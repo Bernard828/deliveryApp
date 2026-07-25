@@ -4,7 +4,7 @@
     {
         //Database entity
         public int OrderId { get; set; }
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public int RestaurantId { get; set; }
         public Guid DriverId { get; set; }
         public decimal TotalPrice { get; set; }

@@ -6,9 +6,8 @@
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public int RoleId { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
         public virtual Role Role { get; set; } = null!;
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 
     public class Role

@@ -38,7 +38,7 @@ namespace deliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Resataurants",
+                name: "Restaurants",
                 columns: table => new
                 {
                     RestaurantId = table.Column<int>(type: "int", nullable: false)
@@ -51,9 +51,9 @@ namespace deliveryApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Resataurants", x => x.RestaurantId);
+                    table.PrimaryKey("PK_Restaurants", x => x.RestaurantId);
                     table.ForeignKey(
-                        name: "FK_Resataurants_CuisineTypes_CuisineTypeId",
+                        name: "FK_Restaurants_CuisineTypes_CuisineTypeId",
                         column: x => x.CuisineTypeId,
                         principalTable: "CuisineTypes",
                         principalColumn: "CuisineTypeId",
@@ -97,9 +97,9 @@ namespace deliveryApp.Server.Migrations
                 {
                     table.PrimaryKey("PK_MenuItems", x => x.MenuItemId);
                     table.ForeignKey(
-                        name: "FK_MenuItems_Resataurants_RestaurantId",
+                        name: "FK_MenuItems_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Resataurants",
+                        principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -119,9 +119,9 @@ namespace deliveryApp.Server.Migrations
                 {
                     table.PrimaryKey("PK_RestaurantHours", x => x.RestaurantHourId);
                     table.ForeignKey(
-                        name: "FK_RestaurantHours_Resataurants_RestaurantId",
+                        name: "FK_RestaurantHours_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Resataurants",
+                        principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -143,9 +143,9 @@ namespace deliveryApp.Server.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Orders_Resataurants_RestaurantId",
+                        name: "FK_Orders_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Resataurants",
+                        principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -221,8 +221,8 @@ namespace deliveryApp.Server.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Resataurants_CuisineTypeId",
-                table: "Resataurants",
+                name: "IX_Restaurants_CuisineTypeId",
+                table: "Restaurants",
                 column: "CuisineTypeId");
 
             migrationBuilder.CreateIndex(
@@ -252,7 +252,7 @@ namespace deliveryApp.Server.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Resataurants");
+                name: "Restaurants");
 
             migrationBuilder.DropTable(
                 name: "Users");

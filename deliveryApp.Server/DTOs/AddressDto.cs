@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace deliveryApp.Server.Models
+﻿namespace deliveryApp.Server.DTOs
 {
-    [Owned]
-    public class Address
+    public class AddressDto
     {
         public string? Line1 { get; set; } = string.Empty;
         public string? Line2 { get; set; } = string.Empty;
@@ -12,5 +9,4 @@ namespace deliveryApp.Server.Models
         public string? PostalCode { get; set; } = string.Empty;
         public string? Country { get; set; } = string.Empty;
     }
-   
 }

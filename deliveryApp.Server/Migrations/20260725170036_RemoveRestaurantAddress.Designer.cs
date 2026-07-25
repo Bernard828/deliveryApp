@@ -12,15 +12,15 @@ using deliveryApp.Server.Data;
 namespace deliveryApp.Server.Migrations
 {
     [DbContext(typeof(DeliveryAppDbContext))]
-    [Migration("20260606154138_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260725170036_RemoveRestaurantAddress")]
+    partial class RemoveRestaurantAddress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.27")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -87,11 +87,11 @@ namespace deliveryApp.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("DriverId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DriverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -153,23 +153,18 @@ namespace deliveryApp.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CuisineTypeId")
+                    b.Property<int?>("CuisineTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("RestaurantId");
 
@@ -224,11 +219,9 @@ namespace deliveryApp.Server.Migrations
 
             modelBuilder.Entity("deliveryApp.Server.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -264,13 +257,14 @@ namespace deliveryApp.Server.Migrations
                     b.HasOne("deliveryApp.Server.Models.User", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("deliveryApp.Server.Models.User", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("deliveryApp.Server.Models.Restaurant", "Restaurant")
                         .WithMany()
@@ -306,22 +300,20 @@ namespace deliveryApp.Server.Migrations
 
             modelBuilder.Entity("deliveryApp.Server.Models.Restaurant", b =>
                 {
-                    b.HasOne("deliveryApp.Server.Models.CuisineType", "Cuisine")
+                    b.HasOne("deliveryApp.Server.Models.CuisineType", null)
                         .WithMany("Restaurants")
-                        .HasForeignKey("CuisineTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cuisine");
+                        .HasForeignKey("CuisineTypeId");
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.RestaurantHour", b =>
                 {
-                    b.HasOne("deliveryApp.Server.Models.Restaurant", null)
-                        .WithMany("OperatingHours")
+                    b.HasOne("deliveryApp.Server.Models.Restaurant", "Restaurant")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.User", b =>
@@ -348,8 +340,6 @@ namespace deliveryApp.Server.Migrations
             modelBuilder.Entity("deliveryApp.Server.Models.Restaurant", b =>
                 {
                     b.Navigation("MenuItems");
-
-                    b.Navigation("OperatingHours");
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.Role", b =>

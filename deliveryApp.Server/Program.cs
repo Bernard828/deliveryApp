@@ -1,8 +1,7 @@
 using deliveryApp.Server;
 using deliveryApp.Server.CompiledModels;
 using deliveryApp.Server.Data;
-using deliveryApp.Server.Endpoints;
-using deliveryApp.Server.NewFolder;
+//using deliveryApp.Server.Endpoints;
 using deliveryApp.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
@@ -30,11 +29,11 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<ICuisineTypeService, CuisineTypeService>();
+//builder.Services.AddScoped<ICuisineTypeService, CuisineTypeService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+//builder.Services.AddScoped<IOrderService, OrderService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

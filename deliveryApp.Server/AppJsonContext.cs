@@ -1,4 +1,5 @@
-﻿using deliveryApp.Server.Models;
+﻿using deliveryApp.Server.DTOs;
+using deliveryApp.Server.Models;
 using System.Text.Json.Serialization;
 
 namespace deliveryApp.Server

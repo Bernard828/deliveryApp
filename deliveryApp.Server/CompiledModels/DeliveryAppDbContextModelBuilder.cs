@@ -362,45 +362,45 @@ namespace deliveryApp.Server.CompiledModels
 
             var tableMappings3 = new List<TableMapping>();
             restaurant.SetRuntimeAnnotation("Relational:TableMappings", tableMappings3);
-            var resataurantsTable = new Table("Resataurants", null, relationalModel);
-            var restaurantIdColumn1 = new Column("RestaurantId", "int", resataurantsTable);
-            resataurantsTable.Columns.Add("RestaurantId", restaurantIdColumn1);
-            var addressColumn = new Column("Address", "nvarchar(max)", resataurantsTable);
-            resataurantsTable.Columns.Add("Address", addressColumn);
-            var cuisineTypeIdColumn0 = new Column("CuisineTypeId", "int", resataurantsTable);
-            resataurantsTable.Columns.Add("CuisineTypeId", cuisineTypeIdColumn0);
-            var imageUrlColumn0 = new Column("ImageUrl", "nvarchar(max)", resataurantsTable);
-            resataurantsTable.Columns.Add("ImageUrl", imageUrlColumn0);
-            var nameColumn1 = new Column("Name", "nvarchar(max)", resataurantsTable);
-            resataurantsTable.Columns.Add("Name", nameColumn1);
-            var priceColumn1 = new Column("Price", "decimal(18,2)", resataurantsTable);
-            resataurantsTable.Columns.Add("Price", priceColumn1);
-            var pK_Resataurants = new UniqueConstraint("PK_Resataurants", resataurantsTable, new[] { restaurantIdColumn1 });
-            resataurantsTable.PrimaryKey = pK_Resataurants;
-            var pK_ResataurantsUc = RelationalModel.GetKey(this,
+            var restaurantsTable = new Table("Restaurants", null, relationalModel);
+            var restaurantIdColumn1 = new Column("RestaurantId", "int", restaurantsTable);
+            restaurantsTable.Columns.Add("RestaurantId", restaurantIdColumn1);
+            var addressColumn = new Column("Address", "nvarchar(max)", restaurantsTable);
+            restaurantsTable.Columns.Add("Address", addressColumn);
+            var cuisineTypeIdColumn0 = new Column("CuisineTypeId", "int", restaurantsTable);
+            restaurantsTable.Columns.Add("CuisineTypeId", cuisineTypeIdColumn0);
+            var imageUrlColumn0 = new Column("ImageUrl", "nvarchar(max)", restaurantsTable);
+            restaurantsTable.Columns.Add("ImageUrl", imageUrlColumn0);
+            var nameColumn1 = new Column("Name", "nvarchar(max)", restaurantsTable);
+            restaurantsTable.Columns.Add("Name", nameColumn1);
+            var priceColumn1 = new Column("Price", "decimal(18,2)", restaurantsTable);
+            restaurantsTable.Columns.Add("Price", priceColumn1);
+            var pK_Restaurants = new UniqueConstraint("PK_Restaurants", restaurantsTable, new[] { restaurantIdColumn1 });
+            restaurantsTable.PrimaryKey = pK_Restaurants;
+            var pK_RestaurantsUc = RelationalModel.GetKey(this,
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "RestaurantId" });
-            pK_Resataurants.MappedKeys.Add(pK_ResataurantsUc);
-            RelationalModel.GetOrCreateUniqueConstraints(pK_ResataurantsUc).Add(pK_Resataurants);
-            resataurantsTable.UniqueConstraints.Add("PK_Resataurants", pK_Resataurants);
-            var iX_Resataurants_CuisineTypeId = new TableIndex(
-            "IX_Resataurants_CuisineTypeId", resataurantsTable, new[] { cuisineTypeIdColumn0 }, false);
-            var iX_Resataurants_CuisineTypeIdIx = RelationalModel.GetIndex(this,
+            pK_Restaurants.MappedKeys.Add(pK_RestaurantsUc);
+            RelationalModel.GetOrCreateUniqueConstraints(pK_RestaurantsUc).Add(pK_Restaurants);
+            restaurantsTable.UniqueConstraints.Add("PK_Restaurants", pK_Restaurants);
+            var iX_Restaurants_CuisineTypeId = new TableIndex(
+            "IX_Restaurants_CuisineTypeId", restaurantsTable, new[] { cuisineTypeIdColumn0 }, false);
+            var iX_Restaurants_CuisineTypeIdIx = RelationalModel.GetIndex(this,
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "CuisineTypeId" });
-            iX_Resataurants_CuisineTypeId.MappedIndexes.Add(iX_Resataurants_CuisineTypeIdIx);
-            RelationalModel.GetOrCreateTableIndexes(iX_Resataurants_CuisineTypeIdIx).Add(iX_Resataurants_CuisineTypeId);
-            resataurantsTable.Indexes.Add("IX_Resataurants_CuisineTypeId", iX_Resataurants_CuisineTypeId);
-            relationalModel.Tables.Add(("Resataurants", null), resataurantsTable);
-            var resataurantsTableMapping = new TableMapping(restaurant, resataurantsTable, true);
-            resataurantsTable.AddTypeMapping(resataurantsTableMapping, false);
-            tableMappings3.Add(resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(restaurantIdColumn1, restaurant.FindProperty("RestaurantId")!, resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(addressColumn, restaurant.FindProperty("Address")!, resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(cuisineTypeIdColumn0, restaurant.FindProperty("CuisineTypeId")!, resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(imageUrlColumn0, restaurant.FindProperty("ImageUrl")!, resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(nameColumn1, restaurant.FindProperty("Name")!, resataurantsTableMapping);
-            RelationalModel.CreateColumnMapping(priceColumn1, restaurant.FindProperty("Price")!, resataurantsTableMapping);
+            iX_Restaurants_CuisineTypeId.MappedIndexes.Add(iX_Restaurants_CuisineTypeIdIx);
+            RelationalModel.GetOrCreateTableIndexes(iX_Restaurants_CuisineTypeIdIx).Add(iX_Restaurants_CuisineTypeId);
+            restaurantsTable.Indexes.Add("IX_Restaurants_CuisineTypeId", iX_Restaurants_CuisineTypeId);
+            relationalModel.Tables.Add(("Restaurants", null), restaurantsTable);
+            var restaurantsTableMapping = new TableMapping(restaurant, restaurantsTable, true);
+            restaurantsTable.AddTypeMapping(restaurantsTableMapping, false);
+            tableMappings3.Add(restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(restaurantIdColumn1, restaurant.FindProperty("RestaurantId")!, restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(addressColumn, restaurant.FindProperty("Address")!, restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(cuisineTypeIdColumn0, restaurant.FindProperty("CuisineTypeId")!, restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(imageUrlColumn0, restaurant.FindProperty("ImageUrl")!, restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(nameColumn1, restaurant.FindProperty("Name")!, restaurantsTableMapping);
+            RelationalModel.CreateColumnMapping(priceColumn1, restaurant.FindProperty("Price")!, restaurantsTableMapping);
 
             var restaurantHour = FindEntityType("deliveryApp.Server.Models.RestaurantHour")!;
 
@@ -561,19 +561,19 @@ namespace deliveryApp.Server.CompiledModels
             RelationalModel.CreateColumnMapping(emailColumn, user.FindProperty("Email")!, usersTableMapping);
             RelationalModel.CreateColumnMapping(passwordColumn, user.FindProperty("Password")!, usersTableMapping);
             RelationalModel.CreateColumnMapping(roleIdColumn0, user.FindProperty("RoleId")!, usersTableMapping);
-            var fK_MenuItems_Resataurants_RestaurantId = new ForeignKeyConstraint(
-                "FK_MenuItems_Resataurants_RestaurantId", menuItemsTable, resataurantsTable,
+            var fK_MenuItems_Restaurants_RestaurantId = new ForeignKeyConstraint(
+                "FK_MenuItems_Restaurants_RestaurantId", menuItemsTable, restaurantsTable,
                 new[] { restaurantIdColumn },
-                resataurantsTable.FindUniqueConstraint("PK_Resataurants")!, ReferentialAction.Cascade);
-            var fK_MenuItems_Resataurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
+                restaurantsTable.FindUniqueConstraint("PK_Restaurants")!, ReferentialAction.Cascade);
+            var fK_MenuItems_Restaurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
                 "deliveryApp.Server.Models.MenuItem",
                 new[] { "RestaurantId" },
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "RestaurantId" });
-            fK_MenuItems_Resataurants_RestaurantId.MappedForeignKeys.Add(fK_MenuItems_Resataurants_RestaurantIdFk);
-            RelationalModel.GetOrCreateForeignKeyConstraints(fK_MenuItems_Resataurants_RestaurantIdFk).Add(fK_MenuItems_Resataurants_RestaurantId);
-            menuItemsTable.ForeignKeyConstraints.Add(fK_MenuItems_Resataurants_RestaurantId);
-            resataurantsTable.ReferencingForeignKeyConstraints.Add(fK_MenuItems_Resataurants_RestaurantId);
+            fK_MenuItems_Restaurants_RestaurantId.MappedForeignKeys.Add(fK_MenuItems_Restaurants_RestaurantIdFk);
+            RelationalModel.GetOrCreateForeignKeyConstraints(fK_MenuItems_Restaurants_RestaurantIdFk).Add(fK_MenuItems_Restaurants_RestaurantId);
+            menuItemsTable.ForeignKeyConstraints.Add(fK_MenuItems_Restaurants_RestaurantId);
+            restaurantsTable.ReferencingForeignKeyConstraints.Add(fK_MenuItems_Restaurants_RestaurantId);
             var fK_OrderItems_MenuItems_MenuItemId = new ForeignKeyConstraint(
                 "FK_OrderItems_MenuItems_MenuItemId", orderItemsTable, menuItemsTable,
                 new[] { menuItemIdColumn0 },
@@ -600,19 +600,19 @@ namespace deliveryApp.Server.CompiledModels
             RelationalModel.GetOrCreateForeignKeyConstraints(fK_OrderItems_Orders_OrderIdFk).Add(fK_OrderItems_Orders_OrderId);
             orderItemsTable.ForeignKeyConstraints.Add(fK_OrderItems_Orders_OrderId);
             ordersTable.ReferencingForeignKeyConstraints.Add(fK_OrderItems_Orders_OrderId);
-            var fK_Orders_Resataurants_RestaurantId = new ForeignKeyConstraint(
-                "FK_Orders_Resataurants_RestaurantId", ordersTable, resataurantsTable,
+            var fK_Orders_Restaurants_RestaurantId = new ForeignKeyConstraint(
+                "FK_Orders_Restaurants_RestaurantId", ordersTable, restaurantsTable,
                 new[] { restaurantIdColumn0 },
-                resataurantsTable.FindUniqueConstraint("PK_Resataurants")!, ReferentialAction.Restrict);
-            var fK_Orders_Resataurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
+                restaurantsTable.FindUniqueConstraint("PK_Restaurants")!, ReferentialAction.Restrict);
+            var fK_Orders_Restaurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
                 "deliveryApp.Server.Models.Order",
                 new[] { "RestaurantId" },
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "RestaurantId" });
-            fK_Orders_Resataurants_RestaurantId.MappedForeignKeys.Add(fK_Orders_Resataurants_RestaurantIdFk);
-            RelationalModel.GetOrCreateForeignKeyConstraints(fK_Orders_Resataurants_RestaurantIdFk).Add(fK_Orders_Resataurants_RestaurantId);
-            ordersTable.ForeignKeyConstraints.Add(fK_Orders_Resataurants_RestaurantId);
-            resataurantsTable.ReferencingForeignKeyConstraints.Add(fK_Orders_Resataurants_RestaurantId);
+            fK_Orders_Restaurants_RestaurantId.MappedForeignKeys.Add(fK_Orders_Restaurants_RestaurantIdFk);
+            RelationalModel.GetOrCreateForeignKeyConstraints(fK_Orders_Restaurants_RestaurantIdFk).Add(fK_Orders_Restaurants_RestaurantId);
+            ordersTable.ForeignKeyConstraints.Add(fK_Orders_Restaurants_RestaurantId);
+            restaurantsTable.ReferencingForeignKeyConstraints.Add(fK_Orders_Restaurants_RestaurantId);
             var fK_Orders_Users_CustomerId = new ForeignKeyConstraint(
                 "FK_Orders_Users_CustomerId", ordersTable, usersTable,
                 new[] { customerIdColumn },
@@ -639,32 +639,32 @@ namespace deliveryApp.Server.CompiledModels
             RelationalModel.GetOrCreateForeignKeyConstraints(fK_Orders_Users_DriverIdFk).Add(fK_Orders_Users_DriverId);
             ordersTable.ForeignKeyConstraints.Add(fK_Orders_Users_DriverId);
             usersTable.ReferencingForeignKeyConstraints.Add(fK_Orders_Users_DriverId);
-            var fK_Resataurants_CuisineTypes_CuisineTypeId = new ForeignKeyConstraint(
-                "FK_Resataurants_CuisineTypes_CuisineTypeId", resataurantsTable, cuisineTypesTable,
+            var fK_Restaurants_CuisineTypes_CuisineTypeId = new ForeignKeyConstraint(
+                "FK_Restaurants_CuisineTypes_CuisineTypeId", restaurantsTable, cuisineTypesTable,
                 new[] { cuisineTypeIdColumn0 },
                 cuisineTypesTable.FindUniqueConstraint("PK_CuisineTypes")!, ReferentialAction.Restrict);
-            var fK_Resataurants_CuisineTypes_CuisineTypeIdFk = RelationalModel.GetForeignKey(this,
+            var fK_Restaurants_CuisineTypes_CuisineTypeIdFk = RelationalModel.GetForeignKey(this,
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "CuisineTypeId" },
                 "deliveryApp.Server.Models.CuisineType",
                 new[] { "CuisineTypeId" });
-            fK_Resataurants_CuisineTypes_CuisineTypeId.MappedForeignKeys.Add(fK_Resataurants_CuisineTypes_CuisineTypeIdFk);
-            RelationalModel.GetOrCreateForeignKeyConstraints(fK_Resataurants_CuisineTypes_CuisineTypeIdFk).Add(fK_Resataurants_CuisineTypes_CuisineTypeId);
-            resataurantsTable.ForeignKeyConstraints.Add(fK_Resataurants_CuisineTypes_CuisineTypeId);
-            cuisineTypesTable.ReferencingForeignKeyConstraints.Add(fK_Resataurants_CuisineTypes_CuisineTypeId);
-            var fK_RestaurantHours_Resataurants_RestaurantId = new ForeignKeyConstraint(
-                "FK_RestaurantHours_Resataurants_RestaurantId", restaurantHoursTable, resataurantsTable,
+            fK_Restaurants_CuisineTypes_CuisineTypeId.MappedForeignKeys.Add(fK_Restaurants_CuisineTypes_CuisineTypeIdFk);
+            RelationalModel.GetOrCreateForeignKeyConstraints(fK_Restaurants_CuisineTypes_CuisineTypeIdFk).Add(fK_Restaurants_CuisineTypes_CuisineTypeId);
+            restaurantsTable.ForeignKeyConstraints.Add(fK_Restaurants_CuisineTypes_CuisineTypeId);
+            cuisineTypesTable.ReferencingForeignKeyConstraints.Add(fK_Restaurants_CuisineTypes_CuisineTypeId);
+            var fK_RestaurantHours_Restaurants_RestaurantId = new ForeignKeyConstraint(
+                "FK_RestaurantHours_Restaurants_RestaurantId", restaurantHoursTable, restaurantsTable,
                 new[] { restaurantIdColumn2 },
-                resataurantsTable.FindUniqueConstraint("PK_Resataurants")!, ReferentialAction.Restrict);
-            var fK_RestaurantHours_Resataurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
+                restaurantsTable.FindUniqueConstraint("PK_Restaurants")!, ReferentialAction.Restrict);
+            var fK_RestaurantHours_Restaurants_RestaurantIdFk = RelationalModel.GetForeignKey(this,
                 "deliveryApp.Server.Models.RestaurantHour",
                 new[] { "RestaurantId" },
                 "deliveryApp.Server.Models.Restaurant",
                 new[] { "RestaurantId" });
-            fK_RestaurantHours_Resataurants_RestaurantId.MappedForeignKeys.Add(fK_RestaurantHours_Resataurants_RestaurantIdFk);
-            RelationalModel.GetOrCreateForeignKeyConstraints(fK_RestaurantHours_Resataurants_RestaurantIdFk).Add(fK_RestaurantHours_Resataurants_RestaurantId);
-            restaurantHoursTable.ForeignKeyConstraints.Add(fK_RestaurantHours_Resataurants_RestaurantId);
-            resataurantsTable.ReferencingForeignKeyConstraints.Add(fK_RestaurantHours_Resataurants_RestaurantId);
+            fK_RestaurantHours_Restaurants_RestaurantId.MappedForeignKeys.Add(fK_RestaurantHours_Restaurants_RestaurantIdFk);
+            RelationalModel.GetOrCreateForeignKeyConstraints(fK_RestaurantHours_Restaurants_RestaurantIdFk).Add(fK_RestaurantHours_Restaurants_RestaurantId);
+            restaurantHoursTable.ForeignKeyConstraints.Add(fK_RestaurantHours_Restaurants_RestaurantId);
+            restaurantsTable.ReferencingForeignKeyConstraints.Add(fK_RestaurantHours_Restaurants_RestaurantId);
             var fK_Users_Roles_RoleId = new ForeignKeyConstraint(
                 "FK_Users_Roles_RoleId", usersTable, rolesTable,
                 new[] { roleIdColumn0 },
