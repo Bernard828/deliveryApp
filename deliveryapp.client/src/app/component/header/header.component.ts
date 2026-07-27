@@ -10,7 +10,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { InputNumberModule } from 'primeng/inputnumber'
 
 //Services
-import { CartService } from '../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-header',

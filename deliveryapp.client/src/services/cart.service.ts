@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { MenuItemSearchDto } from '../models/menuItem.model';
+import { MenuItemSearchDto } from '../app/models/menuItem.model';
 
 export interface CartItem {
   menuItemId: number;

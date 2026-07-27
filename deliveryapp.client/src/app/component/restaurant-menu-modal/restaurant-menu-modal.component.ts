@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { MenuItemSearchDto } from '../../models/menuItem.model';
 import { MenuCategoryComponent } from '../menu-category/menu-category.component';
-import { CartService } from '../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-restaurant-menu-modal',

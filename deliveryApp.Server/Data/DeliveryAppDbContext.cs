@@ -41,23 +41,11 @@ namespace deliveryApp.Server.Data
                  .OnDelete(DeleteBehavior.Restrict);
 
             //Restaurant, Cuisine, and Hours Relationships
-            //modelBuilder.Entity<Restaurant>()
-            //   .HasOne(r => r.CuisineType)
-            //   .WithMany(c => c.Restaurants)
-            //   .HasForeignKey(r => r.CuisineTypeId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<Restaurant>()
-            //    .HasMany(r => r.OperatingHours)
-            //    .WithOne()
-            //    .HasForeignKey(h => h.RestaurantId)
-            //    .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Restaurant>()
              .HasMany(r => r.MenuItems)
              .WithOne(m => m.Restaurant)
              .HasForeignKey(m => m.RestaurantId)
               .OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<Restaurant>()
-            //  .OwnsOne(r => r.Address);
 
             //Order & OrderItem Relationships
             modelBuilder.Entity<Order>()

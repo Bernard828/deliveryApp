@@ -5,15 +5,17 @@ import {
   RestaurantDto,
   RestaurantCreateDto,
   RestaurantSearchDto
-} from '../models/restuarant.model';
-import { environment } from '../environment/environment';
+} from '../app/models/restuarant.model';
+import { environment } from '../environments/environment';
+//import { environment } from '../environments/environment.development';
+//import { environment } from '../environments/environment.iis';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestaurantService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUri + 'Restaurant/';
+  private baseUrl = environment.apiUrl + '/Restaurant';
 
   restaurants = signal<RestaurantDto[]>([]);
   loading = signal(false);
@@ -23,18 +25,18 @@ export class RestaurantService {
   getAll() {
     this.loading.set(true);
 
-    return this.http.get<RestaurantDto[]>(this.apiUrl + 'GetRestaurants').pipe(
+    return this.http.get<RestaurantDto[]>(`${this.baseUrl}/GetAll`).pipe(
       tap(data => this.restaurants.set(data)),
       finalize(() => this.loading.set(false))
     );
   }
 
   getById(id: number) {
-    return this.http.get<RestaurantSearchDto>(`${this.apiUrl}/${id}`);
+    return this.http.get<RestaurantSearchDto>(`${this.baseUrl}/${id}`);
   }
 
   create(dto: RestaurantCreateDto) {
-    return this.http.post<RestaurantDto>(this.apiUrl + 'Create', dto).pipe(
+    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto).pipe(
       tap(newRestaurant =>
         this.restaurants.update(list => [...list, newRestaurant])
       )
@@ -42,7 +44,7 @@ export class RestaurantService {
   }
 
   update(id: number, dto: RestaurantDto) {
-    return this.http.put<RestaurantDto>(this.apiUrl + 'Update', dto).pipe(
+    return this.http.put<RestaurantDto>(this.baseUrl + '/Update', dto).pipe(
       tap(updated =>
         this.restaurants.update(list =>
           list.map(r => (r.restaurantId === id ? updated : r))
@@ -52,7 +54,7 @@ export class RestaurantService {
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
       tap(() =>
         this.restaurants.update(list =>
           list.filter(r => r.restaurantId !== id)
@@ -62,6 +64,6 @@ export class RestaurantService {
   }
 
   getMenuByRestaurantId(id: number) {
-    return this.http.get(`${this.apiUrl}/${id}/menu`);
+    return this.http.get(`${this.baseUrl}/${id}/menu`);
   }
 }

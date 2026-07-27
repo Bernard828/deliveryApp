@@ -12,8 +12,8 @@ using deliveryApp.Server.Data;
 namespace deliveryApp.Server.Migrations
 {
     [DbContext(typeof(DeliveryAppDbContext))]
-    [Migration("20260725170036_RemoveRestaurantAddress")]
-    partial class RemoveRestaurantAddress
+    [Migration("20260725183620_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

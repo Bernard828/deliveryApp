@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../app/environment/environment';
-import { MenuItemSearchDto } from '../models/menuItem.model';
+import { MenuItemSearchDto } from '../app/models/menuItem.model';
 
 @Injectable({
   providedIn: 'root'

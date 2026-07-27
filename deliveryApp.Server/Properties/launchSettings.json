@@ -3,33 +3,33 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5140",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
-      }
+      "applicationUrl": "http://localhost:5140"
+      //"dotnetRunMessages": true,
+      //"launchUrl": "swagger",
+      //"environmentVariables": {
+      //  "ASPNETCORE_ENVIRONMENT": "Development",
+      //  "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+      //}
     },
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7140;http://localhost:5140",
+      "applicationUrl": "https://localhost:7140",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
-      }
+      },
+      "launchUrl": "swagger"
+      //"dotnetRunMessages": true,
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
-      }
+      "launchBrowser": true
+      //"launchUrl": "swagger",
+      //"environmentVariables": {
+      //  "ASPNETCORE_ENVIRONMENT": "Development",
+      //  "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+      //}
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
