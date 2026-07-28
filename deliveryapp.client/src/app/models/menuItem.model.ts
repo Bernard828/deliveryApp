@@ -6,22 +6,18 @@ export interface MenuItem {
   imageUrl: string;
   restaurantId: number;
 }
-export interface MenuItemSearchDto {
+export interface MenuItemDto {
   menuItemId: number;
+  restaurantId: number;
   name: string;
-  description: string;
+  description?: string;
   price: number;
+  section: MenuSection;
+  entreeSubSection?: EntreeSubSection;
+  drinkSubSection?: DrinkSubSection;
   imageUrl: string;
-  category: MenuCategory;
+  isActive: boolean;
 }
-
-export type MenuCategory =
-  | 'Apps'
-  | 'SoupSalad'
-  | 'Sandwich'
-  | 'Entrees'
-  | 'Kids'
-  | 'Dessert';
 
 export interface OrderItemDto {
   menuItemId: number;
@@ -35,3 +31,15 @@ export interface CreateOrderDto {
   restaurantId: number;
   orderItems: OrderItemDto[];
 }
+
+export type MenuSection =
+  | 'Apps'
+  | 'SoupAndSalad'
+  | 'Sandwiches'
+  | 'Entrees'
+  | 'Kids'
+  | 'Desserts'
+  | 'Drinks';
+
+export type EntreeSubSection = 'Standard' | 'Vegetarian' | 'Vegan';
+export type DrinkSubSection = 'NonAlcoholic' | 'Alcoholic';

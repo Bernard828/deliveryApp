@@ -12,6 +12,11 @@ export const appRoutes: Routes = [
       import('./pages/restaurant-list/restaurant-list.component').then(m => m.RestaurantListComponent)
   },
   {
+    path: 'restaurant',
+    loadComponent: () =>
+      import('./component/restaurant/restaurant.component').then(m=>m.RestaurantComponent)
+  },
+  {
     path: 'menu',
     loadComponent: () =>
       import('./pages/menu/menu.component').then(m => m.MenuComponent)

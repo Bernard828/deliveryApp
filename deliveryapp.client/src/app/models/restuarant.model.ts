@@ -1,29 +1,38 @@
-import { MenuItemSearchDto } from "./menuItem.model";
+import { MenuItemDto } from "./menuItem.model";
+import { RestaurantHourDto } from "./restaurant-hours.model";
 
-export interface RestaurantDto {
+export interface Restaurant {
   restaurantId: number;
   name: string;
-  description:string;
+  isActive: boolean;
   cuisineTypeId: number;
+  operatingHours: RestaurantHourDto[];
+  isCurrentlyOpen: boolean;
+  description:string;
   cuisine: CuisineType;
-  price: number;
   imageUrl: string;
   address: string;
-  isCurrentlyOpen: boolean;
-  operatingHours: RestaurantHourDto[];
 }
 
-export interface RestaurantHourDto {
-  dayOfWeek: number;
-  openTime: string;
-  closeTime: string;
-}
-export interface RestaurantSearchDto {
+export interface RestaurantDto {
+  // restaurantId: number;
+  // name: string;
+  // description: string;
+  // cuisineTypeId: number;
+  // menuItems: MenuItemDto[];
   restaurantId: number;
   name: string;
-  description: string;
+  isActive: boolean;
   cuisineTypeId: number;
-  menuItems: MenuItemSearchDto[];
+  operatingHours: RestaurantHourDto[];
+  isCurrentlyOpen: boolean;
+  description: string;
+  cuisine: CuisineType;
+  //price: number;
+  imageUrl: string;
+  address: string;
+  menuItemId: number;
+  menuItems: MenuItemDto[];
 }
 export interface RestaurantCreateDto {
   name: string;
@@ -31,7 +40,4 @@ export interface RestaurantCreateDto {
   searchTags: string[];
   cuisineTypeId: number | null;
 }
-export interface CuisineType {
-  cuisineTypeId: number;
-  name: string;
-}
+

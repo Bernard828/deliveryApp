@@ -22,6 +22,7 @@ export class RestaurantService {
 
   constructor() { }
 
+  // OLD
   getAll() {
     this.loading.set(true);
 
@@ -29,6 +30,10 @@ export class RestaurantService {
       tap(data => this.restaurants.set(data)),
       finalize(() => this.loading.set(false))
     );
+  }
+
+  getAllNew(params?: { page?: number; pageSize?: number; isActive?: boolean }) {
+    return this.http.get<PagedResult<RestaurantDto>>(this.baseUrl, { params });
   }
 
   getById(id: number) {
@@ -43,6 +48,10 @@ export class RestaurantService {
     );
   }
 
+  createNew(dto: RestaurantDto) {
+    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto)
+  }
+
   update(id: number, dto: RestaurantDto) {
     return this.http.put<RestaurantDto>(this.baseUrl + '/Update', dto).pipe(
       tap(updated =>
@@ -51,6 +60,10 @@ export class RestaurantService {
         )
       )
     );
+  }
+
+  updateNew(id: number, dto: RestaurantDto) {
+    return this.http.put<RestaurantDto>(`${this.baseUrl}/${id}`, dto);
   }
 
   delete(id: number) {
