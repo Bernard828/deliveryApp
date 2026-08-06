@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { MenuItemDto } from '../app/models/menuItem.model';
+import { PagedResult } from '../app/models/paged-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class MenuItemService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  getByRestaurantId(restaurantId: number, params?: { page?: number; pageSize?: number;isActie?:boolean }) {
+  getByRestaurantId(restaurantId: number, params?: { page?: number; pageSize?: number;isActive?:boolean }) {
     //return this.http.get<MenuItemDto[]>(`${this.apiUrl}/restaurant/${restaurantId}`);
     return this.http.get<PagedResult<MenuItemDto>>(
       `${this.baseUrl}/restaurant/${restaurantId}`,
@@ -32,6 +33,6 @@ export class MenuItemService {
   }
 
   getById(id: number) {
-    return this.http.get<MenuItemDto>(`${this.apiUrl}/${id}`);
+    return this.http.get<MenuItemDto>(`${this.baseUrl}/${id}`);
   }
 }

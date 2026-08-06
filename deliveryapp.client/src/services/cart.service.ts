@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { MenuItemSearchDto } from '../app/models/menuItem.model';
+import { MenuItemDto } from '../app/models/menuItem.model';
 
 export interface CartItem {
   menuItemId: number;
@@ -58,7 +58,7 @@ export class CartService {
   //   });
   // }
 
-  addItem(item: MenuItemSearchDto, quantity: number) {
+  addItem(item: MenuItemDto, quantity: number) {
     if (quantity <= 0) return;
     this.items.update(list => {
       const found = list.find(x => x.menuItemId === item.menuItemId);

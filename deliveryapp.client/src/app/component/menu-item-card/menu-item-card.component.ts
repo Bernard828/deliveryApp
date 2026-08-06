@@ -6,7 +6,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuItemSearchDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menuItem.model';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 
@@ -19,8 +19,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
   changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class MenuItemCardComponent {
-  @Input() item!: MenuItemSearchDto;
-  @Output() addToCart = new EventEmitter<{ item: MenuItemSearchDto; quantity: number }>();
+  @Input() item!: MenuItemDto;
+  @Output() addToCart = new EventEmitter<{ item: MenuItemDto; quantity: number }>();
 
   quantity = 1;
 

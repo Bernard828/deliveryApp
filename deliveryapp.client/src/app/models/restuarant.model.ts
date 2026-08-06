@@ -1,3 +1,4 @@
+import { CuisineType } from "./cuisine-type.model";
 import { MenuItemDto } from "./menuItem.model";
 import { RestaurantHourDto } from "./restaurant-hours.model";
 

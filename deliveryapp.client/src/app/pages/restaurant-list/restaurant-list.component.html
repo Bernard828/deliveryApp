@@ -23,7 +23,7 @@
           <div class="card-sub">{{ res.cuisine?.name || '' }}</div>
           <div class="card-meta">
             <span class="address">{{ res.address }}</span>
-            <span class="price">{{ res.price | currency }}</span>
+            <!--<span class="price">{{ res.price | currency }}</span>-->
             <span class="status" [class.open]="res.isCurrentlyOpen" [class.closed]="!res.isCurrentlyOpen">
               {{ res.isCurrentlyOpen ? 'OPEN' : 'CLOSED' }}
             </span>

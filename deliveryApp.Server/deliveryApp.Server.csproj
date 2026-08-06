@@ -11,15 +11,11 @@
 			$(InterceptorsNamespaces);Microsoft.EntityFrameworkCore.GeneratedInterceptors
 		</InterceptorsNamespaces>
 
-		<!-- Angular SPA root -->
 		<SpaRoot>..\deliveryapp.client</SpaRoot>
 
-		<!-- Launch Angular dev server -->
-		<!--<SpaProxyLaunchCommand>npm start open</SpaProxyLaunchCommand>-->
 		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 
 
-		<!-- Angular dev server URL -->
 		<SpaProxyServerUrl>https://localhost:21970</SpaProxyServerUrl>
 	</PropertyGroup>
 

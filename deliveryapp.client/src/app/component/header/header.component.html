@@ -8,63 +8,40 @@
   <!--Right Navigation-->
   <nav class="flex gap-4 align-items-center">
     <a routerLink="/order" class="font-bold">Cart</a>
-    <button pButton
-            icon="pi pi-shopping-cart"
-            class="p-button-rounded p-button-text relative"
-            (click)="openCart()">
-      <span class="cart-badge"
-            *ngIf="totalItems() > 0">
-        {{ totalItems() }}
-      </span>
+    <button pButton icon="pi pi-shopping-cart" class="p-button-rounded p-button-text relative" (click)="openCart()">
+      <span class="cart-badge" *ngIf="totalItems() > 0"> {{ totalItems() }} </span>
     </button>
   </nav>
 </header>
 
 <!--Cart Modal-->
-<p-dialog [(visible)]="cartVisible"
-          [modal]="true"
-          [style]="{ width: '450' }"
-          header="Your Cart">
-
+<p-dialog [(visible)]="cartVisible" [modal]="true" [style]="{ width: '450px' }" header="Your Cart">
   <div class="flex flex-column gap-3">
-    @for(item of items; track item.menuItemId){
-    <div class="flex justify-content-between align-items-center border-1 surface-border p-2 border-round">
+
+    <!-- Angular 16 compatible Loop Structure -->
+    <div *ngFor="let item of items" class="flex justify-content-between align-items-center border-1 surface-border p-2 border-round">
       <div>
         <div class="font-bold">{{ item.name }}</div>
         <div class="text-sm text-color-secondary">{{ item.price | currency }}</div>
       </div>
-
-      <div class="flex align-items-center" gap-2>
-        <p-inputNumber
-                       [ngModel]="item.quantity"
-                       (ngModelChange)="updateQty(item.menuItemId, $event)">
-                       <!--[min]="1"
-                       [max]="20"-->
-                       <!--[showButtons]="true"-->
+      <div class="flex align-items-center gap-2">
+        <p-inputNumber [ngModel]="item.quantity" (ngModelChange)="updateQty(item.menuItemId, $event)">
         </p-inputNumber>
-
-        <button pButton
-                icon="pi pi-trash"
-                severity="danger"
-                class="p-button-rounded p-button-text"
-                (click)="remove(item.menuItemId)">
+        <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="remove(item.menuItemId)">
         </button>
       </div>
     </div>
-    }
 
-    @empty{
-    <p class="text-center text-color-secondary">Your cart is empty.</p>
-    }
+    <!-- Angular 16 Empty State Placeholder -->
+    <p *ngIf="!items || items.length === 0" class="text-center text-color-secondary">
+      Your cart is empty.
+    </p>
+
   </div>
 
-  <div class="flex justify-content-between align-items-center-items-center mt-4">
+  <div class="flex justify-content-between align-items-center mt-4">
     <span class="font-bold text-xl">Total: {{ totalPrice() | currency }}</span>
-
-    <button pButton
-            label="Checkout"
-            severity="success"
-            [disabled]="totalItems() === 0">
+    <button pButton label="Checkout" class="p-button-success" [disabled]="totalItems() === 0">
     </button>
   </div>
 </p-dialog>

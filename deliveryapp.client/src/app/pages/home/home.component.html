@@ -1,1 +1,77 @@
 <p>home works!</p>
+<div class="p-5">
+  <!-- Header -->
+  <div class="header flex justify-between items-center mb-4">
+    <h2>Explore Restaurants</h2>
+    <button class="btn btn-primary" (click)="openCreateModal()">+ Add Restaurant</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="restaurantService.loading()" class="loading-wrap m-5">
+    <div class="spinner" aria-hidden="true"></div>
+  </div>
+
+  <!-- Restaurant Grid -->
+  <div class="grid">
+    <ng-container *ngFor="let res of restaurants(); trackBy: trackById">
+      <div class="card" (click)="selectRestaurant(res.restaurantId)">
+        <div class="card-image">
+          <img [src]="res.imageUrl || 'assets/default-restaurant.jpg'" alt="{{ res.name }}" />
+        </div>
+
+        <div class="card-body">
+          <div class="card-title">{{ res.name }}</div>
+          <div class="card-sub">{{ res.cuisine?.name || '' }}</div>
+          <div class="card-meta">
+            <span class="address">{{ res.address }}</span>
+            <!--<span class="price">{{ res.price | currency }}</span>-->
+            <span class="status" [class.open]="res.isCurrentlyOpen" [class.closed]="!res.isCurrentlyOpen">
+              {{ res.isCurrentlyOpen ? 'OPEN' : 'CLOSED' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Create Restaurant Modal -->
+<div class="fd-modal-backdrop" *ngIf="displayCreateDialog()">
+  <div class="fd-modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+    <header class="modal-header">
+      <h3 id="createTitle">Create New Restaurant</h3>
+      <button class="close-x" (click)="onCloseClicked()" aria-label="Close">✕</button>
+    </header>
+
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="modal-body">
+      <div class="form-row">
+        <label for="name" class="font-bold block mb-1">Restaurant Name</label>
+        <input id="name" type="text" formControlName="name" />
+        <div class="field-error" *ngIf="createForm.get('name')?.touched && createForm.get('name')?.invalid">
+          Name is required.
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="description">Description</label>
+        <textarea id="description" rows="4" formControlName="description"></textarea>
+        <div class="field-error" *ngIf="createForm.get('description')?.touched && createForm.get('description')?.invalid">
+          Description is required.
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="createForm.invalid || submitting()">
+          {{ submitting() ? 'Submitting...' : 'Submit' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Menu modal component (attributes on opening tag) -->
+<app-restaurant-menu-modal [visible]="displayMenuDialog()"
+                           [restaurantName]="selectedRestaurantMenu()?.name || ''"
+                           [menuItems]="selectedRestaurantMenu()?.menuItems || []">
+</app-restaurant-menu-modal>

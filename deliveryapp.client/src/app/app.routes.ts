@@ -1,6 +1,15 @@
 import { Routes } from '@angular/router';
+import { AdminRestaurantListComponent } from './component/admin-restaurant-list/admin-restaurant-list.component';
+import { AdminRestaurantDetailComponent } from './component/admin-restaurant-detail/admin-restaurant-detail.component';
 
 export const appRoutes: Routes = [
+  {
+    path: 'admin',
+    children: [
+      { path: 'resaturants', component: AdminRestaurantListComponent },
+      { path: 'restaurants/:id', component: AdminRestaurantDetailComponent }
+    ]
+  },
   {
     path: 'home',
     loadComponent: () =>
@@ -14,7 +23,7 @@ export const appRoutes: Routes = [
   {
     path: 'restaurant',
     loadComponent: () =>
-      import('./component/restaurant/restaurant.component').then(m=>m.RestaurantComponent)
+      import('./component/restaurant/restaurant.component').then(m => m.RestaurantComponent)
   },
   {
     path: 'menu',

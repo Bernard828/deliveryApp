@@ -1,3 +1,5 @@
+import { OrderItemDto } from "./order";
+
 export interface MenuItem {
   menuItemId: number;
   name: string;
@@ -19,21 +21,9 @@ export interface MenuItemDto {
   isActive: boolean;
 }
 
-export interface OrderItemDto {
-  menuItemId: number;
-  quantity: number;
-  price: number;
-  name?: string;
-}
-
-export interface CreateOrderDto {
-  customerId: number;
-  restaurantId: number;
-  orderItems: OrderItemDto[];
-}
 
 export type MenuSection =
-  | 'Apps'
+  | 'Appetizers'
   | 'SoupAndSalad'
   | 'Sandwiches'
   | 'Entrees'

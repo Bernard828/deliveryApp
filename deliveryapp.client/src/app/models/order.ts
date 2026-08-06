@@ -10,3 +10,8 @@ export interface CreateOrderDto {
   restaurantId: number;
   orderItems: OrderItemDto[];
 }
+export interface CreateOrderDto {
+  customerId: number;
+  restaurantId: number;
+  orderItems: OrderItemDto[];
+}

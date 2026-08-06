@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
-import { MenuItemSearchDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menuItem.model';
 import { MenuCategoryComponent } from '../menu-category/menu-category.component';
 import { CartService } from '../../../services/cart.service';
 
@@ -25,17 +25,17 @@ import { CartService } from '../../../services/cart.service';
 export class RestaurantMenuModalComponent implements OnChanges {
   @Input() visible = false;
   @Input() restaurantName = '';
-  @Input() menuItems: MenuItemSearchDto[] = [];
+  @Input() menuItems: MenuItemDto[] = [];
 
   private cart = inject(CartService);
 
   grouped = {
-    Apps: [] as MenuItemSearchDto[],
-    SoupSalad: [] as MenuItemSearchDto[],
-    Sandwiches: [] as MenuItemSearchDto[],
-    Entrees: [] as MenuItemSearchDto[],
-    Kids: [] as MenuItemSearchDto[],
-    Dessert: [] as MenuItemSearchDto[]
+    Apps: [] as MenuItemDto[],
+    SoupSalad: [] as MenuItemDto[],
+    Sandwiches: [] as MenuItemDto[],
+    Entrees: [] as MenuItemDto[],
+    Kids: [] as MenuItemDto[],
+    Dessert: [] as MenuItemDto[]
   };
 
   ngOnChanges() {
@@ -46,13 +46,9 @@ export class RestaurantMenuModalComponent implements OnChanges {
     Object.keys(this.grouped).forEach(
       key => (this.grouped[key as keyof typeof this.grouped] = [])
     );
-
-    // for (const item of this.menuItems) {
-    //   this.grouped[item.category].push(item);
-    // }
   }
 
-  addToCart(event: { item: MenuItemSearchDto; quantity: number }) {
+  addToCart(event: { item: MenuItemDto; quantity: number }) {
     this.cart.addItem(event.item, event.quantity);
   }
 }

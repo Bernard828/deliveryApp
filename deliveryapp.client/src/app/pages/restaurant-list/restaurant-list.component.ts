@@ -17,9 +17,8 @@ import {
 //Serivces
 import { RestaurantService } from "../../../services/restaurant.service";
 import {
-  RestaurantSearchDto,
+  RestaurantDto,
   RestaurantCreateDto,
-  RestaurantDto
 } from '../../models/restuarant.model';
 
 //PrimeNG Imports
@@ -60,7 +59,7 @@ export class RestaurantListComponent implements OnInit {
 
   restaurants = signal<RestaurantDto[]>([]);
   // Selected restaurant for menu modal
-  selectedRestaurantMenu = signal<RestaurantSearchDto | null>(null);
+  selectedRestaurantMenu = signal<RestaurantDto | null>(null);
 
   // Dialogs
   displayCreateDialog = signal(false);

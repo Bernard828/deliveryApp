@@ -6,7 +6,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuItemSearchDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menuItem.model';
 import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.component';
 
 @Component({
@@ -22,6 +22,6 @@ import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.componen
 })
 export class MenuCategoryComponent {
   @Input() title!: string;
-  @Input() items: MenuItemSearchDto[] = [];
-  @Output() addToCart = new EventEmitter<{ item: MenuItemSearchDto; quantity: number }>();
+  @Input() items: MenuItemDto[] = [];
+  @Output() addToCart = new EventEmitter<{ item: MenuItemDto; quantity: number }>();
 }

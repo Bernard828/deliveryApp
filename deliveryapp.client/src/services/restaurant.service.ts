@@ -4,9 +4,9 @@ import { finalize, tap } from 'rxjs';
 import {
   RestaurantDto,
   RestaurantCreateDto,
-  RestaurantSearchDto
 } from '../app/models/restuarant.model';
 import { environment } from '../environments/environment';
+import { PagedResult } from '../app/models/paged-result.model';
 //import { environment } from '../environments/environment.development';
 //import { environment } from '../environments/environment.iis';
 
@@ -37,15 +37,16 @@ export class RestaurantService {
   }
 
   getById(id: number) {
-    return this.http.get<RestaurantSearchDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<RestaurantDto>(`${this.baseUrl}/${id}`);
   }
 
   create(dto: RestaurantCreateDto) {
-    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto).pipe(
-      tap(newRestaurant =>
-        this.restaurants.update(list => [...list, newRestaurant])
-      )
-    );
+    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto)
+      .pipe(
+        tap(newRestaurant =>
+          this.restaurants.update(list => [...list, newRestaurant])
+        )
+      );
   }
 
   createNew(dto: RestaurantDto) {
@@ -53,13 +54,14 @@ export class RestaurantService {
   }
 
   update(id: number, dto: RestaurantDto) {
-    return this.http.put<RestaurantDto>(this.baseUrl + '/Update', dto).pipe(
-      tap(updated =>
-        this.restaurants.update(list =>
-          list.map(r => (r.restaurantId === id ? updated : r))
+    return this.http.put<RestaurantDto>(this.baseUrl + '/Update', dto)
+      .pipe(
+        tap(updated =>
+          this.restaurants.update(list =>
+            list.map(r => (r.restaurantId === id ? updated : r))
+          )
         )
-      )
-    );
+      );
   }
 
   updateNew(id: number, dto: RestaurantDto) {

@@ -1,13 +1,16 @@
 <div class="menu-category mb-4">
   <h3 class="mb-3">{{ title }}</h3>
 
-  @for(item of items; track item.menuItemId) {
-  <app-menu-item-card [item]="item"
-                      (addToCart)="addToCart.emit($event)">
-  </app-menu-item-card>
-  }
+  <!-- Angular 16 Compatible Loop -->
+  <ng-container *ngIf="items && items.length > 0; else emptyCategory">
+    <app-menu-item-card *ngFor="let item of items"
+                        [item]="item"
+                        (addToCart)="addToCart.emit($event)">
+    </app-menu-item-card>
+  </ng-container>
 
-  @empty {
-  <p class="text-color-secondary">No items in this category.</p>
-  }
+  <!-- Angular 16 Empty State Placeholder -->
+  <ng-template #emptyCategory>
+    <p class="text-color-secondary">No items in this category.</p>
+  </ng-template>
 </div>

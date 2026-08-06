@@ -21,20 +21,18 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "../deliveryApp.Server/wwwroot",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -92,13 +90,13 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "deliveryapp.client:build:production"
+              "browserTarget": "deliveryapp.client:build:production"
             },
             "development": {
-              "buildTarget": "deliveryapp.client:build:development"
+              "browserTarget": "deliveryapp.client:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -108,10 +106,10 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
               "zone.js",
@@ -119,10 +117,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
@@ -138,7 +134,7 @@
     "analytics": false
   },
   "schematics": {
-    "@schematics/angular:component": {
+    " @schematics/angular:component": {
       "type": "component"
     },
     "@schematics/angular:directive": {
@@ -164,39 +160,3 @@
     }
   }
 }
-//{
-//  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-//  "version": 1,
-//  "projects": {
-//    "deliveryapp.client": {
-//      "projectType": "application",
-//      "root": "",
-//      "sourceRoot": "src",
-//      "architect": {
-//        "build": {
-//          "builder": "@angular/build:application",
-//          "options": {
-//            "outputPath": "dist/deliveryapp.client",
-//            "index": "src/index.html",
-//            "main": "src/main.ts",
-//            "polyfills": "src/polyfills.ts",
-//            "tsConfig": "tsconfig.app.json",
-//            "assets": [ "src/favicon.ico", "src/assets" ],
-//            "styles": [ "src/styles.css" ],
-//            "scripts": []
-//          }
-//        },
-//        "serve": {
-//          "builder": "@angular/build:dev-server",
-//          "options": {
-//            "port": 21970,
-//            "host": "localhost"
-//          }
-//        }
-//      }
-//    }
-//  },
-//  "cli": {
-//    "analytics": false
-//  }
-//}

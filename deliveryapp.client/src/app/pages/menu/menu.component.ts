@@ -4,8 +4,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   selector: 'app-menu',
   standalone: false,
   templateUrl: './menu.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './menu.component.css'
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent
 {
