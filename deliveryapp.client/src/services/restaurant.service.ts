@@ -15,10 +15,11 @@ import { PagedResult } from '../app/models/paged-result.model';
 })
 export class RestaurantService {
   private http = inject(HttpClient);
-  private baseUrl = environment.apiUrl + '/Restaurant';
+  private baseUrl = environment.apiUrl+'/Restaurant';
 
   restaurants = signal<RestaurantDto[]>([]);
   loading = signal(false);
+
 
   constructor() { }
 

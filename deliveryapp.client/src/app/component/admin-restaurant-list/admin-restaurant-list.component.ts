@@ -1,4 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { RestaurantService } from '../../../services/restaurant.service';
 import { RestaurantDto } from '../../models/restuarant.model';
 
@@ -9,17 +12,19 @@ import { RestaurantDto } from '../../models/restuarant.model';
   templateUrl: './admin-restaurant-list.component.html',
   styleUrls: ['./admin-restaurant-list.component.css'],
   imports: [
-   // TableModule,
-   // DropdownModule,
-    //InputSwitchModule,
-    //PaginatorModule
+    CommonModule, FormsModule
   ]
 })
 export class AdminRestaurantListComponent implements OnInit {
   private restaurantService = inject(RestaurantService);
+
   restaurants: RestaurantDto[] = [];
+  loading: boolean = false;
+
+  displayEditModal: boolean = false;
+  selectedRestaurant: RestaurantDto | null = null;
+
   totalRecords = 0;
-  loading = false;
 
   page = 0;
   pageSize = 10;
@@ -56,8 +61,32 @@ export class AdminRestaurantListComponent implements OnInit {
     this.loadRestaurants();
   }
 
-  onRowSelect(restaurant: RestaurantDto) {
-    //navigate to detail page
-    //e.g. this.router.navigate(['/admin/restaurants',restaurant.restaurantId]);
+  openEditModal(restaurant: RestaurantDto): void {
+    this.selectedRestaurant = { ...restaurant };
+    this.displayEditModal = true;
   }
+
+  closeModal(): void {
+    this.displayEditModal = false;
+    this.selectedRestaurant = null;
+  }
+
+  saveRestaurant(): void {
+    if (!this.selectedRestaurant) return;
+
+    this.loading = true;
+    this.restaurantService.updateNew(this.selectedRestaurant.restaurantId, this.selectedRestaurant)
+      .subscribe({
+        next: () => {
+          this.closeModal();
+          this.loadRestaurants();
+        },
+        error: err => {
+          console.error(err);
+          this.loading = false;
+        }
+      })
+  }
+
+  onRowSelect(restaurant: RestaurantDto) {}
 }

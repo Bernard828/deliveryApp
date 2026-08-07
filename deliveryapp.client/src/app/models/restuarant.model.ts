@@ -5,11 +5,11 @@ import { RestaurantHourDto } from "./restaurant-hours.model";
 export interface Restaurant {
   restaurantId: number;
   name: string;
+  description:string;
   isActive: boolean;
   cuisineTypeId: number;
   operatingHours: RestaurantHourDto[];
   isCurrentlyOpen: boolean;
-  description:string;
   cuisine: CuisineType;
   imageUrl: string;
   address: string;

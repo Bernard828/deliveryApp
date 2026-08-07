@@ -1,3 +1,88 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Manage Restaurants</h3>
+  </div>
+
+  <div class="table-responsive shadow-sm rounded border">
+    <table class="table table-hover align-middle mb-0 bg-white">
+      <thead class="table-light">
+        <tr>
+          <th scope="col" style="width:80px;">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col" class="text-center" style="width:120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let restaurant of restaurants">
+          <td class="fw-bold text-secondary">{{ restaurant.restaurantId }}</td>
+          <td>{{ restaurant.name }}</td>
+          <td class="text-truncate" style="max-width:300px;">{{ restaurant.description }}</td>
+          <td class="text-center">
+            <button type="button"
+                    class="btn btn-sm btn-warning rounded-pill px-3 shadow-sm"
+                    (click)="openEditModal(restaurant)">
+              Edit
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="!restaurants || restaurants.length ===0">
+          <td colspan="4" class="text-center text-muted py-4">
+            No restaurants available.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="custom-modal-backdrop" *ngIf="displayEditModal" (click)="closeModal()"></div>
+<div class="custom-modal-window card shadow-lg" *ngIf="displayEditModal">
+  <div class="card-header bg-warning bg-opacity-10 d-flex justify-content-between align-items-center py-3">
+    <h5 class="mb-0 fw-bold text-dark">Edit Restaurant Details</h5>
+    <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+  </div>
+
+  <div class="card-body p-4" *ngIf="selectedRestaurant">
+    <form (ngSubmit)="saveRestaurant()">
+      <div class="mb-3">
+        <label for="restName" class="form-label fw-bold">Restaurant Name</label>
+        <input type="text"
+               id="restName"
+               class="form-control"
+               [(ngModel)]="selectedRestaurant.name"
+               name="name"
+               maxlength="200"
+               required />
+      </div>
+
+      <div class="mb-4">
+        <label for="restDesc" class="form-label fw-bold">Description</label>
+        <textarea id="restDesc"
+                  class="form-control"
+                  rows="4"
+                  [(ngModel)]="selectedRestaurant.description"
+                  name="description"
+                  maxlength="200"
+                  required></textarea>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 border-top pt-3">
+        <button type="button"
+                class="btn btn-light border px-4"
+                (click)="closeModal()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-success px-4 shadow-sm"
+                [disabled]="!selectedRestaurant.name || !selectedRestaurant.description || loading">
+          {{ loading ? 'Saving...' : 'Save Changes'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!--<p>admin-restaurant-list works!</p>
 <table [value]="restaurants"
          [paginator]="true"
@@ -14,9 +99,9 @@
       <h3>Restaurants</h3>
       <div class="flex gap-2 align-items-center">
         <span>Active only:</span>-->
-        <!--<p-inputSwitch [ngModel]="isActiveFilter === true"
-                       (ngModelChange)="onIsActiveFilterChange($event ? true : null)"></p-inputSwitch>-->
-      <!--</div>
+<!--<p-inputSwitch [ngModel]="isActiveFilter === true"
+               (ngModelChange)="onIsActiveFilterChange($event ? true : null)"></p-inputSwitch>-->
+<!--</div>
     </div>
   </ng-template>
 
