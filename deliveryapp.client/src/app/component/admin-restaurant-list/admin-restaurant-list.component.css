@@ -24,6 +24,121 @@
   animation: fadeInModal 0.2s ease-out;
 }
 
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 6px 6px 0 0;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-image-wrapper .badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.description-text {
+  font-size: 0.9rem;
+  color: #555;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.error-msg {
+  color: #c5221f;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: bold;
+}
+
+textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+  input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
+    border-color: #c5221f;
+    background-color: #fff8f8;
+  }
+
+.btn-save:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Card Presentation Framework Layout Controls */
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Modal Window Layout Context Modifiers */
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1040;
+}
+
+.custom-modal-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1050;
+  border: none;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Form Structural Validity Style Modifiers */
+.form-control.ng-invalid.ng-touched {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+
 @keyframes fadeInModal {
   from {
     opacity: 0;

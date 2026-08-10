@@ -1,3 +1,4 @@
+import { Address, AddressDto } from "./address.model";
 import { CuisineType } from "./cuisine-type.model";
 import { MenuItemDto } from "./menuItem.model";
 import { RestaurantHourDto } from "./restaurant-hours.model";
@@ -12,33 +13,29 @@ export interface Restaurant {
   isCurrentlyOpen: boolean;
   cuisine: CuisineType;
   imageUrl: string;
-  address: string;
+  address: Address;
 }
 
 export interface RestaurantDto {
-  // restaurantId: number;
-  // name: string;
-  // description: string;
-  // cuisineTypeId: number;
-  // menuItems: MenuItemDto[];
   restaurantId: number;
   name: string;
-  isActive: boolean;
-  cuisineTypeId: number;
-  operatingHours: RestaurantHourDto[];
-  isCurrentlyOpen: boolean;
   description: string;
-  cuisine: CuisineType;
-  //price: number;
+  cuisineTypeId: number;
+  isActive: boolean;
+  isCurrentlyOpen: boolean;
   imageUrl: string;
-  address: string;
-  menuItemId: number;
-  menuItems: MenuItemDto[];
+  address: AddressDto;
+  cuisine?: CuisineType;
+  operatingHours: RestaurantHourDto[];
+  menuItems?: MenuItemDto[];
 }
+
 export interface RestaurantCreateDto {
   name: string;
   description: string;
-  searchTags: string[];
+  address: AddressDto;
+  imageUrl?: string;
   cuisineTypeId: number | null;
+  searchTags: string[];
 }
 

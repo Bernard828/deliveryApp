@@ -12,14 +12,11 @@ namespace deliveryApp.Server.Services
         Task<RestaurantDto> CreateAsync(RestaurantCreateDto dto);
         Task<bool> UpdateAsync(RestaurantUpdateDto dto);
         Task<RestaurantDto?> GetByIdAsync(int id);
-        //Task<IEnumerable<RestaurantDto>> GetAllAsync();
         Task<List<RestaurantDto>> GetAllAsync();
-        //Task<bool> EditMultipleAsync(RestaurantUpdateMultipleDto dto);
-        //Task<bool> DeleteTagAsync(int id, List<string> tagNames);
-        //Task<IEnumerable<RestaurantSearchDto>> SearchAsync(string query);
         Task<bool> DeleteRestaurantAsync(int id);
         //Task<bool> UpdateOperatingHoursAsync(int restaurantId, List<RestaurantHourDto> hours);
         //Task<IEnumerable<RestaurantDto>> GetPagedAsync(int page, int pageSize);
+        Task<PagedResultDto<RestaurantDto>> GetPagedAsync(int page, int pageSize, bool? isActive);
 
     }
     public class RestaurantService : IRestaurantService
@@ -39,6 +36,7 @@ namespace deliveryApp.Server.Services
                 Description = dto.Description,
                 //CuisineTypeId = dto.CuisineTypeId,
                 //SearchTagsJson = dto.SearchTags != null ? JsonSerializer.Serialize(dto.SearchTags) : null,
+                //ImageUrl=dto.ImageUrl,
                 //Address = dto.Address != null ? new Address
                 //{
                 //    Line1 = dto.Address.Line1,
@@ -62,7 +60,10 @@ namespace deliveryApp.Server.Services
             if (restaurant == null) return false;
 
             restaurant.Name = dto.Name;
+            restaurant.Description = dto.Description;
             //restaurant.CuisineTypeId = dto.CuisineTypeId;
+            // restaurant.ImageUrl = dto.ImageUrl;
+            // restaurant.Address = dto.Address;
 
             await _context.SaveChangesAsync();
             return true;
@@ -82,163 +83,54 @@ namespace deliveryApp.Server.Services
             return list.Select(MapToDto).ToList();
         }
 
-        //public async Task<IEnumerable<RestaurantSearchDto>> SearchAsync(string query)
-        //{
-        //    if (string.IsNullOrWhiteSpace(query))
-        //        return Enumerable.Empty<RestaurantSearchDto>();
-
-        //    var lower = query.ToLower();
-
-        //    return await _context.Restaurants
-        //        //.Include(r => r.CuisineType)
-        //        .Include(r => r.MenuItems)
-        //        //.Include(r => r.SearchTags)
-        //        .Where(r =>
-        //        r.Name.ToLower().Contains(lower) ||
-        //        r.Description.ToLower().Contains(lower) //||
-        //       // r.CuisineType != null && r.CuisineType.Name.ToLower().Contains(lower) ||
-        //        //r.SearchTags.Any(t => t.TagName.ToLower().Contains(lower)) ||
-        //       // r.MenuItems.Any(m =>
-        //       // m.Name.ToLower().Contains(lower) ||
-        //       //m.SearchTags.ToLower().Contains(lower)
-        //       //)
-        //       // )
-        //        .Select(r => new RestaurantSearchDto
-        //        {
-        //            RestaurantId = r.RestaurantId,
-        //            Name = r.Name,
-        //            Description = r.Description,
-        //            //CuisineTypeId = r.CuisineTypeId ?? 0,
-        //            MenuItems = r.MenuItems
-        //            //.Where(m =>
-        //            //m.Name.ToLower().Contains(lower) ||
-        //            //m.SearchTags.ToLower().Contains(lower))
-        //            .Select(m => new MenuItemSearchDto
-        //            {
-        //                MenuItemId = m.MenuItemId,
-        //                Name = m.Name,
-        //               // Price = m.Price,
-        //                //SearchTags = m.SearchTags,
-        //                RestaurantId = m.RestaurantId
-        //            })
-        //        })
-        //        .ToListAsync();
-        //}
-
-        //public async Task<bool> EditMultipleAsync(RestaurantUpdateMultipleDto dto)
-        //{
-        //    var restaurants = await _context.Restaurants
-        //        .Where(r => dto.RestaurantIds.Contains(r.RestaurantId))
-        //        //.Include(r => r.SearchTags)
-        //        .ToListAsync();
-
-        //    if (!restaurants.Any()) return false;
-        //    foreach (var r in restaurants)
-        //    {
-        //        if (dto.Description != null)
-        //            r.Description = dto.Description;
-
-        //        if (dto.CuisineTypeId.HasValue)
-        //            r.CuisineTypeId = dto.CuisineTypeId;
-        //        if (dto.AddSearchTags != null)
-        //        {
-        //            foreach (var tag in dto.AddSearchTags)
-        //            {
-        //                if (!r.SearchTags.Any(t => t.TagName == tag))
-        //                {
-        //                    r.SearchTags.Add(new RestaurantTag { TagName = tag });
-        //                }
-        //            }
-        //        }
-        //    }
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
-
-        //public async Task<bool> DeleteTagAsync(int id, List<string> tagNames)
-        //{
-        //    var restaurant = await _context.Restaurants
-        //        .Include(r => r.SearchTags)
-        //        .FirstOrDefaultAsync(r => r.RestaurantId == id);
-
-        //    if (restaurant == null) return false;
-
-        //    // restaurant.SearchTags.Remove(t => tagNames.Contains(t.TagName));
-
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
-
         public async Task<bool> DeleteRestaurantAsync(int id)
         {
             var restaurant = await _context.Restaurants.FindAsync(id);
             if (restaurant == null) return false;
+
             _context.Restaurants.Remove(restaurant);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        //public async Task<bool> UpdateOperatingHoursAsync(int restaurantId, List<RestaurantHourDto> hours)
-        //{
-        //    var restaurant = await _context.Restaurants
-        //        .Include(r => r.OperatingHours)
-        //        .FirstOrDefaultAsync(r => r.RestaurantId == restaurantId);
-
-        //    if (restaurant == null) return false;
-
-        //    _context.RestaurantHours.RemoveRange(restaurant.OperatingHours);
-
-        //    restaurant.OperatingHours = hours.Select(h => new RestaurantHour
-        //    {
-        //        DayOfWeek = h.DayOfWeek,
-        //        OpenTime = TimeSpan.Parse(h.OpenTime),
-        //        CloseTime = TimeSpan.Parse(h.CloseTime)
-        //    }).ToList();
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
-
-        public async Task<IEnumerable<RestaurantDto>> GetPagedAsync(int page, int pageSize)
+        public async Task<PagedResultDto<RestaurantDto>> GetPagedAsync(int page, int pageSize, bool? isActive)
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 10;
-            var totalCount = await _context.Restaurants.CountAsync();
 
-            var restaurants = await _context.Restaurants
-                //.Include(r => r.CuisineType)
-                //.Include(r => r.OperatingHours)
-                //.Include(r => r.SearchTags)
+            var query = _context.Restaurants.AsQueryable();
+
+            if (isActive.HasValue)
+            {
+                query = query.Where(r => r.IsActive == isActive.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var restaurants = await query
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-            return restaurants.Select(MapToDto);
-            //return new PagedResult<RestaurantDto>
-            //{
-            //    Items = restaurants.Select(MapToDto).ToList(),
-            //    totalCount = totalCount,
-            //    page = page,
-            //    pageSize = pageSize
-            //};
+
+            return new PagedResultDto<RestaurantDto>
+            {
+                Items = restaurants.Select(MapToDto).ToList(),
+                TotalCount = totalCount
+            };
         }
 
         private RestaurantDto MapToDto(Restaurant r)
         {
-            //var now = DateTime.Now;
-            //var today = now.DayOfWeek;
-            //var time = now.TimeOfDay;
-
-            //var todaysHours = r.OperatingHours.FirstOrDefault(h => h.DayOfWeek == today);
-            //bool isOpen = todaysHours != null &&
-            //    (todaysHours.OpenTime <= todaysHours.CloseTime
-            //    ? time >= todaysHours.OpenTime && time <= todaysHours.CloseTime
-            //    : time >= todaysHours.OpenTime || time <= todaysHours.CloseTime);
-
             return new RestaurantDto
             {
                 RestaurantId = r.RestaurantId,
                 Name = r.Name,
                 Description = r.Description,
+                IsActive=r.IsActive,
+                IsCurrentlyOpen=true,
+                ImageUrl="https://unsplash.com",
+                //Address= r.Address
                 //CuisineTypeId = r.CuisineTypeId,
                 //SearchTags = string.IsNullOrEmpty(r.SearchTagsJson) ? null : JsonSerializer.Deserialize<List<string>>(r.SearchTagsJson),
                 //Address = r.Address == null ? null : new AddressDto

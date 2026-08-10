@@ -1,8 +1,5 @@
 ﻿namespace deliveryApp.Server.Models
 {
-    //public class CuisineType
-    //{
-    //}
     public class CuisineType
     {
         public int CuisineTypeId { get; set; }

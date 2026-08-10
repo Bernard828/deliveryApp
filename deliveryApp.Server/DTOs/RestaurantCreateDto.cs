@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using deliveryApp.Server.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace deliveryApp.Server.DTOs
 {
@@ -11,8 +12,9 @@ namespace deliveryApp.Server.DTOs
         [Required]
         [MaxLength(200)]
         public string Description { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
 
-       // public AddressDto? Address { get; set; }
+        public AddressDto? Address { get; set; }
         //public List<string>? SearchTags { get; set; } = new();
         //public int? CuisineTypeId { get; set; }
     }

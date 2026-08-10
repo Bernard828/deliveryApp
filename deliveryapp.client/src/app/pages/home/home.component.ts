@@ -1,5 +1,3 @@
-// import { Component, ChangeDetectionStrategy } from '@angular/core';
-// import { CommonModule } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import {
   Component,
@@ -51,7 +49,8 @@ import { RestaurantMenuModalComponent } from '../../component/restaurant-menu-mo
     InputNumberModule,
     TagModule,
     ProgressSpinnerModule,
-    RestaurantMenuModalComponent],
+    RestaurantMenuModalComponent
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
