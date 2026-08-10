@@ -9,10 +9,11 @@ namespace deliveryApp.Server.Models
         [Required][MaxLength(200)] public string Name { get; set; } = string.Empty;
         [Required][MaxLength(200)] public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; }
-       // public int? CuisineTypeId { get; set; }
+       
+        public int? CuisineTypeId { get; set; }
        // public string? SearchTagsJson { get; set; }
         //public decimal Price { get; set; }
-        //public string ImageUrl { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
         public Address? Address { get; set; }
         //public virtual CuisineType? CuisineType { get; set; } = null!;
         //public virtual ICollection<RestaurantTag> SearchTags { get; set; } = new List<RestaurantTag>();

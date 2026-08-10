@@ -120,6 +120,8 @@ export class AdminRestaurantListComponent implements OnInit {
   }
 
   openEditModal(restaurant: RestaurantDto): void {
+    console.log('Inside Edit:', restaurant);
+
     this.isEditMode = true;
     this.selectedRestaurantId = restaurant.restaurantId;
     const standardHoursString = restaurant.operatingHours && restaurant.operatingHours.length > 0
@@ -129,10 +131,12 @@ export class AdminRestaurantListComponent implements OnInit {
     // this.displayEditModal = true;
 
     this.restaurantForm.setValue({
+      restaurantId:restaurant.restaurantId,
       name: restaurant.name,
       description: restaurant.description,
-      address: restaurant.address,
+      isActive:restaurant.isActive,
       cuisineTypeId: restaurant.cuisineTypeId,
+      address: restaurant.address,
       imageUrl: restaurant.imageUrl,
       displayHours: standardHoursString
     });
