@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let restaurant of restaurants">
+        <tr *ngFor="let restaurant of restaurantList()">
           <td class="fw-bold text-secondary">{{ restaurant.restaurantId }}</td>
           <td>{{ restaurant.name }}</td>
           <td class="text-truncate" style="max-width:300px;">{{ restaurant.description }}</td>
