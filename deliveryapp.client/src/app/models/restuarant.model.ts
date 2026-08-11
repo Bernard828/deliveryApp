@@ -20,14 +20,15 @@ export interface RestaurantDto {
   restaurantId: number;
   name: string;
   description: string;
-  cuisineTypeId: number;
   isActive: boolean;
-  isCurrentlyOpen: boolean;
+  cuisineTypeId: number;
+  cuisineType?: CuisineType;
   imageUrl: string;
-  address: AddressDto;
-  cuisine?: CuisineType;
+  isCurrentlyOpen: boolean;
   operatingHours: RestaurantHourDto[];
+  address: AddressDto;
   menuItems?: MenuItemDto[];
+  searchTags: string[];
 }
 
 export interface RestaurantCreateDto {
@@ -35,6 +36,7 @@ export interface RestaurantCreateDto {
   description: string;
   address: AddressDto;
   imageUrl?: string;
+  isActive: boolean;
   cuisineTypeId: number | null;
   searchTags: string[];
 }

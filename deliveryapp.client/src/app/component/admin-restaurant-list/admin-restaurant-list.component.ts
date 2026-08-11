@@ -67,16 +67,26 @@ export class AdminRestaurantListComponent implements OnInit {
     this.initForm();
   }
 
+  const SafeAddress = this.selectedRestaurant?.address ?? { line1: '', line2: '', city: '', state: '', zipCode: 0 };
+
 
   initForm(): void {
     this.restaurantForm = this.fb.group({
+      restaurantId: [null],
       name: ['', [Validators.required, Validators.maxLength(200)]],
       description: ['', [Validators.required, Validators.maxLength(200)]],
-      address: ['', [Validators.required]],
-      cuisineTypeId: [null, [Validators.required]],
+      isActive: [true],
+      cuisineTypeId: [null],
       imageUrl: ['', [Validators.pattern(this.urlRegex)]],
       displayHours: ['', [Validators.required, Validators.pattern(this.hoursRegex)]],
-      isActive: [true]
+      address: this.fb.group({
+        line1: ['', [Validators.required, Validators.maxLength(200)]],
+        line2: ['', [Validators.maxLength(200)]],
+        city: ['', [Validators.required, Validators.maxLength(100)]],
+        state: ['', [Validators.required, Validators.maxLength(100)]],
+        zipCode: [0, [Validators.required, Validators.maxLength(20)]],
+      }),
+      searchTags: [[]]
     });
   }
 
@@ -131,15 +141,17 @@ export class AdminRestaurantListComponent implements OnInit {
     // this.displayEditModal = true;
 
     this.restaurantForm.setValue({
-      restaurantId:restaurant.restaurantId,
+      restaurantId: restaurant.restaurantId,
       name: restaurant.name,
       description: restaurant.description,
-      isActive:restaurant.isActive,
+      isActive: restaurant.isActive,
       cuisineTypeId: restaurant.cuisineTypeId,
-      address: restaurant.address,
       imageUrl: restaurant.imageUrl,
-      displayHours: standardHoursString
+      address: restaurant.address||this.SafeAddress,
+      displayHours: standardHoursString,
+      searchTags: restaurant.searchTags ?? []
     });
+
     this.displayEditModal = true;
     this.isModalOpen = true;
   }

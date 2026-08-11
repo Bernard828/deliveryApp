@@ -44,7 +44,7 @@ namespace deliveryApp.Server.DTOs
         public int? CuisineTypeId { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public AddressDto? Address { get; set; }
-        public List<string>? SearchTags { get; set; } = new();>
+        public List<string>? SearchTags { get; set; } = new();
     }
 
 }

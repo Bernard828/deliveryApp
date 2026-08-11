@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 namespace deliveryApp.Server
 {
     // Explicitly register every class/DTO sent over your API endpoints
-    [JsonSerializable(typeof(List<RestaurantDtos>))]
-    [JsonSerializable(typeof(RestaurantDtos))]
+    [JsonSerializable(typeof(List<RestaurantDto>))]
+    [JsonSerializable(typeof(RestaurantDto))]
     [JsonSerializable(typeof(RestaurantHourDto))]
     [JsonSerializable(typeof(CuisineType))]
     [JsonSerializable(typeof(Restaurant))]
