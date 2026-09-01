@@ -1,24 +1,24 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { finalize, tap } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { finalize, tap, Observable } from 'rxjs';
+
 import {
   RestaurantDto,
   RestaurantCreateDto,
 } from '../app/models/restuarant.model';
-import { environment } from '../environments/environment';
 import { PagedResult } from '../app/models/paged-result.model';
-//import { environment } from '../environments/environment.development';
-//import { environment } from '../environments/environment.iis';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestaurantService {
   private http = inject(HttpClient);
-  private baseUrl = environment.apiUrl+'/Restaurant';
+  private readonly baseUrl = environment.apiUrl + '/Restaurants';
 
   restaurants = signal<RestaurantDto[]>([]);
-  loading = signal(false);
+
+  readonly loading = signal(false);
 
 
   constructor() { }
@@ -33,12 +33,31 @@ export class RestaurantService {
     );
   }
 
-  getAllNew(params?: { page?: number; pageSize?: number; isActive?: boolean }) {
-    return this.http.get<PagedResult<RestaurantDto>>(this.baseUrl, { params });
+  getPaged(
+    page: number,
+    pageSize: number,
+    isActive: boolean | null = null
+  ): Observable<PagedResult<RestaurantDto>> {
+
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+
+    if (isActive !== null) {
+      params = params.set('isActive', isActive);
+    }
+
+    this.loading.set(true);
+
+    return this.http
+      .get<PagedResult<RestaurantDto>>(`${this.baseUrl}/GetPaged/paged`,
+        { params })
+      .pipe(finalize(() => this.loading.set(false))
+    );
   }
 
   getById(id: number) {
-    return this.http.get<RestaurantDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<RestaurantDto>(`${this.baseUrl}/GetById/${id}`);
   }
 
   create(dto: RestaurantCreateDto) {
@@ -77,9 +96,5 @@ export class RestaurantService {
         )
       )
     );
-  }
-
-  getMenuByRestaurantId(id: number) {
-    return this.http.get(`${this.baseUrl}/${id}/menu`);
   }
 }

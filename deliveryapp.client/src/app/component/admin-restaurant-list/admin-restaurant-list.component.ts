@@ -16,6 +16,7 @@ import {
 
 import { RestaurantService } from '../../../services/restaurant.service';
 import { Restaurant, RestaurantDto } from '../../models/restuarant.model';
+import { GridDataResult } from '../../models/grid-data-result.model';
 
 
 @Component({
@@ -49,6 +50,11 @@ export class AdminRestaurantListComponent implements OnInit {
   pageSize = 10;
   isActiveFilter: boolean | null = null;
 
+  gridData: GridDataResult<RestaurantDto> = {
+    data: [],
+    total: 0
+  };
+
   //Regex Patterns
   // Matches "09:00 AM - 10:00 PM" or "24 Hours" or standard "09:00-22:00" strings cleanly
   hoursRegex = /^(?:[0-1]?[0-9]|2[0-3]):[0-5][0-9]\s?(?:AM|PM)?\s?-\s?(?:[0-1]?[0-9]|2[0-3]):[0-5][0-9]\s?(?:AM|PM)?$/i;
@@ -63,11 +69,10 @@ export class AdminRestaurantListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadRestaurants();
+    this.loadRestaurantsNew();
     this.initForm();
   }
 
-  const SafeAddress = this.selectedRestaurant?.address ?? { line1: '', line2: '', city: '', state: '', zipCode: 0 };
 
 
   initForm(): void {
@@ -90,14 +95,14 @@ export class AdminRestaurantListComponent implements OnInit {
     });
   }
 
-  loadRestaurantsOLD() {
+  loadRestaurantsNew() {
     this.loading = true;
     this.restaurantService
-      .getAllNew({
-        page: this.page,
-        pageSize: this.pageSize,
-        isActive: this.isActiveFilter ?? undefined
-      })
+      .getPaged(
+        this.page,
+        this.pageSize,
+        this.isActiveFilter ?? undefined
+      )
       .subscribe({
         next: (result) => {
           this.restaurants = result.items;
@@ -111,15 +116,25 @@ export class AdminRestaurantListComponent implements OnInit {
   }
 
   loadRestaurants(): void {
-    this.restaurantService.getAll().subscribe(list => {
-      this.restaurantList.set(list || []);
-    });
+    const currentPage = 1;
+    const pageSize = 10;
+    let isActive = null;
+   
+
+    // this.restaurantService.getPaged(currentPage, pageSize).subscribe(list => {
+    //   this.restaurantList.set(l);
+    // });
+    this.restaurantService.getPaged(currentPage, pageSize, isActive).subscribe({
+      next: (() => {
+        
+      })
+    })
   }
 
   onPageChange(event: any) {
     this.page = event.page;
     this.pageSize = event.rows;
-    this.loadRestaurants();
+    this.loadRestaurantsNew();
   }
 
   openCreateModal(): void {
@@ -131,6 +146,8 @@ export class AdminRestaurantListComponent implements OnInit {
 
   openEditModal(restaurant: RestaurantDto): void {
     console.log('Inside Edit:', restaurant);
+    const SafeAddress = this.selectedRestaurant?.address ?? { line1: '', line2: '', city: '', state: '', zipCode: 0 };
+
 
     this.isEditMode = true;
     this.selectedRestaurantId = restaurant.restaurantId;
@@ -147,7 +164,7 @@ export class AdminRestaurantListComponent implements OnInit {
       isActive: restaurant.isActive,
       cuisineTypeId: restaurant.cuisineTypeId,
       imageUrl: restaurant.imageUrl,
-      address: restaurant.address||this.SafeAddress,
+      address: restaurant.address || SafeAddress,
       displayHours: standardHoursString,
       searchTags: restaurant.searchTags ?? []
     });
@@ -185,7 +202,7 @@ export class AdminRestaurantListComponent implements OnInit {
       this.restaurantService.updateNew(this.selectedRestaurantId, updateDto).subscribe({
         next: () => {
           this.closeModal();
-          this.loadRestaurants();
+          this.loadRestaurantsNew();
         },
         error: (err) => {
           console.error(err);
@@ -233,7 +250,7 @@ export class AdminRestaurantListComponent implements OnInit {
       this.restaurantService.create(createDto).subscribe({
         next: () => {
           this.closeModal();
-          this.loadRestaurants();
+          this.loadRestaurantsNew();
         },
         error: (err) => {
           console.error(err);
@@ -254,7 +271,7 @@ export class AdminRestaurantListComponent implements OnInit {
     // });
 
     this.restaurantService.updateNew(restaurant.restaurantId, updateDto).subscribe({
-      next: () => this.loadRestaurants(),
+      next: () => this.loadRestaurantsNew(),
       error: (err) => console.error(err)
     });
   }
@@ -262,7 +279,7 @@ export class AdminRestaurantListComponent implements OnInit {
   onIsActiveFilterChange(value: boolean | null) {
     this.isActiveFilter = value;
     this.page = 1;
-    this.loadRestaurants();
+    this.loadRestaurantsNew();
   }
 
   onMenuManagement(restaurantId: number) {

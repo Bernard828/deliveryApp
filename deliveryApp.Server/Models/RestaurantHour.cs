@@ -1,12 +1,13 @@
-﻿namespace deliveryApp.Server.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace deliveryApp.Server.Models
 {
     public class RestaurantHour
     {
-        public int RestaurantHourId { get; set; }
+        [Key] public int RestaurantHourId { get; set; }
         public int RestaurantId { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
-        public TimeSpan OpenTime { get; set; }
-        public TimeSpan CloseTime { get; set; }
-        public Restaurant Restaurant { get; set; } = null!;
+        [Required] public DayOfWeek DayOfWeek { get; set; }
+        [Required] public TimeSpan OpenTime { get; set; }
+        [Required] public TimeSpan CloseTime { get; set; }
     }
 }

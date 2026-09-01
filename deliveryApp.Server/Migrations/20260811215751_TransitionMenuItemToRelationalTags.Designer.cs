@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deliveryApp.Server.Data;
 
@@ -11,9 +12,11 @@ using deliveryApp.Server.Data;
 namespace deliveryApp.Server.Migrations
 {
     [DbContext(typeof(DeliveryAppDbContext))]
-    partial class DeliveryAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260811215751_TransitionMenuItemToRelationalTags")]
+    partial class TransitionMenuItemToRelationalTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,43 +24,6 @@ namespace deliveryApp.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("deliveryApp.Server.Models.Address", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Line1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Line2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AddressId");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("deliveryApp.Server.Models.CuisineType", b =>
                 {
@@ -212,9 +178,6 @@ namespace deliveryApp.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"));
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CuisineTypeId")
                         .HasColumnType("int");
 
@@ -236,8 +199,6 @@ namespace deliveryApp.Server.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("RestaurantId");
-
-                    b.HasIndex("AddressId");
 
                     b.HasIndex("CuisineTypeId");
 
@@ -402,17 +363,49 @@ namespace deliveryApp.Server.Migrations
 
             modelBuilder.Entity("deliveryApp.Server.Models.Restaurant", b =>
                 {
-                    b.HasOne("deliveryApp.Server.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("deliveryApp.Server.Models.CuisineType", "CuisineType")
                         .WithMany("Restaurants")
                         .HasForeignKey("CuisineTypeId");
 
-                    b.Navigation("Address");
+                    b.OwnsOne("deliveryApp.Server.Models.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("RestaurantId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line1")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Line2")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("RestaurantId");
+
+                            b1.ToTable("Restaurants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RestaurantId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
 
                     b.Navigation("CuisineType");
                 });

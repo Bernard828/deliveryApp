@@ -59,11 +59,17 @@ export class RestaurantListComponent implements OnInit {
 
   restaurants = signal<RestaurantDto[]>([]);
   // Selected restaurant for menu modal
-  selectedRestaurantMenu = signal<RestaurantDto | null>(null);
+
+  // Pager
+  currentPage = signal(1);
+  pageSize = signal(10);
+  totalCount = signal(0);
 
   // Dialogs
   displayCreateDialog = signal(false);
   displayMenuDialog = signal(false);
+
+  selectedRestaurantMenu = signal<RestaurantDto | null>(null);
 
   createForm!: FormGroup;
   submitting = signal(false);
@@ -74,10 +80,35 @@ export class RestaurantListComponent implements OnInit {
   }
 
   loadRestaurants(): void {
-    this.restaurantService.getAll().subscribe(list => {
-      this.restaurants.set(list || []);
+    // this.restaurantService.getAll().subscribe(list => {
+    //   this.restaurants.set(list || []);
+    // });
+    this.restaurantService.getPaged(
+      this.currentPage(),
+      this.pageSize(),
+      true
+    ).subscribe({
+      next: (result) => {
+        this.restaurants.set(result.items);
+        this.totalCount.set(result.totalCount);
+      },
+      error: err => {
+        console.error('Error loading restaurants:', err);
+      }
     });
   }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) {
+      return;
+    }
+    this.currentPage.set(page);
+    this.loadRestaurants();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage() + 1) }
+  previousPage(): void { this.goToPage(this.currentPage() - 1) };
+  totalPages(): number { return Math.ceil(this.totalCount() / this.pageSize()); }
 
   initForm(openAfterInit = true): void {
     this.createForm = this.fb.group({
@@ -90,6 +121,8 @@ export class RestaurantListComponent implements OnInit {
   }
 
   openCreateModal(): void {
+    this.createForm.reset();
+    this.displayCreateDialog.set(true);
     this.initForm(true);
   }
 
@@ -108,8 +141,7 @@ export class RestaurantListComponent implements OnInit {
   }
 
   onCloseClicked(): void {
-    if (this.createForm)
-      this.createForm.reset();
+    //if (this.createForm) this.createForm.reset();
     this.displayCreateDialog.set(false);
   }
 
@@ -118,8 +150,12 @@ export class RestaurantListComponent implements OnInit {
       this.createForm.markAllAsTouched(); return;
     }
     const dto = this.createForm.value as RestaurantCreateDto;
-        this.submitting.set(true);
-            this.restaurantService.create(dto).subscribe({
+    this.submitting.set(true);
+
+    // Call the service to create the restaurant
+    this.submitting.set(false);
+    this.displayCreateDialog.set(false);
+    this.restaurantService.create(dto).subscribe({
       next: (created: RestaurantDto) => {
         this.restaurants.update(list => [created, ...list]);
 
@@ -132,19 +168,31 @@ export class RestaurantListComponent implements OnInit {
         this.submitting.set(false);
       }
     });
+    this.loadRestaurants();
   }
 
-  selectRestaurant(id: number): void {
-    this.restaurantService.getById(id).subscribe({
-      next: (data) => {
-        this.selectedRestaurantMenu.set(data);
-        this.displayMenuDialog.set(true);
-      },
-      error: (err) => console.error(err)
-    });
+  selectRestaurant(restaurantId: number): void {
+
+    const restaurant = this.restaurants().find(r =>
+      r.restaurantId === restaurantId);
+
+    if (!restaurant) {
+      return;
+    }
+
+    this.selectedRestaurantMenu.set(restaurant);
+    this.displayMenuDialog.set(true);
+
+    // this.restaurantService.getById(restaurantId).subscribe({
+    //   next: (data) => {
+    //     this.selectedRestaurantMenu.set(data);
+    //     this.displayMenuDialog.set(true);
+    //   },
+    //   error: (err) => console.error(err)
+    // });
   }
 
-  trackById(index: number, item: RestaurantDto) {
-    return item.restaurantId;
+  trackById(index: number, restaurant: RestaurantDto) {
+    return restaurant.restaurantId;
   }
 }

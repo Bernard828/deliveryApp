@@ -145,21 +145,21 @@
           </small>
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>Physical Address</label>
           <input type="text" formControlName="address" placeholder="123 Main St" />
           <small class="error-msg" *ngIf="restaurantForm.get('address')?.touched && restaurantForm.get('address')?.invalid">
             Address is required.
           </small>
-        </div>
+        </div>-->
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>Cuisine Type ID</label>
           <input type="number" formControlName="cuisineTypeId" placeholder="e.g., 1" />
           <small class="error-msg" *ngIf="restaurantForm.get('cuisineTypeId')?.touched && restaurantForm.get('cuisineTypeId')?.invalid">
             Cuisine Type ID is required.
           </small>
-        </div>
+        </div>-->
 
         <div class="form-group">
           <label>Image URL</label>
@@ -169,13 +169,13 @@
           </small>
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>Operating Hours Check</label>
           <input type="text" formControlName="displayHours" placeholder="e.g., 09:00 AM - 10:00 PM" />
           <small class="error-msg" *ngIf="restaurantForm.get('displayHours')?.touched && restaurantForm.get('displayHours')?.hasError('pattern')">
             Hours format must perfectly match 'HH:MM AM/PM - HH:MM AM/PM'.
           </small>
-        </div>
+        </div>-->
 
         <div class="form-actions">
           <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>

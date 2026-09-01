@@ -3,13 +3,7 @@ import { AdminRestaurantListComponent } from './component/admin-restaurant-list/
 import { AdminRestaurantDetailComponent } from './component/admin-restaurant-detail/admin-restaurant-detail.component';
 
 export const appRoutes: Routes = [
-  // {
-  //   path: 'admin',
-  //   children: [
-  //     { path: 'resaturants', component: AdminRestaurantListComponent },
-  //     { path: 'restaurants/:id', component: AdminRestaurantDetailComponent }
-  //   ]
-  // }
+ 
   {
     path: 'admin-dashboard',
     loadComponent: () =>

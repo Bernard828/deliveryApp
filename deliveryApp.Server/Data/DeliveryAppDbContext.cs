@@ -12,10 +12,11 @@ namespace deliveryApp.Server.Data
         public DbSet<Restaurant> Restaurants { get; set; } = null!;
         public DbSet<CuisineType> CuisineTypes { get; set; } = null!;
         public DbSet<RestaurantHour> RestaurantHours { get; set; } = null!;
+        public DbSet<RestaurantTag> ResturantTags { get; set; } = null!;
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderItem> OrderItems { get; set; } = null!;
-
+        public DbSet<Address> Addresses { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -42,10 +43,10 @@ namespace deliveryApp.Server.Data
 
             //Restaurant, Cuisine, and Hours Relationships
             modelBuilder.Entity<Restaurant>()
-             .HasMany(r => r.MenuItems)
-             .WithOne(m => m.Restaurant)
-             .HasForeignKey(m => m.RestaurantId)
-              .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(r => r.MenuItems)
+                .WithOne(m => m.Restaurant)
+                .HasForeignKey(m => m.RestaurantId)
+             .OnDelete(DeleteBehavior.Cascade);
 
             //Order & OrderItem Relationships
             modelBuilder.Entity<Order>()

@@ -1,10 +1,11 @@
-﻿namespace deliveryApp.Server.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace deliveryApp.Server.Models
 {
     public class RestaurantTag
     {
-        public int RestaurantTagId { get; set; }
-        public string TagName { get; set; } = string.Empty;
+        [Key] public int RestaurantTagId { get; set; }
         public int RestaurantId { get; set; }
-        public Restaurant Restaurant { get; set; } = null!;
+        [Required] public string TagName { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace deliveryApp.Server.DTOs
+﻿using System.Collections.Generic;
+
+namespace deliveryApp.Server.DTOs
 {
     public class PagedResultDto<T>
     {

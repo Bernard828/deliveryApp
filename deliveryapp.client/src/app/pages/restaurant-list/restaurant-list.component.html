@@ -13,17 +13,19 @@
   <!-- Restaurant Grid -->
   <div class="grid">
     <ng-container *ngFor="let res of restaurants(); trackBy: trackById">
+
       <div class="card" (click)="selectRestaurant(res.restaurantId)">
         <div class="card-image">
-          <img [src]="res.imageUrl || 'assets/default-restaurant.jpg'" alt="{{ res.name }}" />
+          <img [src]="res.imageUrl || 'assets/default-restaurant.jpg'"
+               alt="{{ res.name }}" />
         </div>
 
         <div class="card-body">
+
           <div class="card-title">{{ res.name }}</div>
-          <div class="card-sub">{{ res.cuisine?.name || '' }}</div>
+          <div class="card-sub">{{ res.cuisineTypeName || 'Cuisine not specified' }}</div>
           <div class="card-meta">
             <span class="address">{{ res.address }}</span>
-            <!--<span class="price">{{ res.price | currency }}</span>-->
             <span class="status" [class.open]="res.isCurrentlyOpen" [class.closed]="!res.isCurrentlyOpen">
               {{ res.isCurrentlyOpen ? 'OPEN' : 'CLOSED' }}
             </span>
@@ -32,6 +34,23 @@
       </div>
     </ng-container>
   </div>
+</div>
+
+<!--Pagination-->
+<div class="paination" *ngIf="totalPages()>1">
+  <button class="btn btn-secondary"
+          [disabled]="currentPage()===1"
+          (click)="previousPage()">
+    Previous
+  </button>
+
+  <span>Page {{ currentPage() }} of {{totalPages()}} </span>
+
+  <button class="btn btn-secondary"
+          [disabled]="currentPage()===totalPages()"
+          (click)="nextPage()">
+    Next
+  </button>
 </div>
 
 <!-- Create Restaurant Modal -->

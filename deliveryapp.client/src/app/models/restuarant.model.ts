@@ -6,14 +6,15 @@ import { RestaurantHourDto } from "./restaurant-hours.model";
 export interface Restaurant {
   restaurantId: number;
   name: string;
-  description:string;
+  description?:string;
+  imageUrl?: string;
+  address?: Address;
   isActive: boolean;
-  cuisineTypeId: number;
-  operatingHours: RestaurantHourDto[];
   isCurrentlyOpen: boolean;
+  operatingHours: RestaurantHourDto[];
+
+  cuisineTypeId: number;
   cuisine: CuisineType;
-  imageUrl: string;
-  address: Address;
 }
 
 export interface RestaurantDto {
@@ -23,6 +24,7 @@ export interface RestaurantDto {
   isActive: boolean;
   cuisineTypeId: number;
   cuisineType?: CuisineType;
+  cuisineTypeName?: string;
   imageUrl: string;
   isCurrentlyOpen: boolean;
   operatingHours: RestaurantHourDto[];
@@ -34,6 +36,7 @@ export interface RestaurantDto {
 export interface RestaurantCreateDto {
   name: string;
   description: string;
+  addresId: number;
   address: AddressDto;
   imageUrl?: string;
   isActive: boolean;
