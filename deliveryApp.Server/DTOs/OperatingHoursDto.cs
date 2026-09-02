@@ -2,7 +2,7 @@
 
 namespace deliveryApp.Server.DTOs
 {
-    public class RestaurantHourDto
+    public class OperatingHoursDto
     {
         public DayOfWeek DayOfWeek { get; set; }
         [RegularExpression(@"^([01]\d|2[0-3]):([0-5]\d)$", ErrorMessage = "Format must be HH:mm")]

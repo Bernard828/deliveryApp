@@ -203,7 +203,7 @@ namespace deliveryApp.Server.Services
                    .Select(t => t.TagName)
                    .ToList(),
                    OperatingHours = r.OperatingHours
-                   .Select(h => new RestaurantHourDto
+                   .Select(h => new OperatingHoursDto
                    {
                        DayOfWeek = h.DayOfWeek,
                        OpenTime = h.OpenTime.ToString(@"hh\:mm"),
@@ -401,14 +401,14 @@ namespace deliveryApp.Server.Services
                 .ToList() ?? new List<string>(),
 
                 OperatingHours = restaurant.OperatingHours?
-                .Select(h => new RestaurantHourDto
+                .Select(h => new OperatingHoursDto
                 {
                     DayOfWeek = h.DayOfWeek,
                     OpenTime = h.OpenTime.ToString(@"hh\:mm"),
                     CloseTime = h.CloseTime.ToString(@"hh\:mm")
                 })
                 .OrderBy(h => h.DayOfWeek)
-                .ToList() ?? new List<RestaurantHourDto>()
+                .ToList() ?? new List<OperatingHoursDto>()
             };
 
             return dto;

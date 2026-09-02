@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace deliveryApp.Server.Models
 {
@@ -6,12 +7,12 @@ namespace deliveryApp.Server.Models
     public class Address
     {
         public int AddressId { get; set; }
-        public string Line1 { get; set; } = string.Empty;
-        public string Line2 { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-        public string PostalCode { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
+        [Required, MaxLength(150)] public string Line1 { get; set; } = string.Empty;
+        [MaxLength(150)] public string Line2 { get; set; } = string.Empty;
+        [Required, MaxLength(100)] public string City { get; set; } = string.Empty;
+        [Required, MaxLength(50)] public string State { get; set; } = string.Empty;
+        [Required, MaxLength(20)] public string PostalCode { get; set; } = string.Empty;
+        [Required, MaxLength(100)] public string Country { get; set; } = string.Empty;
     }
-   
+
 }

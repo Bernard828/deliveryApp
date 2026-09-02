@@ -2,7 +2,7 @@
 
 namespace deliveryApp.Server.Models
 {
-    public class RestaurantHour
+    public class OperatingHours
     {
         [Key] public int RestaurantHourId { get; set; }
         public int RestaurantId { get; set; }

@@ -7,7 +7,7 @@ namespace deliveryApp.Server
     // Explicitly register every class/DTO sent over your API endpoints
     [JsonSerializable(typeof(List<RestaurantDto>))]
     [JsonSerializable(typeof(RestaurantDto))]
-    [JsonSerializable(typeof(RestaurantHourDto))]
+    [JsonSerializable(typeof(OperatingHoursDto))]
     [JsonSerializable(typeof(CuisineType))]
     [JsonSerializable(typeof(Restaurant))]
     [JsonSerializable(typeof(RestaurantHour))]
