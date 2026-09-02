@@ -14,14 +14,14 @@ namespace deliveryApp.Server.Controllers
             _restaurantService = restaurantService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
-            [FromQuery] bool? activeOnly,
-            [FromQuery] int? cuisineTypeId)
-        {
-            var records = await _restaurantService.GetAllAsync(activeOnly, cuisineTypeId);
-            return Ok(records);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
+        //    [FromQuery] bool? activeOnly,
+        //    [FromQuery] int? cuisineTypeId)
+        //{
+        //    var records = await _restaurantService.GetAllAsync(activeOnly, cuisineTypeId);
+        //    return Ok(records);
+        //}
 
 
         [HttpGet("paged")]

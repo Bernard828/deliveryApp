@@ -205,13 +205,13 @@ namespace deliveryApp.Server.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("deliveryApp.Server.Models.RestaurantHour", b =>
+            modelBuilder.Entity("deliveryApp.Server.Models.OperatingHour", b =>
                 {
-                    b.Property<int>("RestaurantHourId")
+                    b.Property<int>("OperatingHourId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantHourId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OperatingHourId"));
 
                     b.Property<TimeSpan>("CloseTime")
                         .HasColumnType("time");
@@ -225,11 +225,11 @@ namespace deliveryApp.Server.Migrations
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.HasKey("RestaurantHourId");
+                    b.HasKey("OperatingHourId");
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("RestaurantHours");
+                    b.ToTable("OperatingHours");
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.RestaurantTag", b =>
@@ -410,7 +410,7 @@ namespace deliveryApp.Server.Migrations
                     b.Navigation("CuisineType");
                 });
 
-            modelBuilder.Entity("deliveryApp.Server.Models.RestaurantHour", b =>
+            modelBuilder.Entity("deliveryApp.Server.Models.OperatingHour", b =>
                 {
                     b.HasOne("deliveryApp.Server.Models.Restaurant", null)
                         .WithMany("OperatingHours")

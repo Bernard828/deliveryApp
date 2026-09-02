@@ -38,7 +38,7 @@
 //                        h.DayOfWeek == currentDay &&
 //                        currentTime >= h.OpenTime &&
 //                        currentTime <= h.CloseTime),
-//                    OperatingHours = r.OperatingHours.Select(h => new RestaurantHourDto
+//                    OperatingHours = r.OperatingHours.Select(h => new OperatingHourDto
 //                    {
 //                        DayOfWeek = h.DayOfWeek,
 //                        OpenTime = h.OpenTime.ToString(@"hh\:mm"),
@@ -74,7 +74,7 @@
 //                        h.DayOfWeek == currentDay &&
 //                        currentTime >= h.OpenTime &&
 //                        currentTime <= h.CloseTime),
-//                    OperatingHours = restaurant.OperatingHours.Select(h => new RestaurantHourDto
+//                    OperatingHours = restaurant.OperatingHours.Select(h => new OperatingHourDto
 //                    {
 //                        DayOfWeek = h.DayOfWeek,
 //                        OpenTime = h.OpenTime.ToString(@"hh\:mm"),

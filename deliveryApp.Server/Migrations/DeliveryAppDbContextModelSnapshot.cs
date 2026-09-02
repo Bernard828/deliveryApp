@@ -32,27 +32,33 @@ namespace deliveryApp.Server.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Line1")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Line2")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("AddressId");
 
@@ -69,7 +75,8 @@ namespace deliveryApp.Server.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CuisineTypeId");
 
@@ -91,7 +98,8 @@ namespace deliveryApp.Server.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -133,6 +141,33 @@ namespace deliveryApp.Server.Migrations
                     b.HasIndex("MenuItemId");
 
                     b.ToTable("MenuItemTag");
+                });
+
+            modelBuilder.Entity("deliveryApp.Server.Models.OperatingHours", b =>
+                {
+                    b.Property<int>("OperatingHourId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OperatingHourId"));
+
+                    b.Property<TimeSpan>("CloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("OpenTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OperatingHourId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("OperatingHours");
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.Order", b =>
@@ -244,33 +279,6 @@ namespace deliveryApp.Server.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("deliveryApp.Server.Models.RestaurantHour", b =>
-                {
-                    b.Property<int>("RestaurantHourId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantHourId"));
-
-                    b.Property<TimeSpan>("CloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("OpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RestaurantHourId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("RestaurantHours");
-                });
-
             modelBuilder.Entity("deliveryApp.Server.Models.RestaurantTag", b =>
                 {
                     b.Property<int>("RestaurantTagId")
@@ -347,9 +355,20 @@ namespace deliveryApp.Server.Migrations
 
             modelBuilder.Entity("deliveryApp.Server.Models.MenuItemTag", b =>
                 {
-                    b.HasOne("deliveryApp.Server.Models.MenuItem", null)
+                    b.HasOne("deliveryApp.Server.Models.MenuItem", "MenuItem")
                         .WithMany("SearchTags")
                         .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuItem");
+                });
+
+            modelBuilder.Entity("deliveryApp.Server.Models.OperatingHours", b =>
+                {
+                    b.HasOne("deliveryApp.Server.Models.Restaurant", null)
+                        .WithMany("OperatingHours")
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -415,15 +434,6 @@ namespace deliveryApp.Server.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("CuisineType");
-                });
-
-            modelBuilder.Entity("deliveryApp.Server.Models.RestaurantHour", b =>
-                {
-                    b.HasOne("deliveryApp.Server.Models.Restaurant", null)
-                        .WithMany("OperatingHours")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("deliveryApp.Server.Models.RestaurantTag", b =>

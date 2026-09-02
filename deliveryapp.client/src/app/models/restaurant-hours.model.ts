@@ -1,6 +1,6 @@
-export interface RestaurantHours {
+export interface OperatingHours {
 }
-export interface RestaurantHourDto {
+export interface OperatingHourDto {
   //NEW Begins
   modayOpen: string;
   mondayClose: string;

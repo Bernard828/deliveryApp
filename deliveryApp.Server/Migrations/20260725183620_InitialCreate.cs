@@ -101,10 +101,10 @@ namespace deliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestaurantHours",
+                name: "OperatingHours",
                 columns: table => new
                 {
-                    RestaurantHourId = table.Column<int>(type: "int", nullable: false)
+                    OperatingHourId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
@@ -113,9 +113,9 @@ namespace deliveryApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantHours", x => x.RestaurantHourId);
+                    table.PrimaryKey("PK_OperatingHours", x => x.OperatingHourId);
                     table.ForeignKey(
-                        name: "FK_RestaurantHours_Restaurants_RestaurantId",
+                        name: "FK_OperatingHours_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
@@ -217,8 +217,8 @@ namespace deliveryApp.Server.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantHours_RestaurantId",
-                table: "RestaurantHours",
+                name: "IX_OperatingHours_RestaurantId",
+                table: "OperatingHours",
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
@@ -239,7 +239,7 @@ namespace deliveryApp.Server.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "RestaurantHours");
+                name: "OperatingHours");
 
             migrationBuilder.DropTable(
                 name: "MenuItems");

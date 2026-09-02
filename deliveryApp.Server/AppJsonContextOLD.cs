@@ -10,7 +10,7 @@ namespace deliveryApp.Server
     [JsonSerializable(typeof(OperatingHoursDto))]
     [JsonSerializable(typeof(CuisineType))]
     [JsonSerializable(typeof(Restaurant))]
-    [JsonSerializable(typeof(RestaurantHour))]
+    [JsonSerializable(typeof(OperatingHours))]
     public partial class AppJsonContextOLD : JsonSerializerContext
     {
     }

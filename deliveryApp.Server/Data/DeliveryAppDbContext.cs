@@ -11,7 +11,7 @@ namespace deliveryApp.Server.Data
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<Restaurant> Restaurants { get; set; } = null!;
         public DbSet<CuisineType> CuisineTypes { get; set; } = null!;
-        public DbSet<RestaurantHour> RestaurantHours { get; set; } = null!;
+        public DbSet<OperatingHours> OperatingHours { get; set; } = null!;
         public DbSet<RestaurantTag> ResturantTags { get; set; } = null!;
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;

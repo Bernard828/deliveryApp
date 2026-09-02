@@ -5,7 +5,7 @@ import { RestaurantDto } from '../../models/restuarant.model';
 import { MenuItemDto } from '../../models/menuItem.model';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MenuItemService } from '../../../services/menu-item.service';
-import { RestaurantHourDto } from '../../models/restaurant-hours.model';
+import { OperatingHourDto } from '../../models/restaurant-hours.model';
 
 import { ButtonModule } from 'primeng/button';
 //import { DropdownModule } from 'primeng/dropdown';
@@ -102,7 +102,7 @@ export class AdminRestaurantDetailComponent {
   saveHours() {
     const updated: RestaurantDto = {
       ...this.restaurant,
-      //operatingHours: this.hoursForm.value as RestaurantHourDto
+      //operatingHours: this.hoursForm.value as OperatingHourDto
     };
     this.restaurantService.update(this.restaurantId, updated)
       .subscribe(() => {
