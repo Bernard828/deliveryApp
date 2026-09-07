@@ -20,3 +20,9 @@ export interface RestaurantHoursDto {
   closeTime: string;
   //OLD Ends
 }
+
+export interface RestaurantHourCreateDto {
+  dayOfWeek: number;
+  openTime: string;
+  closeTime: string;
+}

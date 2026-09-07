@@ -1,7 +1,7 @@
 import { Address, AddressDto } from "./address.model";
 import { CuisineType } from "./cuisine-type.model";
 import { MenuItemDto } from "./menuItem.model";
-import { RestaurantHoursDto } from "./restaurant-hours.model";
+import { RestaurantHourCreateDto, RestaurantHoursDto } from "./restaurant-hours.model";
 
 export interface Restaurant {
   restaurantId: number;
@@ -42,11 +42,18 @@ export interface RestaurantDto {
 export interface RestaurantCreateDto {
   name: string;
   description: string;
-  addresId: number;
-  address: AddressDto;
-  imageUrl?: string;
   isActive: boolean;
+
   cuisineTypeId: number | null;
+
+  imageUrl?: string;
   searchTags: string[];
+  operatingHours: RestaurantHourCreateDto[];
+
+  addressId: number;
+  address: AddressDto | null;
 }
+
+export interface RestaurantUpdateDto
+  extends RestaurantCreateDto { }
 
