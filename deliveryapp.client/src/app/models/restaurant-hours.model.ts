@@ -1,21 +1,19 @@
-export interface OperatingHours {
-}
-export interface OperatingHourDto {
+export interface RestaurantHoursDto {
   //NEW Begins
-  modayOpen: string;
-  mondayClose: string;
-  tuesdayOpen: string;
-  tuesdayClosed: string;
-  wednesdayOpen: string;
-  wednesdayClosed: string;
-  thursdayOpen: string;
-  thursdayClosed: string;
-  fridayOpen: string;
-  fridayClosed: string;
-  saturdayOpen: string;
-  saturdayClosed: string;
-  sundayOpen: string;
-  sundayClosed: string;
+  // modayOpen: string;
+  // mondayClose: string;
+  // tuesdayOpen: string;
+  // tuesdayClosed: string;
+  // wednesdayOpen: string;
+  // wednesdayClosed: string;
+  // thursdayOpen: string;
+  // thursdayClosed: string;
+  // fridayOpen: string;
+  // fridayClosed: string;
+  // saturdayOpen: string;
+  // saturdayClosed: string;
+  // sundayOpen: string;
+  // sundayClosed: string;
   //OLD Begins
   dayOfWeek: number;
   openTime: string;
