@@ -418,6 +418,7 @@ namespace deliveryApp.Server.Services
 
             _context.Restaurants.Remove(restaurant);
             await _context.SaveChangesAsync(cancellationToken);
+            
             return true;
         }
 
@@ -441,7 +442,7 @@ namespace deliveryApp.Server.Services
                 CuisineTypeId = restaurant.CuisineTypeId,
                 CuisineTypeName = restaurant.CuisineType?.Name ?? string.Empty,
                 ImageUrl = restaurant.ImageUrl,
-                //IsCurrentlyOpen = isOpenNow,
+
                 Address = restaurant.Address == null
                 ? null
                 : new AddressDto
@@ -467,7 +468,23 @@ namespace deliveryApp.Server.Services
                     CloseTime = h.CloseTime.ToString(@"hh\:mm")
                 })
                 .OrderBy(h => h.DayOfWeek)
-                .ToList() ?? new List<OperatingHoursDto>()
+                .ToList() ?? new List<OperatingHoursDto>(),
+
+                MenuItems=restaurant.MenuItems
+                .Select(m=> new MenuItemDto
+                {
+                    MenuItemId=m.MenuItemId,
+                    Name=m.Name,
+                    Description=m.Description,
+                    Price=m.Price,
+                    ImageUrl=m.ImageUrl,
+                    RestaurantId=m.RestaurantId,
+
+                    SearchTags=m.SearchTags
+                    .Select(t=>t.Name)
+                    .ToList()
+                })
+                .ToList()
             };
 
             return dto;

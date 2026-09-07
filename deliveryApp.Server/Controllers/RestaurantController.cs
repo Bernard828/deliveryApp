@@ -45,27 +45,39 @@ namespace deliveryApp.Server.Controllers
 
         // GET: api/restaurants/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RestaurantDto>> GetById(int id)
+        public async Task<ActionResult<RestaurantDto>> GetById(int id, CancellationToken cancellationToken = default)
         {
-            var record = await _restaurantService.GetByIdAsync(id);
+            if (id <= 0)
+            {
+                return BadRequest(new
+                {
+                    Message = "Restaurant ID must be greater than zero."
+                });
+            }
+
+            var record = await _restaurantService.GetByIdAsync(id, cancellationToken);
             if (record == null)
             {
                 return NotFound(new { Message = $"Restaurant with ID {id} was not found." });
             }
+
             return Ok(record);
         }
 
         // POST: api/restaurants
         [HttpPost]
-        public async Task<ActionResult<RestaurantDto>> Create([FromBody] RestaurantCreateDto dto)
+        public async Task<ActionResult<RestaurantDto>> Create([FromBody] RestaurantCreateDto dto, CancellationToken cancellationToken = default)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createdRecord = await _restaurantService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = createdRecord.RestaurantId }, createdRecord);
+            var createdRecord = await _restaurantService.CreateAsync(dto, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdRecord.RestaurantId },
+                createdRecord);
         }
 
         // PUT: api/restaurants/5
