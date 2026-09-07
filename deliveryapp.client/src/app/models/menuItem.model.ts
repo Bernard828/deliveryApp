@@ -10,15 +10,18 @@ export interface MenuItem {
 }
 export interface MenuItemDto {
   menuItemId: number;
-  restaurantId: number;
   name: string;
   description?: string;
   price: number;
-  section: MenuSection;
-  entreeSubSection?: EntreeSubSection;
-  drinkSubSection?: DrinkSubSection;
+ // section: MenuSection;
+  //entreeSubSection?: EntreeSubSection;
+  //drinkSubSection?: DrinkSubSection;
   imageUrl: string;
   isActive: boolean;
+  searchTags: string[];
+
+  restaurantId: number;
+
 }
 
 
