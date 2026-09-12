@@ -12,7 +12,6 @@ namespace deliveryApp.Server.Services
 {
     public interface IRestaurantService
     {
-        //Task<IEnumerable<RestaurantDto>> GetAllAsync(bool? activeOnly, int? cuisineTypeId, CancellationToken cancellationToken = default);
         Task<PagedResultDto<RestaurantDto>> GetPagedAsync(int page, int pageSize, bool? isActive, CancellationToken cancellationToken = default);
         Task<RestaurantDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<RestaurantDto> CreateAsync(RestaurantCreateDto dto, CancellationToken cancellationToken = default);
@@ -30,59 +29,6 @@ namespace deliveryApp.Server.Services
             _context = context;
         }
 
-        // Get All Restaurants with optional filters
-        //public async Task<IEnumerable<RestaurantDto>> GetAllAsync(bool? activeOnly, int? cuisineTypeId, CancellationToken cancellationToken = default)
-        //{
-        //    var query = _context.Restaurants
-        //        .AsNoTracking()
-        //        .Include(r => r.CuisineType)
-        //        .Include(r => r.Address)
-        //        .Include(r => r.OperatingHours)
-        //        .Include(r => r.SearchTags)
-        //        .AsQueryable();
-
-        //    // Default filter returns only active restaurants
-        //    if (activeOnly ?? true)
-        //    {
-        //        query = query.Where(r => r.IsActive);
-        //    }
-
-        //    // Filter by cuisine type if provided
-        //    if (cuisineTypeId.HasValue)
-        //    {
-        //        query = query.Where(r => r.CuisineTypeId == cuisineTypeId.Value);
-        //    }
-
-
-        //    return await query
-        //        .OrderBy(r => r.Name)
-        //        .Select(r => new RestaurantDto
-        //        {
-        //            RestaurantId = r.RestaurantId,
-        //            Name = r.Name,
-        //            Description = r.Description,
-        //            IsActive = r.IsActive,
-        //            CuisineTypeId = r.CuisineTypeId,
-        //            CuisineTypeName = r.CuisineType != null
-        //            ? r.CuisineType.Name
-        //            : null,
-        //            ImageUrl = r.ImageUrl,
-        //            Address = r.Address == null
-        //            ? null
-        //            : new AddressDto
-        //            {
-        //                AddressId = r.Address.AddressId,
-        //                Line1 = r.Address.Line1,
-        //                Line2 = r.Address.Line2,
-        //                City = r.Address.City,
-        //                State = r.Address.State,
-        //                Country = r.Address.Country,
-        //                PostalCode = r.Address.PostalCode
-        //            }
-        //        })
-        //        .ToListAsync(cancellationToken);
-        //}
-
         // Paged Results
         public async Task<PagedResultDto<RestaurantDto>> GetPagedAsync(
             int page,
@@ -99,11 +45,7 @@ namespace deliveryApp.Server.Services
             {
                 pageSize = 10;
             }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
+            //Protects the API from large requests
             if (pageSize > 100)
             {
                 pageSize = 100;
@@ -111,10 +53,6 @@ namespace deliveryApp.Server.Services
 
             var query = _context.Restaurants
                 .AsNoTracking()
-                //.Include(r => r.CuisineType)
-                //.Include(r => r.Address)
-                //.Include(r => r.OperatingHours)
-                //.Include(r => r.SearchTags)
                 .AsSplitQuery() //avoid duplicate items
                 .AsQueryable();
 
@@ -140,8 +78,8 @@ namespace deliveryApp.Server.Services
                     CuisineTypeId = r.CuisineTypeId,
 
                     CuisineTypeName = r.CuisineType != null
-                    ? r.CuisineType.Name
-                    : null,
+                    ? null
+                    : r.CuisineType.Name,
 
                     ImageUrl = r.ImageUrl,
 
@@ -349,6 +287,11 @@ namespace deliveryApp.Server.Services
             // Update Owned Address values safely
             if (dto.Address == null)
             {
+                restaurant.Address = null;
+
+            }
+            else
+            {
                 if (restaurant.Address == null)
                 {
                     restaurant.Address = new Address();
@@ -361,6 +304,7 @@ namespace deliveryApp.Server.Services
                 restaurant.Address.PostalCode = dto.Address?.PostalCode.Trim() ?? string.Empty;
                 restaurant.Address.Country = dto.Address?.Country.Trim() ?? string.Empty;
             }
+
             // Clear database trackers before rebuilding lists to avoid orphan tracking bugs
             _context.ResturantTags.RemoveRange(restaurant.SearchTags);
 
@@ -417,21 +361,22 @@ namespace deliveryApp.Server.Services
             if (restaurant == null) { return false; }
 
             _context.Restaurants.Remove(restaurant);
+           
             await _context.SaveChangesAsync(cancellationToken);
-            
+
             return true;
         }
 
         private RestaurantDto MapToDto(Restaurant restaurant)
         {
-            var now = DateTime.Now;
-            var currentDay = now.DayOfWeek;
-            var currentTime = now.TimeOfDay;
+            //var now = DateTime.Now;
+            //var currentDay = now.DayOfWeek;
+            //var currentTime = now.TimeOfDay;
 
-            bool isOpenNow = restaurant.OperatingHours != null && restaurant.OperatingHours.Any(h =>
-                h.DayOfWeek == currentDay &&
-                currentTime >= h.OpenTime &&
-                currentTime <= h.CloseTime);
+            //bool isOpenNow = restaurant.OperatingHours != null && restaurant.OperatingHours.Any(h =>
+            //    h.DayOfWeek == currentDay &&
+            //    currentTime >= h.OpenTime &&
+            //    currentTime <= h.CloseTime);
 
             var dto = new RestaurantDto
             {
@@ -470,18 +415,18 @@ namespace deliveryApp.Server.Services
                 .OrderBy(h => h.DayOfWeek)
                 .ToList() ?? new List<OperatingHoursDto>(),
 
-                MenuItems=restaurant.MenuItems
-                .Select(m=> new MenuItemDto
+                MenuItems = restaurant.MenuItems
+                .Select(m => new MenuItemDto
                 {
-                    MenuItemId=m.MenuItemId,
-                    Name=m.Name,
-                    Description=m.Description,
-                    Price=m.Price,
-                    ImageUrl=m.ImageUrl,
-                    RestaurantId=m.RestaurantId,
+                    MenuItemId = m.MenuItemId,
+                    Name = m.Name,
+                    Description = m.Description,
+                    Price = m.Price,
+                    ImageUrl = m.ImageUrl,
+                    RestaurantId = m.RestaurantId,
 
-                    SearchTags=m.SearchTags
-                    .Select(t=>t.Name)
+                    SearchTags = m.SearchTags
+                    .Select(t => t.Name)
                     .ToList()
                 })
                 .ToList()
