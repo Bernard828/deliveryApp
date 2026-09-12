@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace deliveryApp.Server.Models
+namespace deliveryApp.Server.DTOs
 {
     public class MenuItemCreateDto
     {

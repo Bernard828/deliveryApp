@@ -12,7 +12,6 @@ namespace deliveryApp.Server.DTOs
         public decimal Price { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public int RestaurantId { get; set; }
-        //public Restaurant? Restaurant { get; set; }
         public List<string> SearchTags { get; set; } = new();
     }
 }

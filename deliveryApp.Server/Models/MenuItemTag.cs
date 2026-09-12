@@ -8,8 +8,7 @@ namespace deliveryApp.Server.Models
         [Key]
         public int MenuItemTagId { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required,MaxLength(50)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
