@@ -58,12 +58,14 @@ export class RestaurantListComponent implements OnInit {
   public restaurantService = inject(RestaurantService);
 
   restaurants = signal<RestaurantDto[]>([]);
+
   // Selected restaurant for menu modal
 
   // Pager
   currentPage = signal(1);
   pageSize = signal(10);
   totalCount = signal(0);
+  totalPages = signal(0);
 
   // Dialogs
   displayCreateDialog = signal(false);
@@ -80,9 +82,7 @@ export class RestaurantListComponent implements OnInit {
   }
 
   loadRestaurants(): void {
-    // this.restaurantService.getAll().subscribe(list => {
-    //   this.restaurants.set(list || []);
-    // });
+
     this.restaurantService.getPaged(
       this.currentPage(),
       this.pageSize(),
@@ -91,6 +91,7 @@ export class RestaurantListComponent implements OnInit {
       next: (result) => {
         this.restaurants.set(result.items);
         this.totalCount.set(result.totalCount);
+        this.totalPages.set(result.totalPages);
       },
       error: err => {
         console.error('Error loading restaurants:', err);
@@ -99,6 +100,7 @@ export class RestaurantListComponent implements OnInit {
   }
 
   goToPage(page: number): void {
+
     if (page < 1 || page > this.totalPages()) {
       return;
     }
@@ -106,9 +108,13 @@ export class RestaurantListComponent implements OnInit {
     this.loadRestaurants();
   }
 
-  nextPage(): void { this.goToPage(this.currentPage() + 1) }
-  previousPage(): void { this.goToPage(this.currentPage() - 1) };
-  totalPages(): number { return Math.ceil(this.totalCount() / this.pageSize()); }
+  nextPage(): void {
+    this.goToPage(this.currentPage() + 1)
+  }
+
+  previousPage(): void {
+    this.goToPage(this.currentPage() - 1)
+  };
 
   initForm(openAfterInit = true): void {
     this.createForm = this.fb.group({
@@ -121,9 +127,25 @@ export class RestaurantListComponent implements OnInit {
   }
 
   openCreateModal(): void {
-    this.createForm.reset();
+    this.createForm.reset({
+      name: '',
+      description: '',
+      isActive: true,
+      cuisineTypeId: null,
+      imageUrl: '',
+      address: {
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country:'USA',
+      }
+    });
+
     this.displayCreateDialog.set(true);
-    this.initForm(true);
+
+    //this.initForm(true);
   }
 
   resetForm(close = true): void {
@@ -144,24 +166,37 @@ export class RestaurantListComponent implements OnInit {
     //if (this.createForm) this.createForm.reset();
     this.displayCreateDialog.set(false);
   }
+  closeCreateModal(): void {
+    this.displayCreateDialog.set(false);
+  }
 
   onSubmit(): void {
     if (!this.createForm || this.createForm.invalid) {
-      this.createForm.markAllAsTouched(); return;
+      this.createForm.markAllAsTouched();
+      return;
     }
+
     const dto = this.createForm.value as RestaurantCreateDto;
+
     this.submitting.set(true);
 
     // Call the service to create the restaurant
     this.submitting.set(false);
     this.displayCreateDialog.set(false);
     this.restaurantService.create(dto).subscribe({
-      next: (created: RestaurantDto) => {
-        this.restaurants.update(list => [created, ...list]);
+      next: (created/*: RestaurantDto */) => {
+        this.submitting.set(false);
+        this.displayCreateDialog.set(false);
 
-        this.resetForm(true);
+        //reload current page.
+        this.loadRestaurants();
+
+       // this.restaurants.update(list => [created, ...list]);
+
+        //this.resetForm(true);
       },
       error: (err) => {
+        this.submitting.set(false);
         console.error('Failed to create restaurant', err);
       },
       complete: () => {
@@ -180,8 +215,10 @@ export class RestaurantListComponent implements OnInit {
       return;
     }
 
-    this.selectedRestaurantMenu.set(restaurant);
-    this.displayMenuDialog.set(true);
+    this.selectRestaurant.set(restaurant);
+
+    // this.selectedRestaurantMenu.set(restaurant);
+    // this.displayMenuDialog.set(true);
 
     // this.restaurantService.getById(restaurantId).subscribe({
     //   next: (data) => {
@@ -192,7 +229,8 @@ export class RestaurantListComponent implements OnInit {
     // });
   }
 
-  trackById(index: number, restaurant: RestaurantDto) {
+  trackById(index: number,
+    restaurant: RestaurantDto):number {
     return restaurant.restaurantId;
   }
 }

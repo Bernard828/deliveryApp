@@ -5,37 +5,41 @@ import { finalize, tap, Observable } from 'rxjs';
 import {
   RestaurantDto,
   RestaurantCreateDto,
+  RestaurantUpdateDto
 } from '../app/models/restuarant.model';
+
 import { PagedResult } from '../app/models/paged-result.model';
+
 import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestaurantService {
-  private http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl + '/Restaurants';
+  private readonly baseUrl = `${environment.apiUrl}/Restaurants`;
+
+  // readonly loading = false;
+
+  private readonly http = inject(HttpClient);
 
   restaurants = signal<RestaurantDto[]>([]);
 
   readonly loading = signal(false);
 
 
-  constructor() { }
-
   // OLD
-  getAll() {
-    this.loading.set(true);
+  // getAll() {
+  //   this.loading.set(true);
 
-    return this.http.get<RestaurantDto[]>(`${this.baseUrl}/GetAll`).pipe(
-      tap(data => this.restaurants.set(data)),
-      finalize(() => this.loading.set(false))
-    );
-  }
+  //   return this.http.get<RestaurantDto[]>(`${this.baseUrl}/GetAll`).pipe(
+  //     tap(data => this.restaurants.set(data)),
+  //     finalize(() => this.loading.set(false))
+  //   );
+  // }
 
   getPaged(
-    page: number,
-    pageSize: number,
+    page: number = 1,
+    pageSize: number = 10,
     isActive: boolean | null = null
   ): Observable<PagedResult<RestaurantDto>> {
 
@@ -44,57 +48,66 @@ export class RestaurantService {
       .set('pageSize', pageSize);
 
     if (isActive !== null) {
-      params = params.set('isActive', isActive);
+      params = params.set
+        ('isActive',
+          isActive);
     }
 
     this.loading.set(true);
 
     return this.http
-      .get<PagedResult<RestaurantDto>>(`${this.baseUrl}/GetPaged/paged`,
-        { params })
-      .pipe(finalize(() => this.loading.set(false))
-    );
-  }
-
-  getById(id: number) {
-    return this.http.get<RestaurantDto>(`${this.baseUrl}/GetById/${id}`);
-  }
-
-  create(dto: RestaurantCreateDto) {
-    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto)
-      .pipe(
-        tap(newRestaurant =>
-          this.restaurants.update(list => [...list, newRestaurant])
-        )
-      );
-  }
-
-  createNew(dto: RestaurantDto) {
-    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto)
-  }
-
-  update(id: number, dto: RestaurantDto) {
-    return this.http.put<RestaurantDto>(this.baseUrl + '/Update', dto)
-      .pipe(
-        tap(updated =>
-          this.restaurants.update(list =>
-            list.map(r => (r.restaurantId === id ? updated : r))
-          )
-        )
-      );
-  }
-
-  updateNew(id: number, dto: RestaurantDto) {
-    return this.http.put<RestaurantDto>(`${this.baseUrl}/${id}`, dto);
-  }
-
-  delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
-      tap(() =>
-        this.restaurants.update(list =>
-          list.filter(r => r.restaurantId !== id)
-        )
+      .get<PagedResult<RestaurantDto>>(
+        `${this.baseUrl}/GetPaged/paged`,
+        { params }
       )
-    );
+      .pipe(finalize(() =>
+        this.loading.set(false))
+      );
+  }
+
+  getById(id: number): Observable<RestaurantDto> {
+    return this.http.get<RestaurantDto>
+      (`${this.baseUrl}/GetById/${id}`);
+  }
+
+  create(dto: RestaurantCreateDto): Observable<RestaurantDto> {
+    return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto);
+    // .pipe(
+    //   tap(newRestaurant =>
+    //     this.restaurants.update(list => [...list, newRestaurant])
+    //   )
+    // );
+  }
+
+  update(id: number, dto: RestaurantUpdateDto): Observable<void> {
+    return this.http.put<void>
+      (`${this.baseUrl}/Update/${id}`, dto);
+    // .pipe(
+    //   tap(updated =>
+    //     this.restaurants.update(list =>
+    //       list.map(r => (r.restaurantId === id ? updated : r))
+    //     )
+    //   )
+    // );
+  }
+
+  // updateNew(id: number, dto: RestaurantDto) {
+  //   return this.http.put<RestaurantDto>(`${this.baseUrl}/${id}`, dto);
+  // }
+
+  toggleActiveStatus(id: number): Observable<void> {
+    return this.http.patch<void>
+      (`${this.baseUrl}/ToggleActiveStatus/${id}`, {});
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/Delete/${id}`);
+    //   .pipe(
+    //   tap(() =>
+    //     this.restaurants.update(list =>
+    //       list.filter(r => r.restaurantId !== id)
+    //     )
+    //   )
+    // );
   }
 }

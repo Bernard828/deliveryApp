@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 
 import { RestaurantService } from '../../../services/restaurant.service';
-import { Restaurant, RestaurantDto } from '../../models/restuarant.model';
+import { Restaurant, RestaurantDto, RestaurantUpdateDto } from '../../models/restuarant.model';
 import { GridDataResult } from '../../models/grid-data-result.model';
 
 
@@ -40,10 +40,13 @@ export class AdminRestaurantListComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   displayEditModal: boolean = false;
-  selectedRestaurant: RestaurantDto | null = null;
+  selectedRestaurant = signal<RestaurantDto | null>(null);
   selectedRestaurantId: number | null = null;
 
+  updateDto: RestaurantUpdateDto | null = null;
   restaurantForm!: FormGroup;
+  createForm!: FormGroup;
+
 
   totalRecords = 0;
   page = 1;
@@ -55,22 +58,26 @@ export class AdminRestaurantListComponent implements OnInit {
     total: 0
   };
 
+  displayCreateDialog = signal(false);
+  submitting = signal(false);
+
   //Regex Patterns
   // Matches "09:00 AM - 10:00 PM" or "24 Hours" or standard "09:00-22:00" strings cleanly
   hoursRegex = /^(?:[0-1]?[0-9]|2[0-3]):[0-5][0-9]\s?(?:AM|PM)?\s?-\s?(?:[0-1]?[0-9]|2[0-3]):[0-5][0-9]\s?(?:AM|PM)?$/i;
   // Matches standard HTTP/HTTPS image URL links safely
   urlRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
 
-  private restaurantService = inject(RestaurantService);
-  private fb = inject(FormBuilder);
+  public readonly restaurantService = inject(RestaurantService);
+  private readonly fb = inject(FormBuilder);
 
-  constructor() {
-    this.initForm();
-  }
+  // constructor() {
+  //   this.initForm();
+  // }
+
 
   ngOnInit() {
     this.loadRestaurantsNew();
-    this.initForm();
+    //this.initForm();
   }
 
 
@@ -93,20 +100,42 @@ export class AdminRestaurantListComponent implements OnInit {
       }),
       searchTags: [[]]
     });
+    this.createForm = this.fb.group({
+      name: ['', [Validators.required, Validators.maxLength(150)]],
+      description: ['', Validators.maxLength(1000)],
+      isActive: [true],
+      cuisineTypeId: [null],
+      imageUrl: ['', Validators.maxLength(500)],
+      address: this.fb.group({
+        line1: ['', [Validators.required,
+        Validators.maxLength(150)]],
+        line2: ['', Validators.maxLength(150)],
+        city: ['', [Validators.required, Validators.maxLength(100)]],
+        state: ['', [Validators.required, Validators.maxLength(50)]],
+        zipCode: ['', [Validators.required, Validators.maxLength(20)]],
+        country: ['USA', [Validators.required, Validators.maxLength(100)]],
+      })
+    });
   }
 
   loadRestaurantsNew() {
     this.loading = true;
+
     this.restaurantService
       .getPaged(
+        //this.currentPage(),
+        //this.pageSize(),
         this.page,
         this.pageSize,
-        this.isActiveFilter ?? undefined
+        null
+        //this.isActiveFilter ?? undefined
       )
       .subscribe({
         next: (result) => {
           this.restaurants = result.items;
+          //this.restaurants.set(result.items);
           this.totalRecords = result.totalCount;
+          this.totalPages = result.totalPages;
           this.loading = false;
         }, error: (err) => {
           console.error(err);
@@ -119,14 +148,14 @@ export class AdminRestaurantListComponent implements OnInit {
     const currentPage = 1;
     const pageSize = 10;
     let isActive = null;
-   
+
 
     // this.restaurantService.getPaged(currentPage, pageSize).subscribe(list => {
     //   this.restaurantList.set(l);
     // });
     this.restaurantService.getPaged(currentPage, pageSize, isActive).subscribe({
       next: (() => {
-        
+
       })
     })
   }
@@ -199,7 +228,7 @@ export class AdminRestaurantListComponent implements OnInit {
         ...formValues
       };
 
-      this.restaurantService.updateNew(this.selectedRestaurantId, updateDto).subscribe({
+      this.restaurantService.update(this.selectedRestaurantId, updateDto).subscribe({
         next: () => {
           this.closeModal();
           this.loadRestaurantsNew();
@@ -261,7 +290,7 @@ export class AdminRestaurantListComponent implements OnInit {
   }
 
   toggleActiveState(restaurant: RestaurantDto): void {
-    const updateDto: RestaurantDto = {
+    let updateDto: RestaurantDto = {
       ...restaurant,
       isActive: !restaurant.isActive
     };
@@ -270,7 +299,7 @@ export class AdminRestaurantListComponent implements OnInit {
     //   next: () => this.loadRestaurants()
     // });
 
-    this.restaurantService.updateNew(restaurant.restaurantId, updateDto).subscribe({
+    this.restaurantService.update(updateDto.restaurantId, updateDto).subscribe({
       next: () => this.loadRestaurantsNew(),
       error: (err) => console.error(err)
     });

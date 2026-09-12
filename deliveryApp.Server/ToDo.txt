@@ -1,0 +1,37 @@
+GET    /api/Restaurants/GetPaged
+GET    /api/Restaurants/GetById/5
+POST   /api/Restaurants/Create
+PUT    /api/Restaurants/Update/5
+DELETE /api/Restaurants/Delete/5
+
+GET    /api/CuisineTypes/GetAll
+
+GET    /api/MenuItems/GetByRestaurant/5
+POST   /api/MenuItems/Create
+PUT    /api/MenuItems/Update/10
+DELETE /api/MenuItems/Delete/10
+
+--NEED TO ADD--
+POST   /api/CuisineTypes/Create
+PUT    /api/CuisineTypes/Update/1
+DELETE /api/CuisineTypes/Delete/1
+GET	   /api/CuisineTypes/GetById/1
+GET    /api/RestaurantTags/Create
+POST   /api/RestaurantTags/GetByRestaurant/5
+PUT    /api/RestaurantTags/Update/1  -associate multi restaurants
+POST   /api/Addresses/Create
+POST   /api/OperatingHours/Create
+
+Restaurant Create/Edit module needs:
+- Address Window
+- Operating Hours Window
+- Restaurant Tags Window  (breakfast, coffee, lunch, dinner, tavern, cocktails, etc.)
+- Cuisine Types Window (american, italian, mexican, etc.)
+- Menu Items Window
+
+Menu Item Create/Edit module needs:
+- Menu Item Details Window
+	-Price
+	-Name
+	-Description
+	-Menu Item Tags (apps, soups, salads, etc.)
