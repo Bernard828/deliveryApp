@@ -6,7 +6,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuItemDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menu-item.model';
 import { MenuItemCardComponent } from '../menu-item-card/menu-item-card.component';
 
 @Component({

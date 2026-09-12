@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { MenuItemDto } from '../app/models/menuItem.model';
+import { MenuItemDto } from '../app/models/menu-item.model';
 import { PagedResult } from '../app/models/paged-result.model';
 
 @Injectable({

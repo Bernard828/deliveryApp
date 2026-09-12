@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
-import { MenuItemDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menu-item.model';
 import { MenuCategoryComponent } from '../menu-category/menu-category.component';
 import { CartService } from '../../../services/cart.service';
 

@@ -1,6 +1,6 @@
 import { Address, AddressDto } from "./address.model";
 import { CuisineType } from "./cuisine-type.model";
-import { MenuItemDto } from "./menuItem.model";
+import { MenuItemDto } from "./menu-item.model";
 import { RestaurantHourCreateDto, RestaurantHoursDto } from "./restaurant-hours.model";
 
 export interface Restaurant {

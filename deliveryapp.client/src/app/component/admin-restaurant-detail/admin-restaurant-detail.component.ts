@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
 import { RestaurantDto } from '../../models/restuarant.model';
-import { MenuItemDto } from '../../models/menuItem.model';
+import { MenuItemDto } from '../../models/menu-item.model';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MenuItemService } from '../../../services/menu-item.service';
 import { OperatingHourDto } from '../../models/restaurant-hours.model';
