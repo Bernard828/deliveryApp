@@ -14,21 +14,12 @@ namespace deliveryApp.Server.Controllers
             _restaurantService = restaurantService;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
-        //    [FromQuery] bool? activeOnly,
-        //    [FromQuery] int? cuisineTypeId)
-        //{
-        //    var records = await _restaurantService.GetAllAsync(activeOnly, cuisineTypeId);
-        //    return Ok(records);
-        //}
-
-
         [HttpGet("paged")]
         public async Task<ActionResult<PagedResultDto<RestaurantDto>>> GetPaged(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
-            [FromQuery] bool? isActive = null)
+            [FromQuery] bool? isActive = true,
+            CancellationToken cancellationToken = default)
         {
             if (page < 1 || pageSize < 1)
             {
@@ -36,14 +27,11 @@ namespace deliveryApp.Server.Controllers
             }
 
             var result = await _restaurantService.GetPagedAsync(
-                page,
-                pageSize,
-                isActive);
+                page, pageSize, isActive, cancellationToken);
 
             return Ok(result);
         }
 
-        // GET: api/restaurants/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RestaurantDto>> GetById(int id, CancellationToken cancellationToken = default)
         {
@@ -55,16 +43,16 @@ namespace deliveryApp.Server.Controllers
                 });
             }
 
-            var record = await _restaurantService.GetByIdAsync(id, cancellationToken);
-            if (record == null)
+            var restaurant = await _restaurantService.GetByIdAsync(id, cancellationToken);
+            
+            if (restaurant == null)
             {
                 return NotFound(new { Message = $"Restaurant with ID {id} was not found." });
             }
 
-            return Ok(record);
+            return Ok(restaurant);
         }
 
-        // POST: api/restaurants
         [HttpPost]
         public async Task<ActionResult<RestaurantDto>> Create([FromBody] RestaurantCreateDto dto, CancellationToken cancellationToken = default)
         {
@@ -73,20 +61,26 @@ namespace deliveryApp.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createdRecord = await _restaurantService.CreateAsync(dto, cancellationToken);
+            var restaurant = await _restaurantService.CreateAsync(dto, cancellationToken);
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = createdRecord.RestaurantId },
-                createdRecord);
+                new { id = restaurant.RestaurantId },
+                restaurant);
         }
 
-        // PUT: api/restaurants/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] RestaurantUpdateDto dto)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] RestaurantUpdateDto dto, CancellationToken cancellationToken = default)
         {
+            if (id <= 0)
+            {
+                return BadRequest(new
+                {
+                    Message = "Restaurant ID must be reater than zero."
+                });
+            }
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             if (id != dto.RestaurantId)
@@ -94,7 +88,7 @@ namespace deliveryApp.Server.Controllers
                 return BadRequest(new { Message = "Route identifier ID must match target payload ID." });
             }
 
-            var success = await _restaurantService.UpdateAsync(id, dto);
+            var success = await _restaurantService.UpdateAsync(id, dto, cancellationToken);
             if (!success)
             {
                 return NotFound(new { Message = $"Target modification record ID {id} not found." });
@@ -103,11 +97,10 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        // PATCH: api/restaurants/5/toggle-active
-        [HttpPatch("{id}/toggle-active")]
-        public async Task<IActionResult> ToggleActive(int id)
+        [HttpPatch("{id:int}/toggle-active")]
+        public async Task<IActionResult> ToggleActive(int id, CancellationToken cancellationToken=default)
         {
-            var success = await _restaurantService.ToggleActiveStatusAsync(id);
+            var success = await _restaurantService.ToggleActiveStatusAsync(id, cancellationToken);
             if (!success)
             {
                 return NotFound(new { Message = $"Target toggle record ID {id} not found." });
@@ -116,11 +109,10 @@ namespace deliveryApp.Server.Controllers
             return NoContent();
         }
 
-        // DELETE: api/restaurants/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken=default)
         {
-            var success = await _restaurantService.DeleteAsync(id);
+            var success = await _restaurantService.DeleteAsync(id, cancellationToken);
             if (!success)
             {
                 return NotFound(new { Message = $"Target record removal ID {id} not found." });
