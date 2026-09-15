@@ -115,9 +115,9 @@
       <div class="card-actions">
         <button class="btn-secondary" (click)="openEditModal(restaurant)">✏️ Edit</button>
         <button class="btn-menu" (click)="navigateToMenu(restaurant.restaurantId)">🍔 Menu Management</button>
-        <button class="btn-toggle" [class.btn-danger]="restaurant.isActive" [class.btn-success]="!restaurant.isActive" (click)="toggleActiveState(restaurant)">
+        <!--<button class="btn-toggle" [class.btn-danger]="restaurant.isActive" [class.btn-success]="!restaurant.isActive" (click)="toggleActiveState(restaurant)">
           {{ restaurant.isActive ? '🚫 Disable' : '✅ Enable' }}
-        </button>
+        </button>-->
       </div>
     </div>
   </div>
@@ -247,9 +247,9 @@
           <button type="button" class="btn btn-sm btn-outline-primary flex-grow-1" (click)="onMenuManagement(restaurant.restaurantId)">
             🍔 Menu
           </button>
-          <button type="button" class="btn btn-sm" [ngClass]="restaurant.isActive ? 'btn-outline-danger' : 'btn-outline-success'" (click)="toggleActiveState(restaurant)">
+          <!--<button type="button" class="btn btn-sm" [ngClass]="restaurant.isActive ? 'btn-outline-danger' : 'btn-outline-success'" (click)="toggleActiveState(restaurant)">
             {{ restaurant.isActive ? 'Hide' : 'Show' }}
-          </button>
+          </button>-->
         </div>
       </div>
     </div>

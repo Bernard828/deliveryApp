@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 
 import { RestaurantService } from '../../../services/restaurant.service';
-import { Restaurant, RestaurantDto, RestaurantUpdateDto } from '../../models/restuarant.model';
+import { RestaurantDto, RestaurantUpdateDto } from '../../models/restuarant.model';
 import { GridDataResult } from '../../models/grid-data-result.model';
 
 
@@ -40,7 +40,7 @@ export class AdminRestaurantListComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   displayEditModal: boolean = false;
-  selectedRestaurant = signal<RestaurantDto | null>(null);
+  selectedRestaurant!: RestaurantDto;
   selectedRestaurantId: number | null = null;
 
   updateDto: RestaurantUpdateDto | null = null;
@@ -49,6 +49,7 @@ export class AdminRestaurantListComponent implements OnInit {
 
 
   totalRecords = 0;
+  totalPages?: number;
   page = 1;
   pageSize = 10;
   isActiveFilter: boolean | null = null;
@@ -221,11 +222,21 @@ export class AdminRestaurantListComponent implements OnInit {
 
     if (this.isEditMode && this.selectedRestaurantId !== null) {
       // Build full updated payload structure
-      const updateDto: RestaurantDto = {
+      const dto: RestaurantDto = {
         restaurantId: this.selectedRestaurantId,
         //isActive: true,
         //isCurrentlyOpen: false,
         ...formValues
+      };
+      let updateDto: RestaurantUpdateDto = {
+        restaurantId: this.selectedRestaurant.restaurantId,
+        name: this.selectedRestaurant.name,
+        description: this.selectedRestaurant.description,
+        isActive: this.selectedRestaurant.isActive,
+        cuisineTypeId: this.selectedRestaurant.cuisineTypeId,
+        searchTags: this.selectedRestaurant.searchTags,
+        operatingHours: this.selectedRestaurant.operatingHours,
+        address: this.selectedRestaurant.address || undefined
       };
 
       this.restaurantService.update(this.selectedRestaurantId, updateDto).subscribe({
@@ -289,17 +300,9 @@ export class AdminRestaurantListComponent implements OnInit {
     }
   }
 
-  toggleActiveState(restaurant: RestaurantDto): void {
-    let updateDto: RestaurantDto = {
-      ...restaurant,
-      isActive: !restaurant.isActive
-    };
+  toggleActiveState(dto: RestaurantUpdateDto): void {
 
-    // this.restaurantService.update(restaurant.restaurantId, updateDto).subscribe({
-    //   next: () => this.loadRestaurants()
-    // });
-
-    this.restaurantService.update(updateDto.restaurantId, updateDto).subscribe({
+    this.restaurantService.update(dto.restaurantId, dto).subscribe({
       next: () => this.loadRestaurantsNew(),
       error: (err) => console.error(err)
     });

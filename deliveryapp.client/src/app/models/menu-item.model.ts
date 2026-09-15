@@ -13,17 +13,34 @@ export interface MenuItemDto {
   name: string;
   description?: string;
   price: number;
- // section: MenuSection;
-  //entreeSubSection?: EntreeSubSection;
-  //drinkSubSection?: DrinkSubSection;
   imageUrl: string;
-  isActive: boolean;
-  searchTags: string[];
 
   restaurantId: number;
 
+  searchTags: string[];
+}
+export interface MenuItemCreateDto {
+  name: string;
+  description?: string;
+  price: number;
+  imageUrl: string;
+
+  restaurantId: number;
+
+  searchTags: string[];
 }
 
+export interface MenuItemUpdateDto {
+  menuItemId: number;
+  name: string;
+  description?: string;
+  price: number;
+  imageUrl: string;
+
+  restaurantId: number;
+
+  searchTags: string[];
+}
 
 export type MenuSection =
   | 'Appetizers'

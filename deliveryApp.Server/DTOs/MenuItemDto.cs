@@ -11,7 +11,9 @@ namespace deliveryApp.Server.DTOs
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
         public int RestaurantId { get; set; }
-        public List<string> SearchTags { get; set; } = new();
+        public List<int> MenuItemTagIds { get; set; } = new();
+        public List<string> MenuItemTags { get; set; } = new();
     }
 }

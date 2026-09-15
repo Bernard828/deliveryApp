@@ -54,8 +54,8 @@ import { RestaurantMenuModalComponent } from '../../component/restaurant-menu-mo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RestaurantListComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  public restaurantService = inject(RestaurantService);
+  public readonly restaurantService = inject(RestaurantService);
+  private readonly fb = inject(FormBuilder);
 
   restaurants = signal<RestaurantDto[]>([]);
 
@@ -72,12 +72,13 @@ export class RestaurantListComponent implements OnInit {
   displayMenuDialog = signal(false);
 
   selectedRestaurantMenu = signal<RestaurantDto | null>(null);
-
-  createForm!: FormGroup;
+  selectedRestaurant = signal<RestaurantDto | null>(null);
   submitting = signal(false);
 
+  createForm!: FormGroup;
+
   ngOnInit(): void {
-    this.initForm(false);
+    this.initForm();
     this.loadRestaurants();
   }
 
@@ -116,18 +117,28 @@ export class RestaurantListComponent implements OnInit {
     this.goToPage(this.currentPage() - 1)
   };
 
-  initForm(openAfterInit = true): void {
+  initForm(): void {
     this.createForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(200)]],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
       description: ['', [Validators.required, Validators.maxLength(1000)]],
+      isActive: [true],
+      cuisineTypeId: [null],
+      imageUrl: ['', Validators.maxLength(500)],
+      address: this.fb.group({
+        line1: ['', [Validators.required, Validators.maxLength(150)]],
+        line2: ['', [Validators.maxLength(150)]],
+        city: ['', [Validators.required, Validators.maxLength(100)]],
+        state: ['', [Validators.required, Validators.maxLength(50)]],
+        postalCode: ['', [Validators.required, Validators.maxLength(20)]],
+        country: ['USA', [Validators.required, Validators.maxLength(100)]],
+      })
     });
-    if (openAfterInit) {
-      this.displayCreateDialog.set(true);
-    }
+
+
   }
 
   openCreateModal(): void {
-    this.createForm.reset({
+    this.createForm?.reset({
       name: '',
       description: '',
       isActive: true,
@@ -138,41 +149,22 @@ export class RestaurantListComponent implements OnInit {
         line2: '',
         city: '',
         state: '',
-        zipCode: '',
-        country:'USA',
+        postalCode: '',
+        country: 'USA',
       }
     });
 
     this.displayCreateDialog.set(true);
-
-    //this.initForm(true);
   }
 
-  resetForm(close = true): void {
-    if (this.createForm) {
-      this.createForm.reset();
-    } if (close) {
-      this.displayCreateDialog.set(false);
-    }
-  }
-
-  onCancel(): void {
-    if (this.createForm)
-      this.createForm.reset();
-    this.displayCreateDialog.set(false);
-  }
-
-  onCloseClicked(): void {
-    //if (this.createForm) this.createForm.reset();
-    this.displayCreateDialog.set(false);
-  }
   closeCreateModal(): void {
     this.displayCreateDialog.set(false);
   }
 
   onSubmit(): void {
+
     if (!this.createForm || this.createForm.invalid) {
-      this.createForm.markAllAsTouched();
+      this.createForm?.markAllAsTouched();
       return;
     }
 
@@ -181,19 +173,13 @@ export class RestaurantListComponent implements OnInit {
     this.submitting.set(true);
 
     // Call the service to create the restaurant
-    this.submitting.set(false);
-    this.displayCreateDialog.set(false);
     this.restaurantService.create(dto).subscribe({
-      next: (created/*: RestaurantDto */) => {
+      next: (created) => {
         this.submitting.set(false);
         this.displayCreateDialog.set(false);
 
         //reload current page.
         this.loadRestaurants();
-
-       // this.restaurants.update(list => [created, ...list]);
-
-        //this.resetForm(true);
       },
       error: (err) => {
         this.submitting.set(false);
@@ -215,22 +201,30 @@ export class RestaurantListComponent implements OnInit {
       return;
     }
 
-    this.selectRestaurant.set(restaurant);
-
-    // this.selectedRestaurantMenu.set(restaurant);
-    // this.displayMenuDialog.set(true);
-
-    // this.restaurantService.getById(restaurantId).subscribe({
-    //   next: (data) => {
-    //     this.selectedRestaurantMenu.set(data);
-    //     this.displayMenuDialog.set(true);
-    //   },
-    //   error: (err) => console.error(err)
-    // });
+    this.selectedRestaurant.set(restaurant);
   }
 
   trackById(index: number,
-    restaurant: RestaurantDto):number {
+    restaurant: RestaurantDto): number {
     return restaurant.restaurantId;
+  }
+
+  // resetForm(close = true): void {
+  //   if (this.createForm) {
+  //     this.createForm.reset();
+  //   } if (close) {
+  //     this.displayCreateDialog.set(false);
+  //   }
+  // }
+
+  // onCancel(): void {
+  //   if (this.createForm)
+  //     this.createForm.reset();
+  //   this.displayCreateDialog.set(false);
+  // }
+
+  onCloseClicked(): void {
+    //if (this.createForm) this.createForm.reset();
+    this.displayCreateDialog.set(false);
   }
 }

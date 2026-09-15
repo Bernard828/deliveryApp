@@ -4,10 +4,9 @@ import { finalize, tap, Observable } from 'rxjs';
 
 import {
   RestaurantDto,
-  RestaurantCreateDto,
   RestaurantUpdateDto
 } from '../app/models/restuarant.model';
-
+import { RestaurantCreateDto } from '../app/models/restaurant-create.dto';
 import { PagedResult } from '../app/models/paged-result.model';
 
 import { environment } from '../environments/environment';
@@ -27,20 +26,10 @@ export class RestaurantService {
   readonly loading = signal(false);
 
 
-  // OLD
-  // getAll() {
-  //   this.loading.set(true);
-
-  //   return this.http.get<RestaurantDto[]>(`${this.baseUrl}/GetAll`).pipe(
-  //     tap(data => this.restaurants.set(data)),
-  //     finalize(() => this.loading.set(false))
-  //   );
-  // }
-
   getPaged(
     page: number = 1,
     pageSize: number = 10,
-    isActive: boolean | null = null
+    isActive: boolean | null = true
   ): Observable<PagedResult<RestaurantDto>> {
 
     let params = new HttpParams()
@@ -72,42 +61,19 @@ export class RestaurantService {
 
   create(dto: RestaurantCreateDto): Observable<RestaurantDto> {
     return this.http.post<RestaurantDto>(`${this.baseUrl}/Create`, dto);
-    // .pipe(
-    //   tap(newRestaurant =>
-    //     this.restaurants.update(list => [...list, newRestaurant])
-    //   )
-    // );
   }
 
-  update(id: number, dto: RestaurantUpdateDto): Observable<void> {
-    return this.http.put<void>
+  update(id: number, dto: RestaurantUpdateDto): Observable<RestaurantDto> {
+    return this.http.put<RestaurantDto>
       (`${this.baseUrl}/Update/${id}`, dto);
-    // .pipe(
-    //   tap(updated =>
-    //     this.restaurants.update(list =>
-    //       list.map(r => (r.restaurantId === id ? updated : r))
-    //     )
-    //   )
-    // );
   }
 
-  // updateNew(id: number, dto: RestaurantDto) {
-  //   return this.http.put<RestaurantDto>(`${this.baseUrl}/${id}`, dto);
-  // }
-
-  toggleActiveStatus(id: number): Observable<void> {
-    return this.http.patch<void>
+  toggleActiveStatus(id: number): Observable<RestaurantDto> {
+    return this.http.patch<RestaurantDto>
       (`${this.baseUrl}/ToggleActiveStatus/${id}`, {});
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/Delete/${id}`);
-    //   .pipe(
-    //   tap(() =>
-    //     this.restaurants.update(list =>
-    //       list.filter(r => r.restaurantId !== id)
-    //     )
-    //   )
-    // );
   }
 }

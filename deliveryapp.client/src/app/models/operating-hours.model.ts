@@ -14,6 +14,7 @@ export interface RestaurantHoursDto {
   // saturdayClosed: string;
   // sundayOpen: string;
   // sundayClosed: string;
+
   //OLD Begins
   dayOfWeek: number;
   openTime: string;

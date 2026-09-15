@@ -76,9 +76,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadRestaurants(): void {
-    this.restaurantService.getAll().subscribe(list => {
-      this.restaurants.set(list || []);
-    });
+    // this.restaurantService.getPaged().subscribe(list => {
+    //   this.restaurants.set(list || []);
+    // });
   }
 
   initForm(openAfterInit = true): void {

@@ -1,38 +1,21 @@
-import { Address, AddressDto } from "./address.model";
-import { CuisineType } from "./cuisine-type.model";
+import { AddressDto } from "./address.model";
 import { MenuItemDto } from "./menu-item.model";
-import { RestaurantHourCreateDto, RestaurantHoursDto } from "./restaurant-hours.model";
-
-export interface Restaurant {
-  restaurantId: number;
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  address?: Address;
-  isActive: boolean;
-  isCurrentlyOpen: boolean;
-  operatingHours: RestaurantHoursDto[];
-
-  cuisineTypeId: number;
-  cuisine: CuisineType;
-}
-
+import { RestaurantHoursDto, RestaurantHourCreateDto } from "./operating-hours.model";
 export interface RestaurantDto {
   restaurantId: number;
   name: string;
   description: string;
   isActive: boolean;
-
-  cuisineTypeId: number | null;
-  cuisineType?: CuisineType;
-  cuisineTypeName?: string | null;
-
   imageUrl: string;
 
-  isCurrentlyOpen: boolean;
-  operatingHours: RestaurantHoursDto[];
+  cuisineTypeId: number | null;
+  cuisineTypeName?: string | null;
 
-  address: AddressDto | null;
+  address?: AddressDto | null;
+
+  isCurrentlyOpen: boolean;
+
+  operatingHours: RestaurantHoursDto[];
 
   searchTags: string[];
 
@@ -50,10 +33,24 @@ export interface RestaurantCreateDto {
   searchTags: string[];
   operatingHours: RestaurantHourCreateDto[];
 
-  addressId: number;
-  address: AddressDto | null;
+  //addressId: number;
+  address?: AddressDto;
 }
 
-export interface RestaurantUpdateDto
-  extends RestaurantCreateDto { }
+
+export interface RestaurantUpdateDto {
+  restaurantId: number;
+  name: string;
+  description: string;
+  isActive: boolean;
+
+  cuisineTypeId: number | null;
+
+  imageUrl?: string;
+  searchTags: string[];
+  operatingHours: RestaurantHourCreateDto[];
+
+  //addressId: number;
+  address?: AddressDto;
+}
 

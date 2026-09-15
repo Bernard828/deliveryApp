@@ -4,16 +4,18 @@ namespace deliveryApp.Server.DTOs
 {
     public class RestaurantUpdateDto
     {
-        [Required,MaxLength(150)]public int RestaurantId { get; set; }
-        [MaxLength(1000)]public string Name { get; set; } = string.Empty;
+        [Required, MaxLength(150)] 
+        public string Name { get; set; } = string.Empty;
+        [MaxLength(1000)]
         public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
-       
         public int? CuisineTypeId { get; set; }
         
-        public AddressDto? Address { get; set; } = new();
-        public List<string> SearchTags { get; set; } = new();
-        public List<OperatingHoursCreateDto> OperatingHours { get; set; } = new();
+        public string ImageUrl { get; set; } = string.Empty;
+
+
+        public AddressUpdateDto? Address { get; set; } = new();
+        public List<int> RestaurantTagIds { get; set; } = new();
+        //public List<OperatingHourCreateDto> OperatingHours { get; set; } = new();
     }
 }

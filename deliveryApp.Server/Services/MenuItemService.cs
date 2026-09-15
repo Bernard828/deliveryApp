@@ -11,16 +11,11 @@ namespace deliveryApp.Server.Services
 {
     public interface IMenuItemService
     {
-        Task<MenuItemDto> CreateAsync(MenuItemCreateDto dto);
+        Task<List<MenuItemDto>> GetByRestaurantAsync(int restaurantId);
+        Task<MenuItemDto?> GetByIdAsync(int id);
+        Task<MenuItemDto?> CreateAsync(MenuItemCreateDto dto);
         Task<bool> UpdateAsync(int id, MenuItemUpdateDto dto);
         Task<bool> DeleteAsync(int id);
-        Task<MenuItemDto?> GetByIdAsync(int id);
-        Task<IEnumerable<MenuItemSearchDto>> GetByRestaurantIdAsync(int restaurantId);
-        Task<IEnumerable<MenuItemSearchDto>> SearchAsync(string query);
-        Task<bool> UpdateTagsAsync(int menuItemId, List<string> tags);
-        Task<bool> DeleteTagsAsync(int menuItemId, List<string> tags);
-        Task<IEnumerable<MenuItemSearchDto>> GetPagedAsync(int page, int pageSize);
-        Task<bool> BatchUpdateAsync(List<MenuItemUpdateDto> items);
     }
 
     public class MenuItemService : IMenuItemService
@@ -32,41 +27,61 @@ namespace deliveryApp.Server.Services
             _context = context;
         }
 
-        public async Task<MenuItemDto> CreateAsync(MenuItemCreateDto dto)
+        public async Task<MenuItemDto?> CreateAsync(MenuItemCreateDto dto)
         {
-            var item = new MenuItem
+            ArgumentNullException.ThrowIfNull(dto);
+
+            var restaurantExists = await _context.Restaurants
+                .AnyAsync(r => r.RestaurantId == dto.RestaurantId);
+            if (!restaurantExists) { return null; }
+
+            var menuItem = new MenuItem
             {
-                Name = dto.Name,
-                Description = dto.Description,
+                Name = dto.Name.Trim(),
+                Description = dto.Description.Trim(),
                 Price = dto.Price,
-                ImageUrl = dto.ImageUrl,
+                ImageUrl = dto.ImageUrl.Trim(),
                 RestaurantId = dto.RestaurantId,
-                SearchTags = dto.SearchTags?.Select(t => new MenuItemTag { Name = t }).ToList() ?? new List<MenuItemTag>()
+
+                //SearchTags = dto.Menu?
+                //.Where(t => !string.IsNullOrWhiteSpace(t))
+                //.Select(t => new MenuItemTag
+                //{
+                //    Name = t.Trim()
+                //}).ToList()
+                //?? new List<MenuItemTag>()
             };
 
-            _context.MenuItems.Add(item);
+            _context.MenuItems.Add(menuItem);
             await _context.SaveChangesAsync();
-            return MapToDto(item);
+            return await GetByIdAsync(menuItem.MenuItemId);
         }
 
         public async Task<bool> UpdateAsync(int id, MenuItemUpdateDto dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
+
             if (id != dto.MenuItemId) return false;
 
-            var item = await _context.MenuItems
+            var menuItem = await _context.MenuItems
                 .Include(m => m.SearchTags)
                 .FirstOrDefaultAsync(m => m.MenuItemId == id);
 
-            if (item == null) return false;
+            if (menuItem == null) return false;
 
-            item.Name = dto.Name;
-            item.Description = dto.Description;
-            item.Price = dto.Price;
-            item.ImageUrl = dto.ImageUrl;
-            item.RestaurantId = dto.RestaurantId;
+            menuItem.Name = dto.Name.Trim();
+            menuItem.Description = dto.Description.Trim();
+            menuItem.Price = dto.Price;
+            menuItem.ImageUrl = dto.ImageUrl.Trim();
+            //menuItem.RestaurantId = dto.RestaurantId;
 
-            _context.RemoveRange(item.SearchTags);
-            item.SearchTags = dto.SearchTags?.Select(t => new MenuItemTag { Name = t }).ToList() ?? new List<MenuItemTag>();
+            _context.RemoveRange(menuItem.SearchTags);
+
+            //menuItem.SearchTags = dto.SearchTags?
+            //    .Where(t => !string.IsNullOrWhiteSpace(t))
+            //    .Select(t => new MenuItemTag
+            //    { Name = t })
+            //    .ToList() ?? new List<MenuItemTag>();
 
             try
             {
@@ -82,11 +97,14 @@ namespace deliveryApp.Server.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var item = await _context.MenuItems.FindAsync(id);
-            if (item == null) return false;
+            var menuItem = await _context.MenuItems.FirstOrDefaultAsync(m => m.MenuItemId == id);
 
-            _context.MenuItems.Remove(item);
+            if (menuItem == null) return false;
+
+            _context.MenuItems.Remove(menuItem);
+
             await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -99,14 +117,14 @@ namespace deliveryApp.Server.Services
             return item == null ? null : MapToDto(item);
         }
 
-        public async Task<IEnumerable<MenuItemSearchDto>> GetByRestaurantIdAsync(int restaurantId)
+        public async Task<List<MenuItemDto>> GetByRestaurantAsync(int restaurantId)
         {
             var items = await _context.MenuItems
                 .Include(m => m.SearchTags)
                 .Where(m => m.RestaurantId == restaurantId)
                 .ToListAsync();
+            return items.Select(MapToDto).ToList();
 
-            return items.Select(MapToSearchDto);
         }
 
         public async Task<IEnumerable<MenuItemSearchDto>> SearchAsync(string query)
@@ -188,10 +206,10 @@ namespace deliveryApp.Server.Services
                 item.Description = dto.Description;
                 item.Price = dto.Price;
                 item.ImageUrl = dto.ImageUrl;
-                item.RestaurantId = dto.RestaurantId;
+               // item.RestaurantId = dto.RestaurantId;
 
-                _context.RemoveRange(item.SearchTags);
-                item.SearchTags = dto.SearchTags?.Select(t => new MenuItemTag { Name = t }).ToList() ?? new List<MenuItemTag>();
+                //_context.RemoveRange(item.SearchTags);
+                //item.SearchTags = dto.MenuItemTagIds?.Select(t => new MenuItemTag { Name = t }).ToList() ?? new List<MenuItemTag>();
             }
 
             await _context.SaveChangesAsync();
@@ -208,7 +226,7 @@ namespace deliveryApp.Server.Services
                 Price = m.Price,
                 ImageUrl = m.ImageUrl,
                 RestaurantId = m.RestaurantId,
-                SearchTags = m.SearchTags?.Select(t => t.Name).ToList() ?? new List<string>()
+                //SearchTags = m.SearchTags?.Select(t => t.Name).ToList() ?? new List<string>()
             };
         }
 

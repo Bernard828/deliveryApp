@@ -1,16 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
-import { RestaurantDto } from '../../models/restuarant.model';
+import { RestaurantDto, RestaurantUpdateDto } from '../../models/restuarant.model';
 import { MenuItemDto } from '../../models/menu-item.model';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MenuItemService } from '../../../services/menu-item.service';
-import { OperatingHourDto } from '../../models/restaurant-hours.model';
 
 import { ButtonModule } from 'primeng/button';
-//import { DropdownModule } from 'primeng/dropdown';
-//import { InputSwitchModule } from 'primeng/inputswitch';
-//import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 
 
@@ -76,15 +72,13 @@ export class AdminRestaurantDetailComponent {
   }
 
   loadMenuItems() {
-    this.menuItemService.getByRestaurantId(this.restaurantId, {
-      page: this.menuPage,
-      pageSize: this.menuPageSize,
-      isActive: this.menuIsActiveFilter ?? undefined
-    })
-      .subscribe(result => {
-        this.menuItems = result.items;
-        this.totalMenuItems = result.totalCount;
-      });
+    this.menuItemService.getByRestaurantId(this.restaurantId)
+      .subscribe({
+        next: result => {
+          this.menuItems = result;
+          //this.totalMenuItems = result.totalCount;
+        }
+      })
   }
 
   onMenuPageChange(event: any) {
@@ -99,12 +93,8 @@ export class AdminRestaurantDetailComponent {
     this.loadMenuItems();
   }
 
-  saveHours() {
-    const updated: RestaurantDto = {
-      ...this.restaurant,
-      //operatingHours: this.hoursForm.value as OperatingHourDto
-    };
-    this.restaurantService.update(this.restaurantId, updated)
+  saveHours(dto:RestaurantUpdateDto) {
+    this.restaurantService.update(this.restaurantId, dto)
       .subscribe(() => {
         //maybe show toast
       });

@@ -12,7 +12,7 @@ namespace deliveryApp.Server.Services
 {
     public interface IRestaurantService
     {
-        Task<PagedResultDto<RestaurantDto>> GetPagedAsync(int page, int pageSize, bool? isActive, CancellationToken cancellationToken = default);
+        Task<PagedResultDto<RestaurantListDto>> GetPagedAsync(int page, int pageSize, bool? isActive, CancellationToken cancellationToken = default);
         Task<RestaurantDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<RestaurantDto> CreateAsync(RestaurantCreateDto dto, CancellationToken cancellationToken = default);
         Task<bool> UpdateAsync(int id, RestaurantUpdateDto dto, CancellationToken cancellationToken = default);
@@ -30,7 +30,7 @@ namespace deliveryApp.Server.Services
         }
 
         // Paged Results
-        public async Task<PagedResultDto<RestaurantDto>> GetPagedAsync(
+        public async Task<PagedResultDto<RestaurantListDto>> GetPagedAsync(
             int page,
             int pageSize,
             bool? isActive,
@@ -69,13 +69,11 @@ namespace deliveryApp.Server.Services
                 .ThenBy(r => r.RestaurantId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(r => new RestaurantDto
+                .Select(r => new RestaurantListDto
                 {
                     RestaurantId = r.RestaurantId,
                     Name = r.Name,
-                    Description = r.Description,
                     IsActive = r.IsActive,
-                    CuisineTypeId = r.CuisineTypeId,
 
                     CuisineTypeName = r.CuisineType != null
                     ? null
@@ -96,39 +94,39 @@ namespace deliveryApp.Server.Services
                         Country = r.Address.Country
                     },
 
-                    SearchTags = r.SearchTags
-                    .Select(t => t.TagName)
-                    .ToList(),
+                    //SearchTags = r.SearchTags
+                    //.Select(t => t.TagName)
+                    //.ToList(),
 
-                    OperatingHours = r.OperatingHours
-                    .Select(h => new OperatingHoursDto
-                    {
-                        DayOfWeek = h.DayOfWeek,
-                        OpenTime = h.OpenTime.ToString(@"hh\:mm"),
-                        CloseTime = h.CloseTime.ToString(@"hh\:mm")
-                    })
-                    .OrderBy(h => h.DayOfWeek)
-                    .ToList(),
+                    //OperatingHours = r.OperatingHours
+                    //.Select(h => new OperatingHoursDto
+                    //{
+                    //    DayOfWeek = h.DayOfWeek,
+                    //    OpenTime = h.OpenTime.ToString(@"hh\:mm"),
+                    //    CloseTime = h.CloseTime.ToString(@"hh\:mm")
+                    //})
+                    //.OrderBy(h => h.DayOfWeek)
+                    //.ToList(),
 
-                    MenuItems = r.MenuItems
-                    .Select(m => new MenuItemDto
-                    {
-                        MenuItemId = m.MenuItemId,
-                        Name = m.Name,
-                        Description = m.Description,
-                        Price = m.Price,
-                        ImageUrl = m.ImageUrl,
-                        RestaurantId = m.RestaurantId,
+                    //MenuItems = r.MenuItems
+                    //.Select(m => new MenuItemDto
+                    //{
+                    //    MenuItemId = m.MenuItemId,
+                    //    Name = m.Name,
+                    //    Description = m.Description,
+                    //    Price = m.Price,
+                    //    ImageUrl = m.ImageUrl,
+                    //    RestaurantId = m.RestaurantId,
 
-                        SearchTags = m.SearchTags
-                        .Select(t => t.Name)
-                        .ToList()
-                    })
-                    .ToList()
+                    //    SearchTags = m.SearchTags
+                    //    .Select(t => t.Name)
+                    //    .ToList()
+                    //})
+                    //.ToList()
                 })
                 .ToListAsync(cancellationToken);
 
-            return new PagedResultDto<RestaurantDto>
+            return new PagedResultDto<RestaurantListDto>
             {
                 Items = restaurants,
                 TotalCount = totalCount,
@@ -180,11 +178,11 @@ namespace deliveryApp.Server.Services
                    .ToList(),
 
                    OperatingHours = r.OperatingHours
-                   .Select(h => new OperatingHoursDto
+                   .Select(h => new OperatingHourDto
                    {
-                       DayOfWeek = h.DayOfWeek,
-                       OpenTime = h.OpenTime.ToString(@"hh\:mm"),
-                       CloseTime = h.CloseTime.ToString(@"hh\:mm")
+                       //DayOfWeek = h.DayOfWeek,
+                       //OpenTime = h.OpenTime.ToString(@"hh\:mm"),
+                       //CloseTime = h.CloseTime.ToString(@"hh\:mm")
                    })
                    .OrderBy(h => h.DayOfWeek)
                    .ToList(),
@@ -199,9 +197,9 @@ namespace deliveryApp.Server.Services
                        ImageUrl = m.ImageUrl,
                        RestaurantId = m.RestaurantId,
 
-                       SearchTags = m.SearchTags
-                       .Select(t => t.Name)
-                       .ToList()
+                       //tag = m.SearchTags
+                       //.Select(t => t.Name)
+                       //.ToList()
                    })
                    .ToList()
                })
@@ -224,7 +222,7 @@ namespace deliveryApp.Server.Services
                 ? null
                 : new Address
                 {
-                    AddressId = dto.Address.AddressId,
+                    //AddressId = dto.Address.AddressId,
                     Line1 = dto.Address?.Line1.Trim() ?? string.Empty,
                     Line2 = dto.Address?.Line2.Trim() ?? string.Empty,
                     City = dto.Address?.City.Trim() ?? string.Empty,
@@ -233,21 +231,21 @@ namespace deliveryApp.Server.Services
                     Country = dto.Address?.Country.Trim() ?? string.Empty
                 },
 
-                SearchTags = dto.SearchTags
-                .Where(t => !string.IsNullOrWhiteSpace(t))
-                .Select(t => new RestaurantTag
-                {
-                    TagName = t.Trim()
-                })
-                .ToList(),
+                //SearchTags = dto.SearchTags
+                //.Where(t => !string.IsNullOrWhiteSpace(t))
+                //.Select(t => new RestaurantTag
+                //{
+                //    TagName = t.Trim()
+                //})
+                //.ToList(),
 
-                OperatingHours = dto.OperatingHours
-                .Select(h => new OperatingHours
-                {
-                    DayOfWeek = h.DayOfWeek,
-                    OpenTime = TimeSpan.Parse(h.OpenTime),
-                    CloseTime = TimeSpan.Parse(h.CloseTime)
-                }).ToList()
+                //OperatingHours = dto.oper
+                //.Select(h => new OperatingHours
+                //{
+                //    DayOfWeek = h.DayOfWeek,
+                //    OpenTime = TimeSpan.Parse(h.OpenTime),
+                //    CloseTime = TimeSpan.Parse(h.CloseTime)
+                //}).ToList()
             };
 
             _context.Restaurants.Add(restaurant);
@@ -308,26 +306,26 @@ namespace deliveryApp.Server.Services
             // Clear database trackers before rebuilding lists to avoid orphan tracking bugs
             _context.ResturantTags.RemoveRange(restaurant.SearchTags);
 
-            restaurant.SearchTags = dto.SearchTags
-                .Where(t => !string.IsNullOrWhiteSpace(t))
-                .Select(t => new RestaurantTag
-                {
-                    TagName = t.Trim()
-                })
-                .ToList();
+            //restaurant.SearchTags = dto.SearchTags
+            //    .Where(t => !string.IsNullOrWhiteSpace(t))
+            //    .Select(t => new RestaurantTag
+            //    {
+            //        TagName = t.Trim()
+            //    })
+            //    .ToList();
 
             // Replace OperatingHours with new values from DTO
             if (restaurant.OperatingHours != null)
             {
                 _context.OperatingHours.RemoveRange(restaurant.OperatingHours);
             }
-            restaurant.OperatingHours = dto.OperatingHours
-                .Select(h => new OperatingHours
-                {
-                    DayOfWeek = h.DayOfWeek,
-                    OpenTime = TimeSpan.Parse(h.OpenTime),
-                    CloseTime = TimeSpan.Parse(h.CloseTime)
-                }).ToList();
+            //restaurant.OperatingHours = dto.OperatingHours
+            //    .Select(h => new OperatingHours
+            //    {
+            //        DayOfWeek = h.DayOfWeek,
+            //        OpenTime = TimeSpan.Parse(h.OpenTime),
+            //        CloseTime = TimeSpan.Parse(h.CloseTime)
+            //    }).ToList();
 
             await _context.SaveChangesAsync(cancellationToken);
 
@@ -406,14 +404,14 @@ namespace deliveryApp.Server.Services
                 .ToList() ?? new List<string>(),
 
                 OperatingHours = restaurant.OperatingHours?
-                .Select(h => new OperatingHoursDto
+                .Select(h => new OperatingHourDto
                 {
-                    DayOfWeek = h.DayOfWeek,
-                    OpenTime = h.OpenTime.ToString(@"hh\:mm"),
-                    CloseTime = h.CloseTime.ToString(@"hh\:mm")
+                    //DayOfWeek = h.DayOfWeek,
+                    //OpenTime = h.OpenTime.ToString(@"hh\:mm"),
+                    //CloseTime = h.CloseTime.ToString(@"hh\:mm")
                 })
                 .OrderBy(h => h.DayOfWeek)
-                .ToList() ?? new List<OperatingHoursDto>(),
+                .ToList() ?? new List<OperatingHourDto>(),
 
                 MenuItems = restaurant.MenuItems
                 .Select(m => new MenuItemDto
@@ -425,9 +423,9 @@ namespace deliveryApp.Server.Services
                     ImageUrl = m.ImageUrl,
                     RestaurantId = m.RestaurantId,
 
-                    SearchTags = m.SearchTags
-                    .Select(t => t.Name)
-                    .ToList()
+                    //SearchTags = m.SearchTags
+                    //.Select(t => t.Name)
+                    //.ToList()
                 })
                 .ToList()
             };
