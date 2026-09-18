@@ -13,23 +13,7 @@ namespace deliveryApp.Server.Controllers
             _service = service;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<CuisineTypeDto>> Create(CuisineTypeCreateDto dto)
-        {
-            var result = await _service.CreateAsync(dto);
-            return Ok(result);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Update(int id, CuisineTypeUpdateDto dto)
-        {
-            if (id != dto.CuisineTypeId) return BadRequest("Id mismatch.");
-            var updated = await _service.UpdateAsync(id, dto);
-            if (!updated) return NotFound();
-            return Ok(updated);
-        }
-
-        [HttpGet]
+         [HttpGet]
         public async Task<ActionResult<List<CuisineTypeDto>>> GetAll()
         {
             try
@@ -49,6 +33,31 @@ namespace deliveryApp.Server.Controllers
             var result = await _service.GetByIdAsync(id);
             if (result == null) return NotFound();
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CuisineTypeDto>> Create(CuisineTypeCreateDto dto)
+        {
+            var result = await _service.CreateAsync(dto);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update(int id, CuisineTypeUpdateDto dto)
+        {
+            if (id != dto.CuisineTypeId) return BadRequest("Id mismatch.");
+            var updated = await _service.UpdateAsync(id, dto);
+            if (!updated) return NotFound();
+            return Ok(updated);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return Ok(deleted);
+           // return NoContent();
         }
     }
 }
