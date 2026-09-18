@@ -20,7 +20,7 @@ namespace deliveryApp.Server.Controllers
         [HttpGet("{restaurantId:int}")]
         public async Task<ActionResult<List<MenuItemDto>>> GetByRestaurant(int restaurantId)
         {
-            return Ok(await _service.GetByRestaurantAsync(restaurantId);
+            return Ok(await _service.GetByRestaurantAsync(restaurantId));
         }
 
 
