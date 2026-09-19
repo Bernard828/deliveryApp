@@ -28,6 +28,7 @@ Restaurant Create/Edit module needs:
 - Restaurant Tags Window  (breakfast, coffee, lunch, dinner, tavern, cocktails, etc.)
 - Cuisine Types Window (american, italian, mexican, etc.)
 - Menu Items Window
+-Delete Restaurant includes: Address, Menu Items, Operating Hours, remove search tag relationship
 
 Menu Item Create/Edit module needs:
 - Menu Item Details Window

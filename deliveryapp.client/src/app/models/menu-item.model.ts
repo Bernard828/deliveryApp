@@ -1,45 +1,36 @@
-import { OrderItemDto } from "./order";
-
-export interface MenuItem {
+export interface MenuItemDto {
   menuItemId: number;
   name: string;
   description: string;
   price: number;
   imageUrl: string;
-  restaurantId: number;
-}
-export interface MenuItemDto {
-  menuItemId: number;
-  name: string;
-  description?: string;
-  price: number;
-  imageUrl: string;
+  isActive: boolean;
 
   restaurantId: number;
-
-  searchTags: string[];
+  menuItemTagIds: number[];
 }
 export interface MenuItemCreateDto {
   name: string;
-  description?: string;
+  description: string;
   price: number;
   imageUrl: string;
+  isActive: boolean;
 
   restaurantId: number;
 
-  searchTags: string[];
+  menuItemTagIds: number[];
 }
 
 export interface MenuItemUpdateDto {
   menuItemId: number;
   name: string;
-  description?: string;
+  description: string;
   price: number;
   imageUrl: string;
+  isActive: boolean;
 
   restaurantId: number;
-
-  searchTags: string[];
+  menuItemTagIds: number[];
 }
 
 export type MenuSection =

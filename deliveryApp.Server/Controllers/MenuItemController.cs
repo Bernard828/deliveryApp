@@ -43,22 +43,6 @@ namespace deliveryApp.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<MenuItemDto>> Create([FromBody] MenuItemCreateDto dto)
         {
-            //if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            //var item = await _service.CreateAsync(dto);
-
-            //if (item == null)
-            //{
-            //    return NotFound(new
-            //    {
-            //        Message = "Restaurant not found."
-            //    });
-            //}
-
-            //return CreatedAtAction(
-            //    nameof(GetById),
-            //    new { id = item.MenuItemId },
-            //    item);
             return Ok(await _service.CreateAsync(dto));
         }
 

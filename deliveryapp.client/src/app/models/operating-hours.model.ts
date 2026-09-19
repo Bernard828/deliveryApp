@@ -1,4 +1,4 @@
-export interface RestaurantHoursDto {
+export interface OperatingHoursDto {
   //NEW Begins
   // modayOpen: string;
   // mondayClose: string;
@@ -15,15 +15,30 @@ export interface RestaurantHoursDto {
   // sundayOpen: string;
   // sundayClosed: string;
 
-  //OLD Begins
+  //Different model Begins
+  operatingHourId: number;
+  restaurantId: number;
   dayOfWeek: number;
-  openTime: string;
-  closeTime: string;
-  //OLD Ends
+  dayName: string;
+  isClosed: boolean;
+  openTime: string | null;
+  closeTime: string | null;
 }
 
-export interface RestaurantHourCreateDto {
+export interface OperatingHoursCreateDto {
+  restaurantId: number;
   dayOfWeek: number;
-  openTime: string;
-  closeTime: string;
+  isClosed: boolean;
+  openTime: string | null;
+  closeTime: string | null;
+}
+
+export interface OperatingHoursUpdateDto {
+  operatingHourId: number;
+  restaurantId: number;
+  dayOfWeek: number;
+  dayName: string;
+  isClosed: boolean;
+  openTime: string | null;
+  closeTime: string | null;
 }
