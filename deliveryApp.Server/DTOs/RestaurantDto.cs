@@ -19,7 +19,7 @@ namespace deliveryApp.Server.DTOs
         public AddressDto? Address { get; set; } = new();
         
         public List<string> SearchTags { get; set; } = new();
-        public List<OperatingHoursDto> OperatingHours { get; set; } = new();
+        public List<OperatingHourDto> OperatingHours { get; set; } = new();
         public List<MenuItemDto> MenuItems { get; set; } = new();
 
     }

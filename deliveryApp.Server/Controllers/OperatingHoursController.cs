@@ -15,7 +15,7 @@ namespace deliveryApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OperatingHourDto>>> GetByRestaurant(int restaurantId)
         {
-            return Ok(await _service.GetByRestaurantAsync(restaurantId))
+            return Ok(await _service.GetByRestaurantAsync(restaurantId));
         }
 
         [HttpPost]

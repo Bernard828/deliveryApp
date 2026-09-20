@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CuisineTypeService {
+
   private readonly http = inject(HttpClient);
+
   private readonly baseUrl = `${environment.apiUrl}/CuisineType`;
 
   getAll(): Observable<CuisineTypeDto[]> {
@@ -16,7 +18,7 @@ export class CuisineTypeService {
   }
 
   getById(id: number): Observable<CuisineTypeDto> {
-    return this.http.get(`${this.baseUrl}/GetById/${id}`);
+    return this.http.get<CuisineTypeDto>(`${this.baseUrl}/GetById/${id}`);
   }
 
   create(dto: CuisineTypeCreateDto): Observable<CuisineTypeDto> {
