@@ -1,30 +1,34 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Service } from '@angular/core';
-import { inject } from '@angular/core/primitives/di';
+import { Injectable } from '@angular/core';
+import { inject } from '@angular/core/';
 import { environment } from '../environments/environment.development';
-import { CuisineTypeDto } from '../app/models/cuisine-type.model';
+import { CuisineTypeCreateDto, CuisineTypeDto, CuisineTypeUpdateDto } from '../app/models/cuisine-type.model';
 import { Observable } from 'rxjs';
 
-@Injectable({providedIn:'root'})
+@Injectable({ providedIn: 'root' })
 export class CuisineTypeService {
-  private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/CusineType`;
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = `${environment.apiUrl}/CuisineType`;
 
   getAll(): Observable<CuisineTypeDto[]> {
     return this.http.get<CuisineTypeDto[]>
       (`${this.baseUrl}/GetAll`);
   }
 
-  create(dto: CuisineTypeDto) {
+  getById(id: number): Observable<CuisineTypeDto> {
+    return this.http.get(`${this.baseUrl}/GetById/${id}`);
+  }
+
+  create(dto: CuisineTypeCreateDto): Observable<CuisineTypeDto> {
     return this.http.post<CuisineTypeDto>(`${this.baseUrl}/Create`, dto);
   }
 
-  update(id: number, dto: CuisineTypeDto) {
+  update(id: number, dto: CuisineTypeUpdateDto): Observable<CuisineTypeDto> {
     return this.http.put<CuisineTypeDto>(`${this.baseUrl}/Update/${id}`, dto);
   }
 
-  delete(id: number) {
+  delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/Delete/${id}`);
   }
-  
+
 }
