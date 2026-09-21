@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -6,12 +6,13 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 //PrimeNG
 import Aura from '@primeuix/themes/aura';
+import { GlobalErrorHandler } from './exception-handler/global-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
     provideHttpClient(withInterceptorsFromDi()),
-    //provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    {provide:ErrorHandler, useClass:GlobalErrorHandler }
   ]
 };
