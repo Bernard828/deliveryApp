@@ -9,11 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DeliveryAppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//builder.Services.ConfigureHttpJsonOptions(options =>
+//{
+//    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+//});
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-});
+builder.Logging.ClearProviders();
+builder.Logging.AddLog4Net("log4net.config");
 
 builder.Services.AddControllers();
 
@@ -26,16 +28,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("DevCors", policy =>
-    {
-        policy.WithOrigins(
+    options.AddPolicy("DevCors", 
+        policy => {
+            policy.WithOrigins(
             "http://localhost:21970",   // Angular dev server
             "http://localhost:5140",    // HTTP
             "https://localhost:7140",   // HTTPS
             "http://localhost:5500"     // IIS Express
             )
-       .AllowAnyHeader()
-       .AllowAnyMethod();
+       .AllowAnyMethod()
+       .AllowAnyHeader();
     });
 });
 
