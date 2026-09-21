@@ -1,0 +1,129 @@
+<p>restaurant-edit works!</p>
+<form [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="restaurant-editor">
+  <!--Restaurant Details-->
+  <section class="editor-section">
+
+    <header class="section-header">
+      <div>
+        <h2>Restaurant Details</h2>
+        <p>Basic restaurant information.</p>
+      </div>
+    </header>
+
+    <div class="form-grid">
+
+      <div class="form-field">
+        <label for="name">Restaurant Name</label>
+        <input id="name" type="text" formControlName="name" placeholder="Example: Cleveland Kitchen" />
+      </div>
+
+      <div class="form-field">
+        <label for="cuisine">Cuisine Type</label>
+        <select id="cuisine" formControlName="cusineTypeId">
+          <option [ngValue]="null">Select cuisine</option>
+          <option *ngFor="let cuisine of cuisines()" [ngValue]="cuisine.cuisineTypeId">{{ cuisine.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-field full-width">
+        <label for="description">Description</label>
+        <textarea id="description"
+                  rows="4"
+                  formControlName="descrition"
+                  placeholder="Describe the restaurant..."></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="imageUrl">Image URL</label>
+        <input id="imageUrl" type="url" formControlName="imageUrl" placeholder="https://..." />
+      </div>
+
+      <label class="checkbox-field">
+        <input type="checkbox" formControlName="isActive" />
+        <span>Restaurant is active</span>
+      </label>
+
+    </div>
+
+  </section>
+
+  <!--ADDRESS-->
+  <section class="editor-section"
+           formGroupName="address">
+    <header class="section-header">
+      <div>
+        <h2>Address</h2>
+        <p>Restaurant location.</p>
+      </div>
+    </header>
+
+    <div class="form-grid">
+
+      <div class="form-field full-width">
+        <label>Address Line 1</label>
+        <input type="text"
+               formControlName="line1"
+               placeholder="123 Main Street" />
+      </div>
+
+      <div class="form-field full-width">
+        <label>Address Line 2</label>
+        <input type="text"
+               formControlName="line2"
+               placeholder="Suite 200" />
+      </div>
+
+      <div class="form-field">
+        <label>City</label>
+        <input type="text"
+               formControlName="city" />
+      </div>
+
+      <div class="form-field">
+        <label>State</label>
+        <input type="text"
+               formControlName="state" />
+      </div>
+
+      <div class="form-field">
+        <label>Zip Code</label>
+        <input type="text"
+               formControlName="postalCode" />
+      </div>
+
+      <div class="form-field">
+        <label>Country</label>
+        <input type="text"
+               formControlName="country" />
+      </div>
+
+    </div>
+
+  </section>
+
+  <!--RESTAURANT TAGS-->
+  <section class="editor-section">
+
+    <header class="section-header">
+
+      <div>
+        <h2>Restaurant Tags</h2>
+        <p>Select everything that applies.</p>
+      </div>
+
+    </header>
+
+    <div class="tag-picker">
+      <button type="button"
+              *ngFor="let tag of restaurantTags()"
+              class="tag-option"
+              [class.selected]="isTagSelected(tag.restaurantTagId)"
+              (click)="toggleTag(tag.restaurantTagId)">
+        <span>{{ tag.name }}</span>
+        <span *ngIf="isTagSelected(tag.restaurantTagId)"></span>
+      </button>
+    </div>
+  </section>
+</form>

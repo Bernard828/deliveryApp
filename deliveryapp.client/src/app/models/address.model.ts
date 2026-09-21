@@ -1,6 +1,6 @@
 export interface Address {
-  addressId: number;
-  restaurantId: number;
+  //addressId: number;
+ // restaurantId: number;
   line1: string;
   line2?: string;
   city: string;
@@ -8,30 +8,30 @@ export interface Address {
   zipCode: string;
 }
 export interface AddressDto {
-  addressId: number;
-  line1: string;
-  line2?: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
+  //addressId: number;
+  line1: string|null;
+  line2?: string|null;
+  city: string|null;
+  state: string|null  ;
+  zipCode: string|null  ;
+  country: string|null  ;
 
-  restaurantId: number;
+  //restaurantId: number;
 }
 
 export interface AddressCreateDto {
-  line1: string;
-  line2?: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
+  line1: string|null;
+  line2?: string|null;
+  city: string|null;
+  state: string|null;
+  zipCode: string|null  ;
+  country: string|null;
 
-  restaurantId: number;
+  //restaurantId: number;
 }
 
 export interface AddressUpdateDto {
-  addressId: number;
+  //addressId: number;
   line1: string;
   line2?: string;
   city: string;
@@ -39,6 +39,6 @@ export interface AddressUpdateDto {
   zipCode: string;
   country: string;
 
-  restaurantId: number;
+ // restaurantId: number;
 }
 

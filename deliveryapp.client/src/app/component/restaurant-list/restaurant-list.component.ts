@@ -54,7 +54,9 @@ import { RestaurantMenuModalComponent } from '../../component/restaurant-menu-mo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RestaurantListComponent implements OnInit {
-  public readonly restaurantService = inject(RestaurantService);
+
+public readonly restaurantService = inject(RestaurantService);
+
   private readonly fb = inject(FormBuilder);
 
   restaurants = signal<RestaurantDto[]>([]);
