@@ -122,8 +122,79 @@
               [class.selected]="isTagSelected(tag.restaurantTagId)"
               (click)="toggleTag(tag.restaurantTagId)">
         <span>{{ tag.name }}</span>
-        <span *ngIf="isTagSelected(tag.restaurantTagId)"></span>
+        <span *ngIf="isTagSelected(tag.restaurantTagId)">
+          <fa-icon [icon]="faCheck"></fa-icon>
+        </span>
       </button>
     </div>
   </section>
+
+  <!--Operating Hours-->
+  <section class="editor-section">
+    <header class="section-header">
+      <div>
+        <h2>Operating Hours</h2>
+        <p>Set the hours for each day.</p>
+      </div>
+
+      <buton type="button"
+             class="btn btn-secondary"
+             (click)="copyMondayToWeekdays()">
+        Apply Monday to Weekdays
+      </buton>
+
+    </header>
+
+    <div formArrayName="operatingHours"
+         class="hours-table">
+
+      <div *ngFor="let hour of operatingHours.controls;
+           let i = index"
+           [formGroupName]="i"
+           class="hours-row">
+
+        <div class="day-name">
+          {{ hour.get('dayName')?.value }}
+        </div>
+
+        <label class="switch-field">
+          <input type="checkbox"
+                 formControlName="isClosed" />
+          <span>Closed</span>
+        </label>
+
+        <div class="time-field">
+          <label>Open</label>
+          <input type="time"
+                 formControlName="openTime"
+                 [disabled]="hour.get('isClosed')?.value" />
+        </div>
+
+        <span class="time-seperator">to</span>
+
+        <div class="time-field">
+          <label>Close</label>
+          <input
+                 type="time"
+                 formControlName="closeTime"
+                 [disabled]="hour.get('isClosed')?.value" />
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!--SAVE-->
+  <footer class="editor-footer">
+
+    <button type="submit"
+            class="btn-primary"
+            [disabled]="form.invalid|| saving()">
+      {{ saving() ? 'Saving...' : 'Save Restaurant' }}
+    </button>
+
+  </footer>
+
 </form>
