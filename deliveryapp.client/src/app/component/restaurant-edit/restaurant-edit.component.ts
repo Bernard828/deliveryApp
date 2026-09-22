@@ -11,9 +11,8 @@ import{OperatingHourService} from '../../../services/operating-hour.service';
 import { CuisineTypeDto } from '../../models/cuisine-type.model';
 import { RestaurantTagDto } from '../../models/restaurant-tag-dto.model';
 import { RestaurantCreateDto, RestaurantUpdateDto } from '../../models/restuarant.model';
-import{FontAwesomeModule} from'@fortawesome/angular-fontawesome'
-//import { faCheck } from '@fortawesome/free-solid-svg-icons';
-
+import{FontAwesomeModule} from'@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-restaurant-edit',
   standalone: true,
@@ -24,7 +23,7 @@ import{FontAwesomeModule} from'@fortawesome/angular-fontawesome'
 export class RestaurantEditComponent {
 
   //Icons
-
+  faCheck=faCheck;
 
   private readonly fb= inject(FormBuilder);
 
